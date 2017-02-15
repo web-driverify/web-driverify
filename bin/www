@@ -1,0 +1,13 @@
+#!/usr/bin/env node
+
+var env = require('../utils/env');
+var proxy = require('../proxy');
+var wd = require('../wd');
+
+proxy.listen(env.browserPort, function() {
+    console.log('proxy listening on', env.browserPort);
+});
+
+wd.listen(env.wdPort, function() {
+    console.log('web driver listening on', env.wdPort);
+});

@@ -1,0 +1,19 @@
+{
+  "name": "web-driverify",
+  "version": "0.0.0",
+  "homepage": "https://github.com/harttle/web-driverify",
+  "authors": [
+    "harttle <yangjvn@126.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~3.1.1"
+  }
+}

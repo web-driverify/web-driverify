@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+export http_proxy=http://localhost:${PROXY_PORT:-8011}
+curl "$@"
