@@ -34,10 +34,13 @@ router.get('/', function(req, res, next) {
     }
 });
 
+var id = 0;
 router.get('/command', rpc.sessionRequired, function(req, res, next) {
-    debug('command polling requested');
+    id++;
+    debug('command polling requested', id, 'browser info:');
     req.session.cmdQueue.front()
         .then(cmd => {
+            debug('command polling responsing', id);
             res.json(cmd.dto());
         })
         .catch(err => {
@@ -57,6 +60,18 @@ router.post('/result/:cid', rpc.sessionRequired, function(req, res) {
     }
     req.session.cmdQueue.pop(result);
     res.end('received');
+});
+
+router.use(function(req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+});
+
+router.use(function(err, req, res, next) {
+    var status = err.status || 500;
+    debug(err.stack);
+    res.status(status).end(err.stack);
 });
 
 module.exports = router;

@@ -4,8 +4,10 @@
   "description": "A passive web driver endpoint for real browsers.",
   "main": "index.js",
   "scripts": {
+    "start": "node bin/www",
+    "start-debug": "NODE_ENV=development DEBUG=wd:* node bin/www",
     "test": "NODE_ENV=development mocha",
-    "debug": "NODE_ENV=development DEBUG=wd:* mocha"
+    "test-debug": "NODE_ENV=development DEBUG=wd:* mocha"
   },
   "repository": {
     "type": "git",

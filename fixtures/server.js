@@ -1,7 +1,12 @@
 var express = require('express');
-var debug = require('debug')('wd:fixture');
+var debug = require('debug')('wd:fixtures:server');
 
 var app = express();
+
+app.use(function(req, res, next) {
+    debug(req.originalUrl, 'requested');
+    next();
+});
 
 app.get('/wellformed', (req, res) => {
     debug('requesting wellformed');

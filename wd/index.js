@@ -11,7 +11,8 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(morganDebug('wd:wd', 'dev'));
 
-app.use(require('./routes.js'));
+app.use(require('./routes/sessions.js'));
+app.use(require('./routes/navigation.js'));
 
 app.use(function(req, res, next) {
     var err = new Error('Not Found');

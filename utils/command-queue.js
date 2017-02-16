@@ -41,6 +41,9 @@ CommandQueue.prototype.trySendCmd = function() {
     cmd.status = 'pending';
     this.cmdReceiver(cmd);
     this.cmdReceiver = null;
+    if (cmd.isImmediateInvoked()) {
+        this.pop(null);
+    }
 };
 
 CommandQueue.prototype.sendFailed = function() {

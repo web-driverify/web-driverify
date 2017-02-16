@@ -20,7 +20,9 @@
         },
         // https: //www.w3.org/TR/webdriver/#dfn-go
         go: function(data) {
-            return location.href = data.url;
+            console.log('going to', data.url);
+            location.href = data.url;
+            return null;
         },
         back: function() {
             return location.back();
@@ -63,7 +65,9 @@
             })
             .done(function(cmd) {
                 console.log('command received', JSON.stringify(cmd));
-                var responder = result.bind(null, cmd);
+                var responder = isImmediateInvoked(cmd.type) ?
+                    responder = function noop() {} :
+                    result.bind(null, cmd);
                 execCommand(cmd.type, cmd.args, responder);
                 poll();
             })
@@ -73,6 +77,10 @@
                     poll();
                 }, 3000);
             });
+    }
+
+    function isImmediateInvoked(type) {
+        return ['go', 'refresh', 'forward', 'back'].indexOf(type) > -1;
     }
 
     function execCommand(type, args, responder) {

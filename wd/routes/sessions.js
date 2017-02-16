@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var rpc = require('../utils/rpc.js');
-var debug = require('debug')('wd:wd:routes');
+var rpc = require('../../utils/rpc.js');
+var debug = require('debug')('wd:wd:routes:sessions');
 
 router.param('sid', rpc.sessionById);
 

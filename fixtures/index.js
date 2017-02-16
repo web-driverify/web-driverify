@@ -21,8 +21,10 @@ fixtures.startProxyServer = startProxyServer;
 fixtures.startBrowserClient = startBrowserClient;
 
 function setupSession(done) {
-    wd.once('createSessionRequested', startBrowserClient);
-    setupProxy(() => requestSession(() => done()));
+    setupProxy(() => {
+        wd.once('createSessionRequested', startBrowserClient);
+        requestSession(() => done());
+    });
 }
 
 function teardownSession(done) {
@@ -50,10 +52,11 @@ function startStubServer(done) {
 
 function startBrowserClient() {
     var cmdId = Command.getLastId();
-    var url = `http://localhost:${env.proxyPort}/wd?cmd=${cmdId}`;
-    debug('starting client', url);
+    var initUrl = `${env.proxyUrl}/wd?cmd=${cmdId}`;
+    debug('starting client:', initUrl, 'with proxy:', env.proxyUrl);
     browserClient = new Horseman()
-        .setProxy('localhost', env.proxyPort, 'http')
+        .setProxy(env.proxyUrl)
+        .viewport(375, 667)
         .userAgent('Mozilla/5.0 (Windows NT 6.1; WOW64; rv:27.0) Gecko/20100101 Firefox/27.0')
         .on('consoleMessage', msg => {
             debug('[browser console]', msg);
@@ -71,11 +74,11 @@ function startBrowserClient() {
         .then(() => {
             debug('browser started');
         })
-        .open(url)
+        .open(initUrl)
         .waitForNextPage()
         .html()
         .then((text) => {
-            debug('browser connected, html length:', text.length);
+            debug('browser connected, html:', text);
         });
 }
 

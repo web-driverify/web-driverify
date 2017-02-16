@@ -58,8 +58,9 @@ function sessionRequired(req, res, next) {
         var e = new Error('session not connected');
         e.status = 403;
         next(e);
+    } else{
+        next();
     }
-    next();
 }
 
 exports.exec = exec;

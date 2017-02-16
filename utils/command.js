@@ -11,6 +11,10 @@ function Command(type, args, cb) {
     this.cb = cb;
 }
 
+Command.prototype.isImmediateInvoked = function() {
+    return ['go', 'refresh', 'forward', 'back'].indexOf(this.type) > -1;
+};
+
 Command.prototype.exit = function(data) {
     this.data = data;
     this.status = 'exit';

@@ -1,7 +1,7 @@
 var request = require('request');
 var charset = require('charset');
 var _ = require('lodash');
-var debug = require('debug')('wd:proxy:routes/external');
+const debug = require('debug')('wd:proxy:routes:external');
 var scripts = [
     "",
     "<script src='/wd/assets/vendors/jquery/dist/jquery.min.js'></script>",
