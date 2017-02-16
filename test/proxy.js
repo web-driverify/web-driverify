@@ -1,26 +1,17 @@
 const chai = require('chai');
 const expect = chai.expect;
-const proxy = require('../proxy');
-const server = require('../fixtures/server.js');
 const request = require('superagent');
-const env = require('../utils/env.js');
+const fixtures = require('../fixtures');
+const env = require('../utils/env');
 require('superagent-proxy')(request);
 
 describe('proxy', function() {
-    var serverSocket, proxySocket;
-    var proxyUrl = `http://localhost:${env.browserPort}`;
-    var serverUrl = `http://localhost:${env.testServerPort}`;
-
-    before(done => {
-        serverSocket = server.listen(env.testServerPort, () => {
-            proxySocket = proxy.listen(env.browserPort, () => done());
-        });
-    });
-    after(done => proxySocket.close(() => serverSocket.close(() => done())));
+    before(fixtures.setupProxy);
+    after(fixtures.teardownProxy);
 
     it('should proxy stylesheets', function(done) {
-        request.get(`${serverUrl}/css`)
-            .proxy(proxyUrl)
+        request.get(`${env.stubUrl}/css`)
+            .proxy(env.proxyUrl)
             .end((err, res) => {
                 expect(res.text).to.equal('div{color: red}');
                 done();
@@ -33,8 +24,8 @@ describe('proxy', function() {
             "<script src='/wd/assets/javascripts/index.js'></script>",
             '</html>'
         ].join('\n');
-        request.get(`${serverUrl}/emptyhtml`)
-            .proxy(proxyUrl)
+        request.get(`${env.stubUrl}/emptyhtml`)
+            .proxy(env.proxyUrl)
             .end((err, res) => {
                 expect(res.text).to.equal(html);
                 done();
@@ -47,8 +38,8 @@ describe('proxy', function() {
             "<script src='/wd/assets/javascripts/index.js'></script>",
             ""
         ].join('\n');
-        request.get(`${serverUrl}/empty`)
-            .proxy(proxyUrl)
+        request.get(`${env.stubUrl}/empty`)
+            .proxy(env.proxyUrl)
             .end((err, res) => {
                 expect(res.text).to.equal(html);
                 done();
@@ -61,15 +52,16 @@ describe('proxy', function() {
             "<script src='/wd/assets/javascripts/index.js'></script>",
             "</head><body>foo</body></html>"
         ].join('\n');
-        request.get(`${serverUrl}/wellformed`)
-            .proxy(proxyUrl)
+        request.get(`${env.stubUrl}/wellformed`)
+            .proxy(env.proxyUrl)
             .end((err, res) => {
                 expect(res.text).to.equal(html);
                 done();
             });
     });
     it('should provide init page', function(done) {
-        request.get(`${proxyUrl}/wd`)
+        request.get(`${env.stubUrl}/wd`)
+            .proxy(env.proxyUrl)
             .end((err, res) => {
                 expect(res.statusCode).to.equal(200);
                 expect(res.text).to.match(/.+/);

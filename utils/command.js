@@ -1,4 +1,3 @@
-const debug = require('debug')('wd:utils:command');
 const _ = require('lodash');
 
 var id = 0;
@@ -13,7 +12,6 @@ function Command(type, args, cb) {
 }
 
 Command.prototype.exit = function(data) {
-    debug(`command exiting with value`, data);
     this.data = data;
     this.status = 'exit';
     this.cb(data);
@@ -25,6 +23,10 @@ Command.getLastId = function() {
 
 Command.prototype.dto = function() {
     return _.pick(this, ['id', 'type', 'args']);
+};
+
+Command.prototype.toString = function() {
+    return this.type + `(${this.id})`;
 };
 
 module.exports = Command;

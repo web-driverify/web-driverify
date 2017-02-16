@@ -16,7 +16,11 @@ function getIPAddr() {
 }
 
 exports.ip = getIPAddr();
-exports.testServerPort = process.env.TEST_SERVER_PORT || 8087;
-exports.browserPort = process.env.BROWSER_PORT || 8088;
+exports.stubPort = process.env.STUB_PORT || 8087;
+exports.proxyPort = process.env.PROXY_PORT || 8088;
 exports.wdPort = process.env.WD_PORT || 8089;
-exports.env = process.env.NODE_ENV || 'production';
+exports.name = process.env.NODE_ENV || 'production';
+exports.host = process.env.HOST || 'localhost';
+
+exports.proxyUrl = 'http://' + exports.host + ':' + exports.proxyPort;
+exports.stubUrl = 'http://' + exports.host + ':' + exports.stubPort;

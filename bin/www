@@ -4,8 +4,8 @@ var env = require('../utils/env');
 var proxy = require('../proxy');
 var wd = require('../wd');
 
-proxy.listen(env.browserPort, function() {
-    console.log('proxy listening on', env.browserPort);
+proxy.listen(env.proxyPort, function() {
+    console.log('proxy listening on', env.proxyPort);
 });
 
 wd.listen(env.wdPort, function() {

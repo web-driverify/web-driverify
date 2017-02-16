@@ -7,7 +7,7 @@ router.param('sid', rpc.sessionById);
 
 router.post('/session', function(req, res, next) {
     rpc 
-        .exec('createSession', null, req.body)
+        .exec('createSession', null, res.app)
         .then(result => res.json(result))
         .catch(next);
 });

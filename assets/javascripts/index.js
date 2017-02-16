@@ -6,7 +6,6 @@
     console.log('web-driverify loading...');
 
     var commandHandlers = {
-        // spec: https://www.w3.org/TR/webdriver/#dfn-new-session
         setActive: function() {
             return window.navigator.webdriver = true;
         },
@@ -19,8 +18,9 @@
         findElements: function(sel) {
             return document.querySelectorAll(sel);
         },
-        go: function(url) {
-            return location.href = url;
+        // https: //www.w3.org/TR/webdriver/#dfn-go
+        go: function(data) {
+            return location.href = data.url;
         },
         back: function() {
             return location.back();
@@ -41,8 +41,7 @@
     function result(cmd, data) {
         data = JSON.stringify(data);
         console.log('sending result ' + data +
-            ' (length: ' + data.length + ') ' +
-            ' for command ' + JSON.stringify(cmd));
+            ' for command ' + cmd.type + '(' + cmd.id + ')');
 
         $.ajax('/wd/result/' + cmd.id, {
             'data': data,
@@ -55,7 +54,13 @@
     function poll() {
         console.log('polling');
         $
-            .getJSON('/wd/command')
+            .ajax({
+                url: '/wd/command',
+                dataType: 'json',
+                // notimeout, see:
+                // http://stackoverflow.com/questions/4148830/what-is-jquerys-ajax-default-timeout-value
+                timeout: 0
+            })
             .done(function(cmd) {
                 console.log('command received', JSON.stringify(cmd));
                 var responder = result.bind(null, cmd);

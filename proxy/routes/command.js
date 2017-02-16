@@ -13,7 +13,6 @@ router.use(bodyParser.json({
 router.use(rpc.sessionByReq);
 
 router.get('/', function(req, res, next) {
-    debug('respond with web driverify connection page');
     res.set('content-type', 'text/html');
     var session = rpc.createSession(req);
 
@@ -26,7 +25,7 @@ router.get('/', function(req, res, next) {
         });
         res.render('connect-success.html', session);
     } catch (e) {
-        console.warn('connection failed', e.message);
+        console.warn('connection failed:', e.message);
         if (e.code === 'ENOCMD') {
             res.render('connect-fail.html', session);
         } else {

@@ -30,6 +30,7 @@ function createSession(req) {
         ua: req.headers['user-agent'],
         cmdQueue: new CommandQueue()
     };
+    // spec: https://www.w3.org/TR/webdriver/#dfn-new-session
     req.session.cmdQueue.push(new Command('setActive'));
     return req.session;
 }
