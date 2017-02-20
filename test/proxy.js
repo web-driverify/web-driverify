@@ -1,9 +1,12 @@
-const chai = require('chai');
-const expect = chai.expect;
-const request = require('superagent');
-const fixtures = require('../fixtures');
-const env = require('../utils/env');
-require('superagent-proxy')(request);
+import chai from 'chai';
+import request from 'superagent';
+import fixtures from '../fixtures';
+import env from '../utils/env';
+import superagentProxy from 'superagent-proxy';
+
+superagentProxy(request);
+
+let expect = chai.expect;
 
 describe('proxy', function() {
     before(fixtures.setupProxy);

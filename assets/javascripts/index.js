@@ -6,9 +6,6 @@
     console.log('web-driverify loading...');
 
     var commandHandlers = {
-        setActive: function() {
-            return window.navigator.webdriver = true;
-        },
         getCurrentUrl: function() {
             return window.location.href;
         },
@@ -43,7 +40,7 @@
     function result(cmd, data) {
         data = JSON.stringify(data);
         console.log('sending result ' + data +
-            ' for command ' + cmd.type + '(' + cmd.id + ')');
+            ' for command ' + cmd.name + '(' + cmd.id + ')');
 
         $.ajax('/wd/result/' + cmd.id, {
             'data': data,
@@ -65,10 +62,10 @@
             })
             .done(function(cmd) {
                 console.log('command received', JSON.stringify(cmd));
-                var responder = isImmediateInvoked(cmd.type) ?
+                var responder = cmd.confirmationRequired ?
                     responder = function noop() {} :
                     result.bind(null, cmd);
-                execCommand(cmd.type, cmd.args, responder);
+                execCommand(cmd.name, cmd.args, responder);
                 poll();
             })
             .fail(function() {
@@ -77,10 +74,6 @@
                     poll();
                 }, 3000);
             });
-    }
-
-    function isImmediateInvoked(type) {
-        return ['go', 'refresh', 'forward', 'back'].indexOf(type) > -1;
     }
 
     function execCommand(type, args, responder) {

@@ -1,28 +1,27 @@
-const Horseman = require('node-horseman');
-const env = require('../utils/env.js');
-const request = require('supertest');
-const wd = require('../wd');
-const proxy = require('../proxy');
-const stub = require('../fixtures/server.js');
-const debug = require('debug')('wd:fixtures');
-const Command = require('../utils/command.js');
+import Horseman from 'node-horseman';
+import env from '../utils/env.js';
+import request from 'supertest';
+import wd from '../wd';
+import proxy from '../proxy';
+import stub from '../fixtures/server.js';
+import Debug from 'debug';
+import Endpoint from '../endpoints';
 
-var proxyServer, browserClient, stubServer;
-
-var fixtures = {};
-fixtures.setupProxy = setupProxy;
-fixtures.teardownProxy = teardownProxy;
-
-fixtures.setupSession = setupSession;
-fixtures.teardownSession = teardownSession;
-
-fixtures.startStubServer = startStubServer;
-fixtures.startProxyServer = startProxyServer;
-fixtures.startBrowserClient = startBrowserClient;
+let proxyServer, browserClient, stubServer;
+let debug = Debug('wd:fixtures');
+let fixtures = {
+    setupProxy,
+    teardownProxy,
+    setupSession,
+    teardownSession,
+    startStubServer,
+    startProxyServer,
+    startBrowserClient
+};
 
 function setupSession(done) {
     setupProxy(() => {
-        wd.once('createSessionRequested', startBrowserClient);
+        wd.once('newSessionRequested', startBrowserClient);
         requestSession(() => done());
     });
 }
@@ -51,7 +50,7 @@ function startStubServer(done) {
 }
 
 function startBrowserClient() {
-    var cmdId = Command.getLastId();
+    var cmdId = Endpoint.getLastId();
     var initUrl = `${env.proxyUrl}/wd?cmd=${cmdId}`;
     debug('starting client:', initUrl, 'with proxy:', env.proxyUrl);
     browserClient = new Horseman()
@@ -83,7 +82,7 @@ function startBrowserClient() {
 }
 
 function requestSession(done) {
-    request(wd).post(`/session`)
+    request(wd).post(`/wd/hub/session`)
         .expect(200)
         .then(res => {
             var session = res.body;
@@ -93,4 +92,4 @@ function requestSession(done) {
         });
 }
 
-module.exports = fixtures;
+export default fixtures;

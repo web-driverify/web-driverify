@@ -1,7 +1,8 @@
-var express = require('express');
-var debug = require('debug')('wd:fixtures:server');
+import express from 'express';
+import Debug from 'debug';
 
-var app = express();
+let debug = Debug('wd:fixtures:server');
+let app = express();
 
 app.use(function(req, res, next) {
     debug(req.originalUrl, 'requested');
@@ -32,4 +33,4 @@ app.get('/css', (req, res) => {
     res.set('content-type', 'text/stylesheet').end(css);
 });
 
-module.exports = app;
+export default app;

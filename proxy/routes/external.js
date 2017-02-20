@@ -1,16 +1,18 @@
-var request = require('request');
-var charset = require('charset');
-var _ = require('lodash');
-const debug = require('debug')('wd:proxy:routes:external');
-var scripts = [
+import request from 'request';
+import charset from 'charset';
+import _ from 'lodash';
+import Debug from 'debug';
+
+let debug = Debug('wd:proxy:routes:external');
+let scripts = [
     "",
     "<script src='/wd/assets/vendors/jquery/dist/jquery.min.js'></script>",
     "<script src='/wd/assets/javascripts/index.js'></script>",
     ""
 ].join('\n');
-var rhead = /(<head[^>]*>)/;
-var rbody = /(<body[^>]*>)/;
-var rhtml = /(<html[^>]*>)/;
+let rhead = /(<head[^>]*>)/;
+let rbody = /(<body[^>]*>)/;
+let rhtml = /(<html[^>]*>)/;
 
 function proxy(req, res) {
     var url = req.originalUrl;
@@ -50,4 +52,4 @@ function isHTML(headers) {
 }
 
 
-module.exports = proxy;
+export default proxy;

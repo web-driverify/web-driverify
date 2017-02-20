@@ -1,43 +1,35 @@
-var express = require('express');
-var router = express.Router();
-var bodyParser = require('body-parser');
-var rpc = require('../../utils/rpc.js');
-var debug = require('debug')('wd:proxy:routes:command');
-var ServerCmds = require('../../utils/server-commands.js');
-var caps = require('../../utils/capabilities.js');
+import express from 'express';
+import bodyParser from 'body-parser';
+import session from '../../utils/session.js';
+import Debug from 'debug';
+import Endpoint from '../../endpoints';
+
+let router = express.Router();
+let debug = Debug('wd:proxy:routes:command');
+let id = 0;
 
 router.use(bodyParser.json({
     // doc: https://www.npmjs.com/package/body-parser
     strict: false
 }));
-router.use(rpc.sessionByReq);
+router.use(session.sessionByReq);
+router.param('eid', Endpoint.endpointById);
 
 router.get('/', function(req, res, next) {
     res.set('content-type', 'text/html');
-    var session = rpc.createSession(req);
-
-    try {
-        // New Session, spec: 
-        // https://www.w3.org/TR/webdriver/#dfn-new-session
-        ServerCmds.exit(req.query.cmd, {
-            sessionId: session.id,
-            capabilities: caps
-        });
-        res.render('connect-success.html', session);
-    } catch (e) {
+    if (req.endpoint.name !== 'NewSession') {
         console.warn('connection failed:', e.message);
-        if (e.code === 'ENOCMD') {
-            res.render('connect-fail.html', session);
-        } else {
-            next(e);
-        }
+        res.render('connect-fail.html');
+    } else {
+        session.createSession(req);
+        req.endpoint.responseArrived(null, req.session);
+        res.render('connect-success.html', req.session);
     }
 });
 
-var id = 0;
-router.get('/command', rpc.sessionRequired, function(req, res, next) {
+router.get('/command', session.sessionRequired, function(req, res, next) {
     id++;
-    debug('command polling requested', id, 'browser info:');
+    debug('command polling requested', id);
     req.session.cmdQueue.front()
         .then(cmd => {
             debug('command polling responsing', id);
@@ -49,7 +41,7 @@ router.get('/command', rpc.sessionRequired, function(req, res, next) {
         });
 });
 
-router.post('/result/:cid', rpc.sessionRequired, function(req, res) {
+router.post('/result/:eid', session.sessionRequired, function(req, res) {
     debug('command result received', req.body);
     try {
         var result = req.body;
@@ -58,7 +50,8 @@ router.post('/result/:cid', rpc.sessionRequired, function(req, res) {
         debug(msg);
         return res.status(400).end(msg);
     }
-    req.session.cmdQueue.pop(result);
+    req.session.cmdQueue.pop();
+    req.endpoint.responseArrived(result);
     res.end('received');
 });
 
@@ -74,4 +67,4 @@ router.use(function(err, req, res, next) {
     res.status(status).end(err.stack);
 });
 
-module.exports = router;
+export default router;

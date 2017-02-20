@@ -1,30 +1,32 @@
-var express = require('express');
-var morganDebug = require('morgan-debug');
-var Liquid = require('shopify-liquid');
-var env = require('../utils/env.js');
-const debug = require('debug')('wd:proxy');
+import express from 'express';
+import morganDebug from 'morgan-debug';
+import Liquid from 'shopify-liquid';
+import env from '../utils/env.js';
+import Debug from 'debug';
+import commandMiddleware from './routes/command';
+import externalMiddleware from './routes/external.js';
 
-var engine = new Liquid({
+let debug = Debug('wd:proxy');
+let engine = new Liquid({
     cache: env.name === 'production',
     root: __dirname + '/../views/',
     extname: '.html'
 });
-
-var app = express();
+let app = express();
 
 app.engine('html', engine.express());
 app.set('views', __dirname + '/../views');
 app.set('view engine', 'html');
 
 app.use((req, res, next) => {
-    debug(req.originalUrl, 'requested');
+    debug(req.method.toUpperCase(), req.originalUrl, 'pending...');
     next();
 });
 app.use(morganDebug('wd:proxy', 'dev'));
 
 app.use('/wd/assets/vendors', express.static(__dirname + '/../node_modules'));
 app.use('/wd/assets', express.static(__dirname + '/../assets'));
-app.use('/wd', require('./routes/command'));
-app.use(require('./routes/external.js'));
+app.use('/wd', commandMiddleware);
+app.use(externalMiddleware);
 
-module.exports = app;
+export default app;
