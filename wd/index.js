@@ -8,6 +8,7 @@ import '../endpoints/go.js';
 import '../endpoints/new-session.js';
 import '../endpoints/delete-session.js';
 import '../endpoints/find-element.js';
+import '../endpoints/get-current-url.js';
 
 var app = express();
 

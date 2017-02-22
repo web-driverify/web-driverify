@@ -9,7 +9,7 @@ describe('navigation', function() {
     after(fixtures.teardownSession);
 
     describe('GET /wd/hub/session/{session id}/url', function() {
-        it('should respond with current URL', function(done) {
+        it.only('should respond with current URL', function(done) {
             request(wd).get(`/wd/hub/session/${fixtures.session.sessionId}/url`)
                 .expect(200)
                 .expect(/https?:.*\/wd\?.*/)

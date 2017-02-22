@@ -1,11 +1,15 @@
+import EventEmitter from 'events';
 import session from '../utils/session.js';
 import express from 'express';
 import _ from 'lodash';
+import Debug from 'debug';
 
+let debug = Debug('Endpoint');
 let registry = new Map();
 let router = express.Router();
 let id = 0;
 var pool = new Map();
+var emitter = new EventEmitter();
 
 router.param('sid', session.sessionById);
 
@@ -16,6 +20,8 @@ class Endpoint {
         this.args = arguments;
         this.confirmationRequired = true;
         pool.set(this.id, this);
+
+        emitter.emit('created', this);
     }
     responseArrived(result, session) {
         if (!this.session) {
@@ -36,6 +42,8 @@ class Endpoint {
             value: result
         });
         pool.delete(this.id);
+
+        emitter.emit('exited', this);
     }
 
     /*
@@ -52,7 +60,13 @@ class Endpoint {
         return data;
     }
     toString() {
-        return this.name + `(${this.id})`;
+        return `${this.constructor.name}(${this.id})`;
+    }
+    static on(name, cb) {
+        return emitter.on(name, cb);
+    }
+    static once(name, cb) {
+        return emitter.once(name, cb);
     }
     static getLastId() {
         return id - 1;
@@ -93,8 +107,14 @@ class Endpoint {
      * Endpoint population middleware
      */
     static endpointById(req, res, next, id) {
-        req.endpoint = pool.get(id);
+        req.endpoint = Endpoint.get(id);
         next();
+    }
+
+    static get(id) {
+        debug(`finding endpoint in ${pool.keys()} by id ${id}...`);
+        id = Number(id);
+        return pool.get(id);
     }
 }
 

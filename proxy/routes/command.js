@@ -15,14 +15,19 @@ router.use(bodyParser.json({
 router.use(session.sessionByReq);
 router.param('eid', Endpoint.endpointById);
 
-router.get('/', function(req, res, next) {
+router.get('/', function(req, res) {
     res.set('content-type', 'text/html');
-    if (req.endpoint.name !== 'NewSession') {
-        console.warn('connection failed:', e.message);
-        res.render('connect-fail.html');
+    var endpoint = Endpoint.get(req.query.cmd);
+    if (!endpoint){
+        console.warn('init session failed:', `endpoint not found for cmd: ${req.query.cmd}`);
+        res.status(400).render('connect-fail.html');
+    } else if(endpoint.constructor.name !== 'NewSession') {
+        console.warn('init session failed:', `endpoint for ${req.query.cmd} is not a NewSession cmd`);
+        res.status(400).render('connect-fail.html');
     } else {
+        console.log(`initializing session with cmd ${req.query.cmd}...`);
         session.createSession(req);
-        req.endpoint.responseArrived(null, req.session);
+        endpoint.responseArrived(null, req.session);
         res.render('connect-success.html', req.session);
     }
 });

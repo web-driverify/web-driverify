@@ -66,7 +66,7 @@ describe('proxy', function() {
         request.get(`${env.stubUrl}/wd`)
             .proxy(env.proxyUrl)
             .end((err, res) => {
-                expect(res.statusCode).to.equal(200);
+                expect(res.statusCode).to.equal(400);
                 expect(res.text).to.match(/.+/);
                 expect(res.headers['content-type']).to.match(/text\/html/);
                 done();

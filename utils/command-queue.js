@@ -26,23 +26,32 @@ class CommandQueue {
             this.trySendCmd();
         });
     }
-    trySendCmd() {
+    shouldSendCmd() {
         if (this.queue.length === 0) {
-            return debug('empty command queue, skipping...');
+            debug('empty command queue');
+            return false;
+        }
+        if (this.top().status === 'pending') {
+            return debug(`${this.top()} still pending`);
         }
         if (!this.cmdReceiver) {
-            return debug('cmdReceiver does not exist, skipping...');
+            debug('cmdReceiver does not exist');
+            return false;
         }
-        var cmd = this.queue[0];
-        if (cmd.status === 'pending') {
-            return debug(`${cmd} still pending, skipping...`);
+    }
+    trySendCmd() {
+        var cmd = this.top();
+        if (!this.shouldSendCmd()) {
+            debug(`skip sending command ${cmd}...`);
+            return;
         }
-        debug('sending command', cmd.type, cmd.id);
         cmd.status = 'pending';
         this.cmdReceiver(cmd);
         this.cmdReceiver = null;
-        if (cmd.isImmediateInvoked()) {
-            this.pop(null);
+        if (cmd.confirmationRequired) {
+            this.queue.shift();
+            cmd.exit(data);
+            this.trySendCmd();
         }
     }
     sendFailed() {
@@ -50,12 +59,8 @@ class CommandQueue {
         if (this.queue.length === 0) return;
         this.queue[0].status = 'waiting';
     }
-    pop(data) {
-        debug('poping command with result', data);
-        var cmd = this.queue.shift();
-        cmd.exit(data);
-        // make a try when poping
-        this.trySendCmd();
+    top() {
+        return this.queue[0];
     }
 }
 

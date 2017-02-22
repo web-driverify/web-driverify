@@ -7,9 +7,7 @@ class Go extends Endpoint {
     }
     static express(router) {
         router.post('/session/:sid/url', (req, res, next) => {
-            req.endpoint = new Go({
-                args: [req.body]
-            });
+            req.endpoint = new Go(req.body.url);
             next();
         });
     }
