@@ -17,7 +17,7 @@ class Endpoint {
     constructor() {
         this.id = id++;
         this.status = 'waiting';
-        this.args = arguments;
+        this.args = _.slice(arguments);
         this.confirmationRequired = true;
         pool.set(this.id, this);
 
@@ -27,7 +27,7 @@ class Endpoint {
         if (!this.session) {
             this.session = session;
         }
-        result = this.transform(result);
+        result = this.transform(result, session);
         this.exit(result);
     }
 
@@ -50,7 +50,11 @@ class Endpoint {
      * Data transfer object for rpc
      */
     dto() {
-        return _.pick(this, ['id', 'name', 'args']);
+        return {
+            id: this.id,
+            name: this.constructor.name,
+            args: this.args
+        };
     }
 
     /*

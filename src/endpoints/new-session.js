@@ -1,22 +1,20 @@
 import Endpoint from '.';
 import env from '../utils/env.js';
+import pkg from '../../package.json';
 
 class NewSession extends Endpoint {
-    constructor(data) {
-        super(data);
-    }
     static express(router) {
         router.post('/session', (req, res, next) => {
             req.endpoint = new NewSession(req.body);
             let url = `${env.proxyUrl}/wd?cmd=${req.endpoint.id}`;
-            console.log(`newSession requested, open the following URL:\n ${url}`);
+            console.log(`newSession requested, open this URL: ${url}`);
             next();
         });
     }
     transform() {
         return {
-            browserName: 'any',
-            browserVersion: 'any',
+            browserName: pkg.name,
+            browserVersion: pkg.version,
             platformName: 'any',
             acceptInsecureCerts: 'true',
             pageLoadStrategy: 'normal',

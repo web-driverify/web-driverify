@@ -1,11 +1,9 @@
 {% layout 'connect-layout' %}
 
 {% block %}
+{{wdScripts}}
 <p> Now connected to your test environment. </p>
 <p>IP: {{ip}}</p>
 <p>User Agent: {{ua}}</p>
 <p>Session ID: {{id}}</p>
-
-<script src='/wd/assets/vendors/jquery/dist/jquery.min.js'></script>
-<script src='/wd/assets/javascripts/index.js'></script>
 {% endblock %}

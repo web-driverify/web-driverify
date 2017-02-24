@@ -1,36 +1,43 @@
 (function() {
-    if (window.webDriverify) {
-        console.log('web-driverify already loaded, skipping...');
-        return;
-    }
     console.log('web-driverify loading...');
 
+    var session = "{{session}}";
+
+    pendingConfirm();
+
+    function pendingConfirm() {
+        var confirm = session.confirm;
+        if (confirm) {
+            result(confirm.cmd, confirm.data);
+        }
+    }
+
     var commandHandlers = {
-        getCurrentUrl: function() {
+        GetCurrentUrl: function() {
             return window.location.href;
         },
-        findElement: function(sel) {
+        FindElement: function(sel) {
             return document.querySelector(sel);
         },
-        findElements: function(sel) {
+        FindElements: function(sel) {
             return document.querySelectorAll(sel);
         },
         // https: //www.w3.org/TR/webdriver/#dfn-go
-        go: function(data) {
-            console.log('going to', data.url);
-            location.href = data.url;
+        Go: function(url) {
+            console.log('navigating to', url);
+            location.href = url;
             return null;
         },
-        back: function() {
+        Back: function() {
             return location.back();
         },
-        forward: function() {
+        Forward: function() {
             return location.forward();
         },
-        refresh: function() {
+        Refresh: function() {
             return location.reload();
         },
-        getTitle: function() {
+        GetTitle: function() {
             return document.title;
         }
     };
@@ -68,20 +75,20 @@
                 execCommand(cmd.name, cmd.args, responder);
                 poll();
             })
-            .fail(function() {
-                console.log('error when polling');
+            .fail(function(xhr, textStatus, error) {
+                console.log('error when polling, status:', JSON.stringify(textStatus), ',error:', JSON.stringify(error));
                 setTimeout(function() {
                     poll();
-                }, 3000);
+                }, 1000);
             });
     }
 
-    function execCommand(type, args, responder) {
-        var handler = commandHandlers[type];
+    function execCommand(name, args, responder) {
+        var handler = commandHandlers[name];
         if (!handler) {
             return responder({
                 error: 'unkownd command',
-                message: 'the command ' + type + 'does not exist',
+                message: 'the command ' + name + ' does not exist',
                 stacktrace: (new Error()).stack
             });
         }
@@ -89,6 +96,4 @@
         var data = handler.apply(null, args);
         return responder(data);
     }
-
-    window.webDriverify = 'webDriverify';
 })();

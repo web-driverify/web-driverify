@@ -2,17 +2,9 @@ import request from 'request';
 import charset from 'charset';
 import _ from 'lodash';
 import Debug from 'debug';
+import injector from '../utils/injector.js';
 
 let debug = Debug('wd:proxy:routes:external');
-let scripts = [
-    "",
-    "<script src='/wd/assets/vendors/jquery/dist/jquery.min.js'></script>",
-    "<script src='/wd/assets/javascripts/index.js'></script>",
-    ""
-].join('\n');
-let rhead = /(<head[^>]*>)/;
-let rbody = /(<body[^>]*>)/;
-let rhtml = /(<html[^>]*>)/;
 
 function proxy(req, res) {
     var url = req.originalUrl;
@@ -28,22 +20,16 @@ function proxy(req, res) {
         _.forOwn(response.headers, (v, k) => {
             res.set(k, v);
         });
+        var resultStr = body;
         if (isHTML(response.headers)) {
             var cs = charset(response.headers, body) || 'utf8';
-            body = body.toString(cs);
-            if (rhead.exec(body)) {
-                body = body.replace(rhead, "$1" + scripts);
-            } else if (rbody.exec(body)) {
-                body = body.replace(rbody, "$1" + scripts);
-            } else if (rhtml.exec(body)) {
-                body = body.replace(rhtml, "$1" + scripts);
-            } else {
-                body += scripts;
-            }
+            var html = body.toString(cs);
+            html = injector.injectWdScripts(html, req.session);
             res.set('content-type', 'text/html;charset=utf8');
-            res.set('content-length', Buffer.byteLength(body));
+            res.set('content-length', Buffer.byteLength(html));
+            resultStr = html;
         }
-        res.status(response.statusCode).end(body);
+        res.status(response.statusCode).end(resultStr);
     });
 }
 

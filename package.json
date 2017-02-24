@@ -5,9 +5,12 @@
   "main": "index.js",
   "scripts": {
     "start": "babel-node bin/www",
-    "start-debug": "NODE_ENV=development DEBUG=wd:* babel-node bin/www",
-    "test": "NODE_ENV=development mocha --compilers js:babel-core/register",
-    "test-debug": "NODE_ENV=development DEBUG=wd:* mocha --compilers js:babel-core/register"
+    "debug": "NODE_ENV=development DEBUG=wd:* babel-node bin/www",
+    "build": "babel src -d lib/src && babel test/fixtures -d lib/test/fixtures && babel bin -d lib/bin",
+    "test:unit": "NODE_ENV=development DEBUG=wd:* mocha test/unit/*.js --compilers js:babel-core/register",
+    "test:prepare": "NODE_ENV=development DEBUG=wd:* babel-node bin/wd-with-phantom.js",
+    "test:integration": "NODE_ENV=development DEBUG=wd:* ./node_modules/.bin/wdio wdio.conf.js",
+    "test": "npm run test:unit"
   },
   "repository": {
     "type": "git",
@@ -25,12 +28,10 @@
   },
   "homepage": "https://github.com/harttle/web-driverify#readme",
   "dependencies": {
-    "babel-cli": "^6.23.0",
-    "babel-preset-es2015": "^6.22.0",
-    "babel-preset-stage-2": "^6.22.0",
     "bluebird": "^3.4.7",
     "body-parser": "^1.16.0",
     "charset": "^1.0.0",
+    "connect-timeout": "^1.8.0",
     "debug": "^2.6.1",
     "express": "^4.14.1",
     "jquery": "^3.1.1",
@@ -41,14 +42,19 @@
     "shopify-liquid": "^1.7.1"
   },
   "devDependencies": {
+    "babel-cli": "^6.23.0",
+    "babel-core": "^6.23.1",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-stage-2": "^6.22.0",
+    "babel-register": "^6.23.0",
     "chai": "^3.5.0",
     "mocha": "^3.2.0",
     "node-horseman": "^3.2.0",
     "superagent": "^3.4.1",
     "superagent-proxy": "^1.0.2",
     "supertest": "^3.0.0",
-    "wdio-dot-reporter": "0.0.7",
     "wdio-mocha-framework": "^0.5.8",
+    "wdio-spec-reporter": "0.0.5",
     "webdriverio": "^4.6.2"
   }
 }

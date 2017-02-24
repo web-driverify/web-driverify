@@ -1,7 +1,7 @@
 import chai from 'chai';
 import request from 'superagent';
 import fixtures from '../fixtures';
-import env from '../utils/env';
+import env from '../../src/utils/env';
 import superagentProxy from 'superagent-proxy';
 
 superagentProxy(request);
@@ -21,44 +21,29 @@ describe('proxy', function() {
             });
     });
     it('should proxy emptyhtml', function(done) {
-        var html = [
-            '<html>',
-            "<script src='/wd/assets/vendors/jquery/dist/jquery.min.js'></script>",
-            "<script src='/wd/assets/javascripts/index.js'></script>",
-            '</html>'
-        ].join('\n');
         request.get(`${env.stubUrl}/emptyhtml`)
             .proxy(env.proxyUrl)
             .end((err, res) => {
-                expect(res.text).to.equal(html);
+                expect(res.text.slice(0, 30)).to.match(/^<html><script>/);
+                expect(res.text.slice(-40)).to.match(/<\/script><\/html>$/);
                 done();
             });
     });
     it('should proxy empty', function(done) {
-        var html = [
-            "",
-            "<script src='/wd/assets/vendors/jquery/dist/jquery.min.js'></script>",
-            "<script src='/wd/assets/javascripts/index.js'></script>",
-            ""
-        ].join('\n');
         request.get(`${env.stubUrl}/empty`)
             .proxy(env.proxyUrl)
             .end((err, res) => {
-                expect(res.text).to.equal(html);
+                expect(res.text.slice(0, 30)).to.match(/^<script>/);
+                expect(res.text.slice(-40)).to.match(/<\/script>$/);
                 done();
             });
     });
     it('should proxy wellformed html', function(done) {
-        var html = [
-            "<html><head>",
-            "<script src='/wd/assets/vendors/jquery/dist/jquery.min.js'></script>",
-            "<script src='/wd/assets/javascripts/index.js'></script>",
-            "</head><body>foo</body></html>"
-        ].join('\n');
         request.get(`${env.stubUrl}/wellformed`)
             .proxy(env.proxyUrl)
             .end((err, res) => {
-                expect(res.text).to.equal(html);
+                expect(res.text.slice(0, 30)).to.match(/^<html><head><script>/);
+                expect(res.text.slice(-40)).to.match(/<\/script><\/head><body>foo<\/body><\/html>$/);
                 done();
             });
     });

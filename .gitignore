@@ -42,3 +42,4 @@ assets/vendors
 
 .*.swp
 .*.swo
+lib/

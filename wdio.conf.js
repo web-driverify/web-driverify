@@ -12,7 +12,7 @@ exports.config = {
     // directory is where your package.json resides, so `wdio` will be called from there.
     //
     specs: [
-        './test/cmd/*.js'
+        './test/integration/*.js'
     ],
     // Patterns to exclude.
     exclude: [
@@ -46,7 +46,7 @@ exports.config = {
         // 5 instances get started at a time.
         maxInstances: 5,
         //
-        browserName: 'firefox'
+        browserName: 'web-driverify'
     }],
     //
     // ===================
@@ -120,13 +120,15 @@ exports.config = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: http://webdriver.io/guide/testrunner/reporters.html
-    reporters: ['dot'],
+    reporters: ['spec'],
     
     //
     // Options to be passed to Mocha.
     // See the full list at http://mochajs.org/
     mochaOpts: {
-        ui: 'bdd'
+        ui: 'bdd',
+        timeout: 10000,
+        compilers: ['js:babel-core/register']
     },
     //
     // =====
@@ -166,8 +168,8 @@ exports.config = {
     // },
     //
     // Function to be executed before a test (in Mocha/Jasmine) or a step (in Cucumber) starts.
-    // beforeTest: function (test) {
-    // },
+    //beforeTest: function (test) {
+    //},
     //
     // Runs before a WebdriverIO command gets executed.
     // beforeCommand: function (commandName, args) {

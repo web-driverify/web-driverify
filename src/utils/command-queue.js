@@ -12,7 +12,6 @@ class CommandQueue {
     push(cmd) {
         debug(`pushing command ${cmd} ...`);
         this.queue.push(cmd);
-        // make a try on appended
         if (this.queue.length === 1) {
             debug('command comes to empty queue, trying to send command...');
             this.trySendCmd();
@@ -38,20 +37,21 @@ class CommandQueue {
             debug('cmdReceiver does not exist');
             return false;
         }
+        return true;
     }
     trySendCmd() {
-        var cmd = this.top();
         if (!this.shouldSendCmd()) {
-            debug(`skip sending command ${cmd}...`);
+            debug(`skip sending command...`);
             return;
         }
+        var cmd = this.top();
         cmd.status = 'pending';
-        this.cmdReceiver(cmd);
-        this.cmdReceiver = null;
         if (cmd.confirmationRequired) {
-            this.queue.shift();
-            cmd.exit(data);
-            this.trySendCmd();
+            this.cmdReceiver(cmd);
+            this.cmdReceiver = null;
+        } else {
+            this.pop();
+            cmd.exit(null);
         }
     }
     sendFailed() {
@@ -61,6 +61,9 @@ class CommandQueue {
     }
     top() {
         return this.queue[0];
+    }
+    pop() {
+        return this.queue.shift();
     }
 }
 

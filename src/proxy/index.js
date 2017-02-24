@@ -5,6 +5,8 @@ import env from '../utils/env.js';
 import Debug from 'debug';
 import commandMiddleware from './routes/command';
 import externalMiddleware from './routes/external.js';
+import reqEmitter from './routes/req-emitter.js';
+import session from '../utils/session.js';
 
 let debug = Debug('wd:proxy');
 let engine = new Liquid({
@@ -24,8 +26,8 @@ app.use((req, res, next) => {
 });
 app.use(morganDebug('wd:proxy', 'dev'));
 
-app.use('/wd/assets/vendors', express.static(__dirname + '/../node_modules'));
-app.use('/wd/assets', express.static(__dirname + '/../assets'));
+app.use(session.sessionByReq);
+app.use(reqEmitter);
 app.use('/wd', commandMiddleware);
 app.use(externalMiddleware);
 
