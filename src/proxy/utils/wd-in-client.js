@@ -2,98 +2,145 @@
     console.log('web-driverify loading...');
 
     var session = "{{session}}";
+    var state = 'running';
 
     pendingConfirm();
 
     function pendingConfirm() {
         var confirm = session.confirm;
         if (confirm) {
-            result(confirm.cmd, confirm.data);
+            sendResult(confirm.cmd, confirm.data);
         }
     }
 
     var commandHandlers = {
         GetCurrentUrl: function() {
-            return window.location.href;
+            var url = window.location.href;
+            sendResult(this, url);
         },
         FindElement: function(sel) {
-            return document.querySelector(sel);
+            var el = document.querySelector(sel);
+            sendResult(this, el);
+        },
+        DeleteSession: function() {
+            state = 'closing';
+            sendResult(this, 'closing', function() {
+                window.close();
+            });
         },
         FindElements: function(sel) {
-            return document.querySelectorAll(sel);
+            var els = document.querySelectorAll(sel);
+            sendResult(this, els);
         },
         // https: //www.w3.org/TR/webdriver/#dfn-go
         Go: function(url) {
+            state = 'closing';
             console.log('navigating to', url);
             location.href = url;
-            return null;
         },
         Back: function() {
-            return location.back();
+            location.back();
         },
         Forward: function() {
-            return location.forward();
+            location.forward();
         },
         Refresh: function() {
-            return location.reload();
+            location.reload();
         },
         GetTitle: function() {
-            return document.title;
+            sendResult(this, document.title);
         }
     };
 
     poll();
 
-    function result(cmd, data) {
-        data = JSON.stringify(data);
+    function sendResult(cmd, data, cb) {
+        cb = cb || noop;
         console.log('sending result ' + data +
             ' for command ' + cmd.name + '(' + cmd.id + ')');
 
-        $.ajax('/wd/result/' + cmd.id, {
-            'data': data,
-            'type': 'POST',
-            'processData': false,
-            'contentType': 'application/json'
+        ajax({
+            url: '/wd/result/' + cmd.id,
+            data: data,
+            method: 'POST',
+            success: function(data) { cb(null, data); },
+            fail: function(xhr) { cb(xhr); }
         });
     }
 
     function poll() {
+        if (state !== 'running') return;
         console.log('polling');
-        $
-            .ajax({
-                url: '/wd/command',
-                dataType: 'json',
-                // notimeout, see:
-                // http://stackoverflow.com/questions/4148830/what-is-jquerys-ajax-default-timeout-value
-                timeout: 0
-            })
-            .done(function(cmd) {
+        ajax({
+            url: '/wd/command',
+            success: function(cmd) {
+                if (state !== 'running') return;
                 console.log('command received', JSON.stringify(cmd));
-                var responder = cmd.confirmationRequired ?
-                    responder = function noop() {} :
-                    result.bind(null, cmd);
-                execCommand(cmd.name, cmd.args, responder);
+                execCommand(cmd);
                 poll();
-            })
-            .fail(function(xhr, textStatus, error) {
+            },
+            error: function(xhr, textStatus, error) {
+                if (state !== 'running') return;
                 console.log('error when polling, status:', JSON.stringify(textStatus), ',error:', JSON.stringify(error));
                 setTimeout(function() {
                     poll();
                 }, 1000);
-            });
+            }
+        });
     }
 
-    function execCommand(name, args, responder) {
-        var handler = commandHandlers[name];
+    function execCommand(cmd) {
+        var handler = commandHandlers[cmd.name];
         if (!handler) {
-            return responder({
+            sendResult(cmd, {
                 error: 'unkownd command',
-                message: 'the command ' + name + ' does not exist',
+                message: 'entrypoint ' + cmd.name + ' not found',
                 stacktrace: (new Error()).stack
             });
+            return;
         }
-
-        var data = handler.apply(null, args);
-        return responder(data);
+        handler.apply(cmd, cmd.args);
     }
+
+    function ajax(settings) {
+        settings.success = settings.success || noop;
+        settings.error = settings.error || noop;
+        settings.always = settings.always || noop;
+
+        var xhr = createXHR();
+
+        xhr.open(settings.method || 'GET', settings.url, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState !== 4) return;
+            if (xhr.status >= 200 && xhr.status < 300) {
+                var data = xhr.responseText;
+                var contentType = xhr.getResponseHeader('Content-Type');
+                if (/application\/json/.exec(contentType)) {
+                    data = JSON.parse(data);
+                }
+                settings.success(data, xhr);
+            } else {
+                settings.error(xhr);
+            }
+            settings.always(xhr);
+        };
+        xhr.send(JSON.stringify(settings.data));
+    }
+
+    function createXHR() {
+        var xhr = false;
+        if (window.XMLHttpRequest) { // Mozilla, Safari,...
+            xhr = new XMLHttpRequest();
+        } else if (window.ActiveXObject) { // IE
+            xhr = new window.ActiveXObject("Microsoft.XMLHTTP");
+        }
+        if (!xhr) {
+            throw new Error('Cannot create an XHR instance');
+        }
+        return xhr;
+    }
+
+    function noop() {}
 })();

@@ -1,7 +1,7 @@
 import Endpoint from '.';
 import Debug from 'debug';
 
-let debug = Debug('endpoints:go');
+let debug = Debug('endpoints:Go');
 
 class Go extends Endpoint {
     static express(router) {

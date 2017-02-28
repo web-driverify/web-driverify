@@ -59,7 +59,8 @@ function teardownProxy() {
 function startBrowserClient(cmd) {
     var initUrl = `${env.proxyUrl}/wd?cmd=${cmd.id}`;
     var options = {
-        timeout: 10000
+        timeout: 10000,
+        injectJquery: false
     };
     debug('starting browser client:', initUrl, 'with proxy:', env.proxyUrl);
     return new Promise((resolve) => {

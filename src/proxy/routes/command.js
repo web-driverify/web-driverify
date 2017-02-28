@@ -19,7 +19,7 @@ router.get('/', function(req, res) {
     var endpoint = Endpoint.get(req.query.cmd);
     if (!endpoint) {
         console.warn('init session failed:', `endpoint not found for cmd: ${req.query.cmd}`);
-        res.status(400).render('connect-fail.html');
+        res.status(404).render('connect-fail.html');
     } else if (endpoint.constructor.name !== 'NewSession') {
         console.warn('init session failed:', `endpoint for ${req.query.cmd} is not a NewSession cmd`);
         res.status(400).render('connect-fail.html');
@@ -51,16 +51,10 @@ router.get('/command', session.sessionRequired, function(req, res, next) {
 });
 
 router.post('/result/:eid', session.sessionRequired, function(req, res) {
-    debug('command result received:', req.body);
-    try {
-        var result = req.body;
-    } catch (e) {
-        var msg = 'invalid json: ' + req.body;
-        debug(msg);
-        return res.status(400).end(msg);
-    }
-    req.session.cmdQueue.pop();
-    req.endpoint.responseArrived(result, req.session);
+    var cmd = req.session.cmdQueue.pop();
+    debug(`response for ${cmd} arrived: ${req.body}`, typeof req.body);
+    debug(req.header('content-type'));
+    req.endpoint.responseArrived(req.body, req.session);
     res.end('received');
 });
 

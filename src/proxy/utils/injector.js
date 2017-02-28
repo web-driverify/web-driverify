@@ -3,23 +3,20 @@ import fs from 'fs';
 import env from '../../utils/env.js';
 import Debug from 'debug';
 
-const jqPath = path.resolve(__dirname, '../../../node_modules/jquery/dist/jquery.min.js');
 const wdPath = path.resolve(__dirname, './wd-in-client.js');
 const rhead = /(<head[^>]*>)/;
 const rbody = /(<body[^>]*>)/;
 const rhtml = /(<html[^>]*>)/;
 
 let debug = Debug('proxy:utils:injector');
-let jqContent = fs.readFileSync(jqPath);
 let wdContent = fs.readFileSync(wdPath);
 
 function contents(session) {
     if (env.name === 'development') {
-        jqContent = fs.readFileSync(jqPath, 'utf8');
         wdContent = fs.readFileSync(wdPath, 'utf8');
     }
     wdContent = injectSession(wdContent, session);
-    return [jqContent, wdContent];
+    return [wdContent];
 }
 
 function createScript(textArr) {

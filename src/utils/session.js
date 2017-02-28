@@ -2,8 +2,8 @@ import crypto from 'crypto';
 import CommandQueue from './command-queue.js';
 import Debug from 'debug';
 
-var debug = Debug('wd:utils:session');
-var sessions = {};
+let debug = Debug('wd:utils:session');
+let sessions = new Map();
 
 class Session {
     constructor(req) {
@@ -12,25 +12,29 @@ class Session {
         this.ua = req.headers['user-agent'];
         this.cmdQueue = new CommandQueue();
         this.storage = {};
-        req.session = sessions[this.id] = this;
-        debug(`session created ${this}`);
+        req.session = this;
+        sessions.set(this.id, this);
+        debug(`session created: ${this}`);
     }
     toString() {
-        return `session ${this.id}:${this.ip}:${this.ua}`;
+        return `${this.id}:${this.ip}:${this.ua}`;
     }
     dto() {
         return this.storage;
+    }
+    remove() {
+        return sessions.delete(this.id);
     }
     static createSession(req) {
         return new Session(req);
     }
     static sessionById(req, res, next, id) {
-        req.session = sessions[id];
+        req.session = sessions.get(id);
         next();
     }
     static sessionByReq(req, res, next) {
         var id = hash(req);
-        req.session = sessions[id];
+        req.session = sessions.get(id);
         next();
     }
     static sessionRequired(req, res, next) {

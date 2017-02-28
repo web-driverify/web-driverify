@@ -1,6 +1,4 @@
 import Endpoint from '.';
-import env from '../utils/env.js';
-import pkg from '../../package.json';
 
 class DeleteSession extends Endpoint {
     static express(router) {
@@ -9,7 +7,9 @@ class DeleteSession extends Endpoint {
             next();
         });
     }
-    transform() {
+    transform(data, session) {
+        console.log(`delete session requested: ${session}`);
+        session.remove();
         return 'deleted';
     }
 }
