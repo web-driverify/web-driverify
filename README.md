@@ -10,7 +10,7 @@ and can work without browser-specific binaries.
 
 There should be a boilerplate project soon.
 
-## Run test
+## Run the Tests
 
 Download and install
 
@@ -34,7 +34,7 @@ npm run test:prepare
 npm run test:integration
 ```
 
-## Differences WebDriver Protocol
+## Differences with WebDriver Protocol
 
 Web-driverify is implemented in comformance to [JSON Wire Protocol][jsonwire],
 the HTTP APIs exposed by web-driverify is just like [Selenium 2][selenium],
