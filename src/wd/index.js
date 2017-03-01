@@ -4,7 +4,7 @@ import morganDebug from 'morgan-debug';
 
 // endpoints
 import Endpoint from '../endpoints';
-import '../endpoints/list';
+import '../endpoints/export.js';
 
 var app = express();
 

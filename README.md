@@ -51,6 +51,7 @@ Method | URI Template | Command | Status
 POST | `/session` | New Session | Ready
 DELETE | `/session/:sessionId` | New Session | Ready
 POST | `/session/:sessionId/url` | Go | Ready
+GET | `/session/:sessionId/url` | Get Current Url | Ready
 POST | `/session/:sessionId/back` | Back | Ready
 POST | `/session/:sessionId/forward` | Forward | Ready
 POST | `/session/:sessionId/screenshot` | Screenshot | Pending
