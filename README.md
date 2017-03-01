@@ -37,12 +37,12 @@ npm run test:integration
 ## Differences with WebDriver Protocol
 
 Web-driverify is implemented in comformance to [JSON Wire Protocol][jsonwire],
-the HTTP APIs exposed by web-driverify is just like [Selenium 2][selenium],
-thus compliant with test runner [Webdriverio][wdio].
+the HTTP APIs exposed by web-driverify are just like [Selenium 2][selenium],
+thus compliant with selenium-based test runners like [Webdriverio][wdio].
 
-Web-driverify cannot launch your browser,
+Web-driverify cannot launch your browser by itself,
 you need set your browser's proxy to the Web-driverify server
-and provide a session by visit the given URL.
+and open a session by visiting the given URL.
 
 ## Implementation Status
 
