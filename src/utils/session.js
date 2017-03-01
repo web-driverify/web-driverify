@@ -29,6 +29,7 @@ class Session {
         return new Session(req);
     }
     static sessionById(req, res, next, id) {
+        req.sessionId = id;
         req.session = sessions.get(id);
         next();
     }

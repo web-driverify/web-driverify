@@ -53,7 +53,6 @@ router.get('/command', session.sessionRequired, function(req, res, next) {
 router.post('/result/:eid', session.sessionRequired, function(req, res) {
     var cmd = req.session.cmdQueue.pop();
     debug(`response for ${cmd} arrived: ${req.body}`, typeof req.body);
-    debug(req.header('content-type'));
     req.endpoint.responseArrived(req.body, req.session);
     res.end('received');
 });

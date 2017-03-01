@@ -8,8 +8,10 @@ let debug = Debug('Endpoint');
 let registry = new Map();
 let router = express.Router();
 let id = 0;
-var pool = new Map();
-var emitter = new EventEmitter();
+let pool = new Map();
+let emitter = new EventEmitter();
+
+const specUrl = "https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#response-status-codes";
 
 router.param('sid', session.sessionById);
 
@@ -64,7 +66,7 @@ class Endpoint {
         return data;
     }
     toString() {
-        return `${this.constructor.name}(${this.id})`;
+        return `${this.constructor.name}(${this.id})[${this.args}]`;
     }
     static on(name, cb) {
         return emitter.on(name, cb);
@@ -92,18 +94,9 @@ class Endpoint {
      * Express middleware for WebDriver HTTP API
      */
     static express() {
-        router.use((req, res, next) => {
-            if (!req.endpoint) {
-                var err = new Error('Not Found');
-                err.status = 404;
-                return next(err);
-            }
-            req.endpoint.session = req.session;
-            req.endpoint.cb = result => res.json(result);
-            if (req.session) {
-                req.session.cmdQueue.push(req.endpoint);
-            }
-        });
+        router.use('/session/:sid', sessionRequired);
+        router.use(unkownEndpoint);
+        router.use(pushIntoSessionQueue);
         return router;
     }
 
@@ -120,6 +113,32 @@ class Endpoint {
         id = Number(id);
         return pool.get(id);
     }
+}
+
+function pushIntoSessionQueue(req, res) {
+    req.endpoint.session = req.session;
+    req.endpoint.cb = result => res.json(result);
+    if (req.session) {
+        req.session.cmdQueue.push(req.endpoint);
+    }
+}
+
+function sessionRequired(req, res, next) {
+    if (req.session) return next();
+    res.json({
+        sessionId: req.sessionId,
+        status: 6,
+        value: 'NoSuchDriver'
+    });
+}
+
+function unkownEndpoint(req, res, next) {
+    if (req.endpoint) return next();
+    res.json({
+        sessionId: req.session.id,
+        status: 9,
+        value: "UnknownCommand"
+    });
 }
 
 export default Endpoint;

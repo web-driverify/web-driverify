@@ -2,15 +2,24 @@
     console.log('web-driverify loading...');
 
     var session = "{{session}}";
-    var state = 'running';
+    var state = 'init';
 
-    pendingConfirm();
+    init();
 
-    function pendingConfirm() {
+    function init() {
         var confirm = session.confirm;
         if (confirm) {
-            sendResult(confirm.cmd, confirm.data);
+            sendResult(confirm.cmd, confirm.data, function() {
+                startPoll();
+            });
+        } else {
+            startPoll();
         }
+    }
+
+    function startPoll() {
+        state = 'running';
+        poll();
     }
 
     var commandHandlers = {
@@ -34,17 +43,19 @@
         },
         // https: //www.w3.org/TR/webdriver/#dfn-go
         Go: function(url) {
-            state = 'closing';
-            console.log('navigating to', url);
+            state = 'navigating';
             location.href = url;
         },
         Back: function() {
-            location.back();
+            state = 'navigating';
+            history.back();
         },
         Forward: function() {
-            location.forward();
+            state = 'navigating';
+            history.forward();
         },
         Refresh: function() {
+            state = 'navigating';
             location.reload();
         },
         GetTitle: function() {
@@ -52,11 +63,9 @@
         }
     };
 
-    poll();
-
     function sendResult(cmd, data, cb) {
         cb = cb || noop;
-        console.log('sending result ' + data +
+        console.log('sending result ' + JSON.stringify(data) +
             ' for command ' + cmd.name + '(' + cmd.id + ')');
 
         ajax({
@@ -81,7 +90,9 @@
             },
             error: function(xhr, textStatus, error) {
                 if (state !== 'running') return;
-                console.log('error when polling, status:', JSON.stringify(textStatus), ',error:', JSON.stringify(error));
+                console.log('error when polling, status:',
+                    JSON.stringify(textStatus),
+                    ',error:', JSON.stringify(error));
                 setTimeout(function() {
                     poll();
                 }, 1000);

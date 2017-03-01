@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/harttle/web-driverify.git"
+    "url": "git+https://github.com/web-driverify/web-driverify.git"
   },
   "keywords": [
     "proxy",
@@ -24,9 +24,9 @@
   "author": "harttle",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/harttle/web-driverify/issues"
+    "url": "https://github.com/web-driverify/web-driverify/issues"
   },
-  "homepage": "https://github.com/harttle/web-driverify#readme",
+  "homepage": "https://github.com/web-driverify/web-driverify#readme",
   "dependencies": {
     "bluebird": "^3.4.7",
     "body-parser": "^1.16.0",
