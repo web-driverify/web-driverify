@@ -16,6 +16,7 @@ Download and install
 
 ```bash
 git clone https://github.com/web-driverify/web-driverify.git
+# fibers in wdio requires -std=gnu++0x, thus make sure gcc4.3+ installed.
 cd web-driverify && npm install
 ```
 
@@ -54,7 +55,7 @@ POST | `/session/:sessionId/url` | Go | Ready
 GET | `/session/:sessionId/url` | Get Current Url | Ready
 POST | `/session/:sessionId/back` | Back | Ready
 POST | `/session/:sessionId/forward` | Forward | Ready
-POST | `/session/:sessionId/screenshot` | Screenshot | Pending
+GET | `/session/:sessionId/screenshot` | Screenshot | Ready
 
 [jsonwire]: https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol
 [wdio]: http://webdriver.io

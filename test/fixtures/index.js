@@ -57,7 +57,7 @@ function teardownProxy() {
 }
 
 function startBrowserClient(cmd) {
-    var initUrl = `${env.proxyUrl}/wd?cmd=${cmd.id}`;
+    var initUrl = `${env.proxyUrl}/web-driverify?cmd=${cmd.id}`;
     var options = {
         timeout: 10000,
         injectJquery: false

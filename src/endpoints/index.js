@@ -11,7 +11,7 @@ let id = 0;
 let pool = new Map();
 let emitter = new EventEmitter();
 
-const specUrl = "https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#response-status-codes";
+// https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#response-status-codes
 
 router.param('sid', session.sessionById);
 
@@ -25,12 +25,26 @@ class Endpoint {
 
         emitter.emit('created', this);
     }
-    responseArrived(result, session) {
+
+    resultArrived(result, session) {
+        // FIXME
         if (!this.session) {
+            debug('why no session here?');
             this.session = session;
         }
         result = this.transform(result, session);
         this.exit(result);
+    }
+
+    errorArrived(err) {
+        this.status = 'error';
+        this.cb(this.data = {
+            sessionById: this.session.id,
+            status: err.status,
+            value: err.message
+        });
+        pool.delete(this.id);
+        emitter.emit('error', this);
     }
 
     /*
@@ -44,8 +58,7 @@ class Endpoint {
             value: result
         });
         pool.delete(this.id);
-
-        emitter.emit('exited', this);
+        emitter.emit('exit', this);
     }
 
     /*

@@ -3,10 +3,10 @@ import Debug from 'debug';
 
 let debug = Debug('wd:endpoints:Forward');
 
-class Foward extends Endpoint {
+class Forward extends Endpoint {
     static express(router) {
         router.post('/session/:sid/forward', (req, res, next) => {
-            req.endpoint = new Foward();
+            req.endpoint = new Forward();
             req.session.storage.confirm = {
                 cmd: req.endpoint.dto(),
                 data: 'forward complete'
@@ -21,4 +21,4 @@ class Foward extends Endpoint {
     }
 }
 
-export default Endpoint.register(Foward);
+export default Endpoint.register(Forward);

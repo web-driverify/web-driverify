@@ -1,28 +1,23 @@
-import path from 'path';
-import fs from 'fs';
-import env from '../../utils/env.js';
 import Debug from 'debug';
 
-const wdPath = path.resolve(__dirname, './wd-in-client.js');
 const rhead = /(<head[^>]*>)/;
 const rbody = /(<body[^>]*>)/;
 const rhtml = /(<html[^>]*>)/;
 
-let debug = Debug('proxy:utils:injector');
-let wdContent = fs.readFileSync(wdPath);
+let debug = Debug('wd:proxy:utils:injector');
 
-function contents(session) {
-    if (env.name === 'development') {
-        wdContent = fs.readFileSync(wdPath, 'utf8');
-    }
-    wdContent = injectSession(wdContent, session);
-    return [wdContent];
-}
-
-function createScript(textArr) {
-    var text = textArr.join(';\n');
-    return `<script>${text}</script>`;
-}
+let externalScripts = [
+        'node_modules/es6-promise/dist/es6-promise.auto.min.js',
+        'assets/html2canvas.js',
+        'assets/session.js',
+        'assets/element-retrieval.js',
+        'assets/navigation.js',
+        'assets/screen-capture.js',
+        'assets/driver.js'
+    ]
+    .map(src => `/web-driverify/${src}`)
+    .map(src => `<script src="${src}"></script>`)
+    .join('\n');
 
 function injectScript(html, script) {
     if (rhead.exec(html)) {
@@ -37,20 +32,17 @@ function injectScript(html, script) {
     return html;
 }
 
-function injectSession(html, session) {
+function initScript(session) {
     var dto = session ? session.dto() : {};
     var str = JSON.stringify(dto);
-    // wrap "" to be compatible with javascript syntax
-    return html.replace('"{{session}}"', str);
+    var html = `window.webDriverify={session:${str}, handlers:{}}`;
+    debug('injecting session:', str);
+    return `<script>${html}</script>`;
 }
 
 function injectWdScripts(html, session) {
-    var strs = contents(session);
-    var script = createScript(strs);
-    var result = injectScript(html, script);
-
-    debug('script injected, before:', html.length, 'after:', result.length);
-    return result;
+    html = injectScript(html, initScript(session) + externalScripts);
+    return html;
 }
 
 export default { injectWdScripts };

@@ -38,8 +38,8 @@ jspm_packages
 
 docs/
 
-assets/vendors
-
 .*.swp
 .*.swo
 lib/
+
+screenshots

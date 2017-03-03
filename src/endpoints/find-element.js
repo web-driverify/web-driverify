@@ -7,9 +7,6 @@ class FindElement extends Endpoint {
             next();
         });
     }
-    static transform(data) {
-        return data;
-    }
 };
 
 export default Endpoint.register(FindElement);

@@ -12,7 +12,7 @@ describe('POST /wd/hub/session', function() {
     after(fixtures.teardownProxy);
     it('should respond with created session', function() {
         Endpoint.once('created', fixtures.startBrowserClient);
-        Endpoint.once('exited', fixtures.exitBrowserClient);
+        Endpoint.once('exit', fixtures.exitBrowserClient);
         return request(wd).post(`/wd/hub/session`)
             .expect(200)
             .then(res => {

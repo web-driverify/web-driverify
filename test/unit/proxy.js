@@ -24,7 +24,7 @@ describe('proxy', function() {
         request.get(`${env.stubUrl}/emptyhtml`)
             .proxy(env.proxyUrl)
             .end((err, res) => {
-                expect(res.text.slice(0, 30)).to.match(/^<html><script>/);
+                expect(res.text.slice(0, 30)).to.match(/^<html><script/);
                 expect(res.text.slice(-40)).to.match(/<\/script><\/html>$/);
                 done();
             });
@@ -33,7 +33,7 @@ describe('proxy', function() {
         request.get(`${env.stubUrl}/empty`)
             .proxy(env.proxyUrl)
             .end((err, res) => {
-                expect(res.text.slice(0, 30)).to.match(/^<script>/);
+                expect(res.text.slice(0, 30)).to.match(/^<script/);
                 expect(res.text.slice(-40)).to.match(/<\/script>$/);
                 done();
             });
@@ -42,16 +42,16 @@ describe('proxy', function() {
         request.get(`${env.stubUrl}/wellformed`)
             .proxy(env.proxyUrl)
             .end((err, res) => {
-                expect(res.text.slice(0, 30)).to.match(/^<html><head><script>/);
+                expect(res.text.slice(0, 30)).to.match(/^<html><head><script/);
                 expect(res.text.slice(-40)).to.match(/<\/script><\/head><body>foo<\/body><\/html>$/);
                 done();
             });
     });
     it('should provide init page', function(done) {
-        request.get(`${env.stubUrl}/wd`)
+        request.get(`${env.stubUrl}/web-driverify`)
             .proxy(env.proxyUrl)
             .end((err, res) => {
-                expect(res.statusCode).to.equal(400);
+                expect(res.statusCode).to.equal(404);
                 expect(res.text).to.match(/.+/);
                 expect(res.headers['content-type']).to.match(/text\/html/);
                 done();

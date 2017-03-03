@@ -10,6 +10,7 @@ let debug = Debug('wd:proxy:routes:command');
 
 router.use(bodyParser.json({
     // doc: https://www.npmjs.com/package/body-parser
+    limit: '50mb',
     strict: false
 }));
 router.param('eid', Endpoint.endpointById);
@@ -26,7 +27,7 @@ router.get('/', function(req, res) {
     } else {
         console.log(`initializing session with cmd ${req.query.cmd}...`);
         session.createSession(req);
-        endpoint.responseArrived(null, req.session);
+        endpoint.resultArrived(null, req.session);
 
         res.render('connect-success.html', {
             ip: req.session.ip,
@@ -38,10 +39,9 @@ router.get('/', function(req, res) {
 });
 
 router.get('/command', session.sessionRequired, function(req, res, next) {
-    debug('command polling requested...');
     req.session.cmdQueue.front()
         .then(cmd => {
-            debug('responding command polling...');
+            debug('cmd retrieved, sending...');
             res.json(cmd.dto());
         })
         .catch(err => {
@@ -52,8 +52,15 @@ router.get('/command', session.sessionRequired, function(req, res, next) {
 
 router.post('/result/:eid', session.sessionRequired, function(req, res) {
     var cmd = req.session.cmdQueue.pop();
-    debug(`response for ${cmd} arrived: ${req.body}`, typeof req.body);
-    req.endpoint.responseArrived(req.body, req.session);
+    debug(`result for ${cmd} arrived, length: ${req.body.length}`);
+    req.endpoint.resultArrived(req.body, req.session);
+    res.end('received');
+});
+
+router.post('/error/:eid', session.sessionRequired, function(req, res) {
+    var cmd = req.session.cmdQueue.pop();
+    debug(`error for ${cmd} arrived, length: ${req.body.length}`);
+    req.endpoint.errorArrived(req.body, req.session);
     res.end('received');
 });
 

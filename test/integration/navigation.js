@@ -20,6 +20,11 @@ describe('navigation', function() {
             browser.url(url2);
             expect(browser.getUrl()).to.equal(url2);
         });
+        it('should support Refresh', function() {
+            browser.url(url1);
+            browser.refresh();
+            expect(browser.getUrl()).to.equal(url1);
+        });
         it('should support Back', function() {
             browser.url(url1);
             browser.url(url2);
