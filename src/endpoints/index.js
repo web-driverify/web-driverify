@@ -79,7 +79,7 @@ class Endpoint {
         return data;
     }
     toString() {
-        return `${this.constructor.name}(${this.id})[${this.args}]`;
+        return `${this.constructor.name}(${this.id})${JSON.stringify(this.args)}`;
     }
     static on(name, cb) {
         return emitter.on(name, cb);

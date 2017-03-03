@@ -47,14 +47,36 @@ and open a session by visiting the given URL.
 
 ## Implementation Status
 
+### Session
+
 Method | URI Template | Command | Status
 --- | --- | --- | ---
 POST | `/session` | New Session | Ready
 DELETE | `/session/:sessionId` | New Session | Ready
+
+### Navigation
+
+Method | URI Template | Command | Status
+--- | --- | --- | ---
 POST | `/session/:sessionId/url` | Go | Ready
 GET | `/session/:sessionId/url` | Get Current Url | Ready
 POST | `/session/:sessionId/back` | Back | Ready
 POST | `/session/:sessionId/forward` | Forward | Ready
+
+### Element Retrieval
+
+Method | URI Template | Command | Status
+--- | --- | --- | ---
+POST | `/session/:sessionId/element/:id` | FindElement | Ready
+
+### Element State
+
+Method | URI Template | Command | Status
+--- | --- | --- | ---
+GET | `/session/:sessionId/element/:id/text` | GetElementText | Ready
+
+### Screen Capture
+
 GET | `/session/:sessionId/screenshot` | Screenshot | Ready
 
 [jsonwire]: https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol

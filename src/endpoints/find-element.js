@@ -7,6 +7,6 @@ class FindElement extends Endpoint {
             next();
         });
     }
-};
+}
 
 export default Endpoint.register(FindElement);

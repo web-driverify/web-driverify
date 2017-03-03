@@ -7,12 +7,18 @@ const rhtml = /(<html[^>]*>)/;
 let debug = Debug('wd:proxy:utils:injector');
 
 let externalScripts = [
+        // 3rd party libs
         'node_modules/es6-promise/dist/es6-promise.auto.min.js',
         'assets/html2canvas.js',
+
+        // implementations
         'assets/session.js',
         'assets/element-retrieval.js',
+        'assets/element-state.js',
         'assets/navigation.js',
         'assets/screen-capture.js',
+
+        // driver
         'assets/driver.js'
     ]
     .map(src => `/web-driverify/${src}`)
@@ -35,7 +41,7 @@ function injectScript(html, script) {
 function initScript(session) {
     var dto = session ? session.dto() : {};
     var str = JSON.stringify(dto);
-    var html = `window.webDriverify={session:${str}, handlers:{}}`;
+    var html = `window.webDriverify={session:${str}, handlers:{}, elements:{}}`;
     debug('injecting session:', str);
     return `<script>${html}</script>`;
 }

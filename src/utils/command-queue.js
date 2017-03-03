@@ -17,7 +17,7 @@ class CommandQueue {
             this.trySendCmd();
         }
     }
-    front = function() {
+    front() {
         debug('retrieving command...');
         return new Promise((resolve) => {
             this.cmdReceiver = resolve;

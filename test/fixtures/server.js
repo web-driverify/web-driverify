@@ -24,6 +24,16 @@ app.get('/empty', (req, res) => {
     res.set('content-type', 'text/html').end(html);
 });
 
+app.get('/plain-html', (req, res) => {
+    var html = [
+        '<form>',
+        '  <label class="control-label">Homepage</label>',
+        '  <input id="url" value="http://harttle.com">',
+        '</form>'
+    ];
+    res.set('content-type', 'text/html').end(html.join('\n'));
+});
+
 app.get('/css', (req, res) => {
     var css = 'div{color: red}';
     res.set('content-type', 'text/stylesheet').end(css);

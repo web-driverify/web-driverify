@@ -9,9 +9,12 @@ export * from './refresh.js';
 export * from './forward.js';
 export * from './get-current-url.js';
 
-// element related
+// element retrieval
 export * from './find-element.js';
 
-// misc
+// element state
+export * from './get-element-text.js';
+
+// screen capture
 export * from './screenshot.js';
 

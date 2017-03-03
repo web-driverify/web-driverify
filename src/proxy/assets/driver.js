@@ -6,10 +6,11 @@
             console.log('window not top (maybe iframe?) skipping...');
             return;
         }
-        console.log('web-driverify loaded with session', wd.session);
+        console.log('web-driverify loaded with session', JSON.stringify(wd.session));
 
         wd.state = 'init';
         wd.sendResult = sendResult;
+        wd.sendError = sendError;
 
         var confirm = wd.session.confirm;
         if (confirm) {
@@ -38,10 +39,11 @@
 
 
     function sendError(cmd, err, cb) {
+        err = normalizeError(err);
         console.log('sending error ' + toString(err) + ' for command ' + cmdToString(cmd));
         ajax({
             url: '/web-driverify/error/' + cmd.id,
-            data: normalizeError(err),
+            data: err,
             method: 'POST',
             cb: function() {
                 cb && cb.apply(null, arguments);
