@@ -77,6 +77,8 @@ GET | `/session/:sessionId/element/:id/text` | GetElementText | Ready
 
 ### Screen Capture
 
+Method | URI Template | Command | Status
+--- | --- | --- | ---
 GET | `/session/:sessionId/screenshot` | Screenshot | Ready
 
 [jsonwire]: https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol
