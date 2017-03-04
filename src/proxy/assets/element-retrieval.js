@@ -11,18 +11,13 @@
                 err.status = 7;
                 throw err;
             }
-            wd.sendResult(this, webElement(el));
+            return webElement(el);
         } catch (e) {
             if (e.code === 12 && e.message.indexOf('XPath') > -1) {
                 e.status = 19;
             }
-            wd.sendError(this, e);
+            throw e;
         }
-    };
-
-    wd.handlers.FindElements = function(sel) {
-        var els = document.querySelectorAll(sel);
-        wd.sendResult(this, els);
     };
 
     var singleElementStrategies = {

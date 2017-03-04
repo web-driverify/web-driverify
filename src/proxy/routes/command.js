@@ -52,14 +52,14 @@ router.get('/command', session.sessionRequired, function(req, res, next) {
 
 router.post('/result/:eid', session.sessionRequired, function(req, res) {
     var cmd = req.session.cmdQueue.pop();
-    debug(`result for ${cmd} arrived, length: ${req.body.length}`);
+    debug(`result for ${cmd} arrived`);
     req.endpoint.resultArrived(req.body, req.session);
     res.end('received');
 });
 
 router.post('/error/:eid', session.sessionRequired, function(req, res) {
     var cmd = req.session.cmdQueue.pop();
-    debug(`error for ${cmd} arrived, length: ${req.body.length}`);
+    debug(`error for ${cmd} arrived`);
     req.endpoint.errorArrived(req.body, req.session);
     res.end('received');
 });

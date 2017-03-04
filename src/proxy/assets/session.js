@@ -3,8 +3,9 @@
 
     wd.handlers.DeleteSession = function() {
         wd.state = 'closing';
-        wd.sendResult(this, 'closing', function() {
-            window.close();
-        });
+        return 'closing';
+    };
+    wd.handlers.DeleteSession.success = function() {
+        window.close();
     };
 })();

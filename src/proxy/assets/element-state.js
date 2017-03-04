@@ -6,11 +6,11 @@
         if (!el) {
             var err = new Error('StaleElementReference');
             err.status = 10;
-            wd.sendError(this, err);
+            throw err;
         } else {
             var text = el.innerText;
             console.log('GetElementText sending:', text);
-            wd.sendResult(this, text);
+            return text;
         }
     };
 })();

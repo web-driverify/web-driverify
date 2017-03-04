@@ -9,14 +9,11 @@
         console.log('web-driverify loaded with session', JSON.stringify(wd.session));
 
         wd.state = 'init';
-        wd.sendResult = sendResult;
-        wd.sendError = sendError;
 
         var confirm = wd.session.confirm;
         if (confirm) {
-            window.webDriverify.sendResult(confirm.cmd, confirm.data, function() {
+            sendResult(confirm.cmd, confirm.data, function() {
                 wd.state = 'running';
-                poll();
             });
         } else {
             wd.state = 'running';
@@ -40,7 +37,7 @@
 
     function sendError(cmd, err, cb) {
         err = normalizeError(err);
-        console.log('sending error ' + toString(err) + ' for command ' + cmdToString(cmd));
+        console.log('sending error ' + errString(err) + ' for command ' + cmdToString(cmd));
         ajax({
             url: '/web-driverify/error/' + cmd.id,
             data: err,
@@ -69,18 +66,23 @@
             return setTimeout(poll, 1000);
         }
         var handler = wd.handlers[cmd.name];
-        if (!handler) {
-            sendError(cmd, {
-                message: 'entrypoint ' + cmd.name + ' not found',
-                status: 9
+        Promise.resolve(handler)
+            .then(function notFound(handler) {
+                if (handler) return handler;
+                var err = new Error('entrypoint ' + cmd.name + ' not found');
+                err.status = 9;
+                throw err;
+            })
+            .then(function exec(handler) {
+                return handler.apply(cmd, cmd.args);
+            })
+            .then(function send(result) {
+                if (handler.silent) return;
+                sendResult(cmd, result, handler.done);
+            })
+            .catch(function error(err) {
+                sendError(cmd, err, handler.fail);
             });
-        } else {
-            try {
-                handler.apply(cmd, cmd.args);
-            } catch (err) {
-                sendError(cmd, err);
-            }
-        }
     }
 
     function ajax(settings) {
@@ -120,7 +122,12 @@
         return xhr;
     }
 
+    function errString(err) {
+        return err.message + '(' + err.status + ')\n' + err.stack;
+    }
+
     function toString(obj) {
+        if (obj === undefined) obj = null;
         return JSON.stringify(obj).slice(0, 1024);
     }
 
