@@ -1,3 +1,7 @@
+/*
+ * Categories refering to: https://www.w3.org/TR/webdriver
+ */
+
 // session related
 export * from './new-session.js';
 export * from './delete-session.js';
@@ -14,6 +18,9 @@ export * from './find-element.js';
 
 // element state
 export * from './get-element-text.js';
+
+// element interaction
+export * from './element-click.js';
 
 // screen capture
 export * from './screenshot.js';

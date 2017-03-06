@@ -38,11 +38,16 @@ class Endpoint {
 
     errorArrived(err) {
         this.status = 'error';
-        this.cb(this.data = {
+        this.data = {
             sessionById: this.session.id,
             status: err.status,
             value: err.message
-        });
+        };
+        if (err.message === 'Unimplemented') {
+            this.response.status(501).json(this.data);
+        } else {
+            this.response.json(this.data);
+        }
         pool.delete(this.id);
         emitter.emit('error', this);
     }
@@ -52,11 +57,12 @@ class Endpoint {
      */
     exit(result) {
         this.status = 'exit';
-        this.cb(this.data = {
+        this.data = {
             sessionId: this.session.id,
             status: 0,
             value: result
-        });
+        };
+        this.response.json(this.data);
         pool.delete(this.id);
         emitter.emit('exit', this);
     }
@@ -130,7 +136,7 @@ class Endpoint {
 
 function pushIntoSessionQueue(req, res) {
     req.endpoint.session = req.session;
-    req.endpoint.cb = result => res.json(result);
+    req.endpoint.response = res;
     if (req.session) {
         req.session.cmdQueue.push(req.endpoint);
     }

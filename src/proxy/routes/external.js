@@ -15,7 +15,8 @@ function proxy(req, res) {
         encoding: null
     }, function(err, response, body) {
         if (err) {
-            return res.status(500).end('proxy error:' + err.stack);
+            console.error('proxy error', err.message);
+            return res.status(500).end();
         }
         _.forOwn(response.headers, (v, k) => {
             res.set(k, v);

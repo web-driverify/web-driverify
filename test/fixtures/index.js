@@ -12,7 +12,7 @@ let session = null;
 let proxyServer, browserClient, stubServer, wdServer;
 let debug = Debug('wd:fixtures');
 
-function setupWDWithPhantom() {
+function setupPhantom() {
     debug('setting up wd with phantomjs...');
     Endpoint.on('created', endpoint => {
         if (endpoint.constructor.name === 'NewSession') {
@@ -20,32 +20,32 @@ function setupWDWithPhantom() {
             return startBrowserClient(endpoint);
         }
     });
-    return Promise.all([
-        setupProxy(),
-        Promise.fromCallback(cb => wdServer = wd.listen(env.wdPort, cb))
-        .then(() => console.log('wd server listening to port', env.wdPort))
-    ]);
 }
 
-function teardownWDWithPhantom() {
-    debug('tearing down wd and phantomjs...');
-    return Promise.all([
-        teardownProxy(),
-        Promise.fromCallback(cb => wdServer.close(cb)),
-        exitBrowserClient()
-    ]);
+function setupWD() {
+    return Promise.fromCallback(cb => wdServer = wd.listen(env.wdPort, cb))
+        .then(() => console.log('wd server listening to port', env.wdPort));
+}
+
+function teardownWD() {
+    debug('tearing down wd...');
+    return Promise.fromCallback(cb => wdServer.close(cb));
 }
 
 function setupProxy() {
     debug('setting up proxy...');
-    return Promise.all([
-        env.name === 'development' &&
-        Promise
-        .fromCallback(cb => stubServer = stub.listen(env.stubPort, cb))
-        .then(() => console.log('stub server listening to port', env.stubPort)),
-        Promise.fromCallback(cb => proxyServer = proxy.listen(env.proxyPort, cb))
-        .then(() => console.log('proxy server listening to port', env.proxyPort)),
-    ]);
+    return Promise.fromCallback(cb => proxyServer = proxy.listen(env.proxyPort, cb))
+        .then(() => console.log('proxy server listening to port', env.proxyPort));
+}
+
+function setupStub() {
+    return Promise.fromCallback(cb => stubServer = stub.listen(env.stubPort, cb))
+        .then(() => console.log('stub server listening to port', env.stubPort));
+}
+
+function teardownStub() {
+    debug('tearing down wd...');
+    return Promise.fromCallback(cb => stubServer.close(cb));
 }
 
 function teardownProxy() {
@@ -108,8 +108,12 @@ export default {
     setupProxy,
     teardownProxy,
 
-    setupWDWithPhantom,
-    teardownWDWithPhantom,
+    setupStub,
+    teardownStub,
+
+    setupWD,
+    setupPhantom,
+    teardownWD,
 
     startBrowserClient,
     exitBrowserClient

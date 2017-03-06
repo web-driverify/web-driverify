@@ -5,23 +5,11 @@ const rbody = /(<body[^>]*>)/;
 const rhtml = /(<html[^>]*>)/;
 
 let debug = Debug('wd:proxy:utils:injector');
-
 let externalScripts = [
-        // 3rd party libs
-        'node_modules/es6-promise/dist/es6-promise.auto.min.js',
-        'assets/html2canvas.js',
-
-        // implementations
-        'assets/session.js',
-        'assets/element-retrieval.js',
-        'assets/element-state.js',
-        'assets/navigation.js',
-        'assets/screen-capture.js',
-
-        // driver
-        'assets/driver.js'
+        'assets/index.bundle.js',
+        'node_modules/html2canvas/dist/html2canvas.min.js'
     ]
-    .map(src => `/web-driverify/${src}`)
+    .map(src => '/web-driverify/' + src)
     .map(src => `<script src="${src}"></script>`)
     .join('\n');
 
@@ -41,14 +29,13 @@ function injectScript(html, script) {
 function initScript(session) {
     var dto = session ? session.dto() : {};
     var str = JSON.stringify(dto);
-    var html = `window.webDriverify={session:${str}, handlers:{}, elements:{}}`;
+    var html = `console.log('fdsafdsa');window.webDriverify={session:${str}, handlers:{}, elements:{}}`;
     debug('injecting session:', str);
     return `<script>${html}</script>`;
 }
 
 function injectWdScripts(html, session) {
-    html = injectScript(html, initScript(session) + externalScripts);
-    return html;
+    return injectScript(html, initScript(session) + externalScripts);
 }
 
 export default { injectWdScripts };

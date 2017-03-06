@@ -1,6 +1,7 @@
 import Endpoint from '.';
 import env from '../utils/env.js';
 import pkg from '../../package.json';
+import qrcode from 'qrcode-terminal';
 
 class NewSession extends Endpoint {
     static express(router) {
@@ -8,6 +9,7 @@ class NewSession extends Endpoint {
             req.endpoint = new NewSession(req.body);
             let url = `${env.proxyUrl}/web-driverify?cmd=${req.endpoint.id}`;
             console.log(`newSession requested, open this URL: ${url}`);
+            qrcode.generate(url);
             next();
         });
     }
