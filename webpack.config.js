@@ -2,6 +2,7 @@ var webpack = require('webpack');
 var isDev = process.env.NODE_ENV !== 'production';
 
 var config = {
+    devtool: isDev && '#source-map',
     entry: {
         index: './src/proxy/assets/index.js'
     },

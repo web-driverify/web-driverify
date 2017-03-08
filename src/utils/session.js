@@ -38,7 +38,7 @@ class Session {
         req.session = sessions.get(id);
         next();
     }
-    static sessionRequired(req, res, next) {
+    static required(req, res, next) {
         if (!req.session) {
             var e = new Error('session not connected');
             e.status = 403;
@@ -52,7 +52,7 @@ class Session {
 function hash(req) {
     var sum = crypto.createHash('md5');
     sum.update(req.ip);
-    sum.update(req.headers['user-agent']);
+    sum.update(req.headers['user-agent'] || 'anonymous');
     return sum.digest('hex');
 }
 

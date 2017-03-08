@@ -2,7 +2,7 @@ import express from 'express';
 import morganDebug from 'morgan-debug';
 import Liquid from 'shopify-liquid';
 import env from '../utils/env.js';
-import commandMiddleware from './routes/command';
+import driverMiddleware from './routes/driver';
 import externalMiddleware from './routes/external.js';
 import utils from './routes/utils.js';
 import session from '../utils/session.js';
@@ -27,7 +27,7 @@ app.use('/web-driverify/assets', express.static(
     path.resolve(__dirname, './assets')));
 
 app.use(utils.pending, session.sessionByReq, utils.emitter);
-app.use('/web-driverify', commandMiddleware);
+app.use('/web-driverify', driverMiddleware);
 app.use(externalMiddleware);
 
 export default app;

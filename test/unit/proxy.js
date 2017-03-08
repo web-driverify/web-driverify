@@ -3,14 +3,21 @@ import request from 'superagent';
 import fixtures from '../fixtures';
 import env from '../../src/utils/env';
 import superagentProxy from 'superagent-proxy';
+import Promise from 'bluebird';
 
 superagentProxy(request);
 
 let expect = chai.expect;
 
 describe('proxy', function() {
-    before(fixtures.setupProxy);
-    after(fixtures.teardownProxy);
+    before(() => Promise.all([
+        fixtures.setupProxy(),
+        fixtures.setupStub()
+    ]));
+    after(() => Promise.all([
+        fixtures.teardownProxy(),
+        fixtures.teardownStub()
+    ]));
 
     it('should proxy stylesheets', function(done) {
         request.get(`${env.stubUrl}/css`)

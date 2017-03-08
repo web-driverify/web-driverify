@@ -33,15 +33,15 @@ router.get('/', function(req, res) {
             ip: req.session.ip,
             ua: req.session.ua,
             id: req.session.id,
-            wdScripts: injector.injectWdScripts('', req.session)
+            wdScripts: injector.injectWdScripts('')
         });
     }
 });
 
-router.get('/command', session.sessionRequired, function(req, res, next) {
+router.get('/command', session.required, function(req, res, next) {
     req.session.cmdQueue.front()
         .then(cmd => {
-            debug('cmd retrieved, sending...');
+            debug(`cmd ${cmd} retrieved, sending...`);
             res.json(cmd.dto());
         })
         .catch(err => {
@@ -50,14 +50,19 @@ router.get('/command', session.sessionRequired, function(req, res, next) {
         });
 });
 
-router.post('/result/:eid', session.sessionRequired, function(req, res) {
+router.get('/session', session.required, function(req, res) {
+    debug('session requested', req.session.dto());
+    res.json(req.session.dto());
+});
+
+router.post('/result/:eid', session.required, function(req, res) {
     var cmd = req.session.cmdQueue.pop();
     debug(`result for ${cmd} arrived`);
     req.endpoint.resultArrived(req.body, req.session);
     res.end('received');
 });
 
-router.post('/error/:eid', session.sessionRequired, function(req, res) {
+router.post('/error/:eid', session.required, function(req, res) {
     var cmd = req.session.cmdQueue.pop();
     debug(`error for ${cmd} arrived`);
     req.endpoint.errorArrived(req.body, req.session);
@@ -72,7 +77,9 @@ router.use(function(req, res, next) {
 
 router.use(function(err, req, res, next) {
     var status = err.status || 500;
-    debug(err.stack);
+    if (status === 500) {
+        debug(err.stack);
+    }
     res.status(status).end(err.stack);
 });
 

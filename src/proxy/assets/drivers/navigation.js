@@ -3,8 +3,7 @@ import { getWD } from '../utils/wd.js';
 let wd = getWD();
 
 wd.handlers.GetCurrentUrl = function() {
-    var url = window.location.href;
-    return url;
+    return window.location.href;
 };
 
 wd.handlers.Go = function(url) {

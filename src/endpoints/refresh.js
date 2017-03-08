@@ -9,7 +9,7 @@ class Refresh extends Endpoint {
             req.endpoint = new Refresh();
             req.session.storage.confirm = {
                 cmd: req.endpoint.dto(),
-                data: 'refresh complete'
+                data: 'navigation(Refresh) complete'
             };
             debug('setting confirm data into session', req.session.storage);
             next();

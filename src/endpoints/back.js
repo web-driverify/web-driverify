@@ -9,8 +9,9 @@ class Back extends Endpoint {
             req.endpoint = new Back();
             req.session.storage.confirm = {
                 cmd: req.endpoint.dto(),
-                data: 'back complete'
+                data: 'navigation(Back) complete'
             };
+            debug('setting storage', JSON.stringify(req.session.storage));
             next();
         });
     }

@@ -37,7 +37,7 @@ class Endpoint {
     }
 
     errorArrived(err) {
-        this.status = 'error';
+        this.status = 'fail';
         this.data = {
             sessionById: this.session.id,
             status: err.status,
@@ -49,7 +49,7 @@ class Endpoint {
             this.response.json(this.data);
         }
         pool.delete(this.id);
-        emitter.emit('error', this);
+        emitter.emit('fail', this);
     }
 
     /*
@@ -124,7 +124,13 @@ class Endpoint {
      */
     static endpointById(req, res, next, id) {
         req.endpoint = Endpoint.get(id);
-        next();
+        if (req.endpoint) {
+            next();
+        } else {
+            var err = new Error(`endpoint ${id} not found`);
+            err.status = 404;
+            next(err);
+        }
     }
 
     static get(id) {

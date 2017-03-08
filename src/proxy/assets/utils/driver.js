@@ -5,15 +5,22 @@ let wd = getWD();
 
 function init() {
     wd.state = 'init';
-    var confirm = wd.session.confirm;
-    if (confirm) {
-        sendResult(confirm.cmd, confirm.data, function() {
-            wd.state = 'running';
-        });
-    } else {
-        wd.state = 'running';
-        poll();
-    }
+    console.log('acquiring session');
+    ajax({
+        url: '/web-driverify/session?rand=' + Math.random(),
+        cb: function sessionAcquired(err, session) {
+            console.log('session acquired', JSON.stringify(session));
+            var confirm = session.confirm;
+            if (confirm) {
+                sendResult(confirm.cmd, confirm.data, function() {
+                    wd.state = 'running';
+                });
+            } else {
+                wd.state = 'running';
+                poll();
+            }
+        }
+    });
 }
 
 function sendResult(cmd, data, cb) {

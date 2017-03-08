@@ -1,24 +1,16 @@
 import { getWD } from '../utils/wd.js';
+import { NoSuchElement, XPathLookupError } from '../utils/errors.js';
 
 let wd = getWD();
 let elementId = 0;
 
 wd.handlers.FindElement = function(query) {
     var strategy = singleElementStrategies[query.using];
-    try {
-        var el = strategy(query.value);
-        if (!el) {
-            var err = new Error('NoSuchElement');
-            err.status = 7;
-            throw err;
-        }
-        return webElement(el);
-    } catch (e) {
-        if (e.code === 12 && e.message.indexOf('XPath') > -1) {
-            e.status = 19;
-        }
-        throw e;
+    var el = strategy(query.value);
+    if (!el) {
+        throw new NoSuchElement();
     }
+    return webElement(el);
 };
 
 var singleElementStrategies = {
@@ -58,7 +50,12 @@ var singleElementStrategies = {
         return document.getElementsByTagName(val);
     },
     'xpath': function(val) {
-        return document.evaluate(val, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+        let el = null;
+        try {
+            el = document.evaluate(val, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+        } catch (err) {
+            throw new XPathLookupError();
+        }
     }
 };
 

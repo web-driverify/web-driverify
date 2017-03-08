@@ -50,10 +50,7 @@ function teardownStub() {
 
 function teardownProxy() {
     debug('tearing down proxy...');
-    return Promise.all([
-        env.name === 'development' && Promise.fromCallback(cb => stubServer.close(cb)),
-        Promise.fromCallback(cb => proxyServer.close(cb))
-    ]);
+    return Promise.fromCallback(cb => proxyServer.close(cb));
 }
 
 function startBrowserClient(cmd) {

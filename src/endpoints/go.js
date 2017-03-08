@@ -9,9 +9,9 @@ class Go extends Endpoint {
             req.endpoint = new Go(req.body.url);
             req.session.storage.confirm = {
                 cmd: req.endpoint.dto(),
-                data: 'navigation complete'
+                data: 'navigation(Go) complete'
             };
-            debug('setting confirm data into session', req.session.storage);
+            debug('setting storage', JSON.stringify(req.session.storage));
             next();
         });
     }
