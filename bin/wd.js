@@ -1,3 +1,5 @@
+#!/usr/bin/env babel-node
+
 import fixtures from '../test/fixtures';
 
 Promise

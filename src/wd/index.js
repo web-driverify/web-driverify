@@ -1,9 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import morganDebug from 'morgan-debug';
-
-// endpoints
 import Endpoint from '../endpoints';
+import morgan from 'morgan';
 import '../endpoints/export.js';
 
 var app = express();
@@ -12,7 +10,13 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
-app.use(morganDebug('wd:wd', 'dev'));
+
+app.use(morgan((tokens, req, res) => [
+    tokens.method(req, res),
+    tokens.url(req, res),
+    tokens.status(req, res) || '-',
+    tokens['response-time'](req, res) || '-', 'ms'
+].join(' ')));
 
 app.use('/wd/hub/', Endpoint.express());
 

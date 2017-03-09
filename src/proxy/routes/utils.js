@@ -1,9 +1,10 @@
 import Debug from 'debug';
+import string from '../../utils/string.js';
 
 let debug = Debug('wd:proxy:routes:utils');
 
 function pending(req, res, next) {
-    debug(req.method.toUpperCase(), req.originalUrl, 'pending...');
+    debug(req.method.toUpperCase(), string(req.originalUrl).summary(), 'pending...');
     next();
 }
 

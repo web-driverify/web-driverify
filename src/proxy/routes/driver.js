@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import session from '../../utils/session.js';
 import Debug from 'debug';
 import Endpoint from '../../endpoints';
-import injector from '../utils/injector.js';
+import { injectWdScripts } from '../../utils/injector.js';
 
 let router = express.Router();
 let debug = Debug('wd:proxy:routes:command');
@@ -33,7 +33,7 @@ router.get('/', function(req, res) {
             ip: req.session.ip,
             ua: req.session.ua,
             id: req.session.id,
-            wdScripts: injector.injectWdScripts('')
+            wdScripts: injectWdScripts('')
         });
     }
 });

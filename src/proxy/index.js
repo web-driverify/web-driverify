@@ -1,5 +1,6 @@
 import express from 'express';
-import morganDebug from 'morgan-debug';
+import morgan from 'morgan';
+import string from '../utils/string.js';
 import Liquid from 'shopify-liquid';
 import env from '../utils/env.js';
 import driverMiddleware from './routes/driver';
@@ -19,15 +20,19 @@ app.engine('html', engine.express());
 app.set('views', __dirname + '/../views');
 app.set('view engine', 'html');
 
-app.use(morganDebug('wd:proxy', 'dev'));
+app.use(morgan((tokens, req, res) => [
+    tokens.method(req, res),
+    string(tokens.url(req, res)).summary(),
+    tokens.status(req, res) || '-',
+    tokens['response-time'](req, res) || '-', 'ms'
+].join(' ')));
 
 app.use('/web-driverify/node_modules', express.static(
     path.resolve(__dirname, '../../node_modules')));
 app.use('/web-driverify/assets', express.static(
     path.resolve(__dirname, './assets')));
 
-app.use(utils.pending, session.sessionByReq, utils.emitter);
-app.use('/web-driverify', driverMiddleware);
+app.use('/web-driverify', utils.pending, session.sessionByReq, utils.emitter, driverMiddleware);
 app.use(externalMiddleware);
 
 export default app;

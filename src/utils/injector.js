@@ -28,4 +28,4 @@ function injectWdScripts(html) {
     return injectScript(html, initScript + externalScripts);
 }
 
-export default { injectWdScripts };
+export { injectWdScripts, injectScript };
