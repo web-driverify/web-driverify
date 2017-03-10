@@ -1,4 +1,4 @@
-import Endpoint from '.'
+import Endpoint from '..'
 
 class ElementClick extends Endpoint {
   static express (router) {

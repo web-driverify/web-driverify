@@ -19,7 +19,7 @@
 
     function watch(eventName) {
       $('body').on(eventName, function() {
-        console.log('click on body triggered')
+        console.log(eventName, 'on body triggered')
         document.title = eventName;
       });
     }

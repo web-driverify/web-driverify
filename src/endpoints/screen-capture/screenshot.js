@@ -1,4 +1,4 @@
-import Endpoint from '.'
+import Endpoint from '..'
 import Debug from 'debug'
 
 let debug = Debug('wd:endpoints:Screenshot')

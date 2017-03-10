@@ -14,7 +14,7 @@ describe('element interaction', function () {
     id = browser.element('body').value.ELEMENT
   })
 
-  it.only('GET /session/:sessionId/element/:id/click', function () {
+  it('GET /session/:sessionId/element/:id/click', function () {
     browser.elementIdClick(id)
     let title = browser.getTitle()
     expect(title).to.equal('click')

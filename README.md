@@ -62,12 +62,20 @@ POST | `/session/:sessionId/url` | Go | Ready
 GET | `/session/:sessionId/url` | Get Current Url | Ready
 POST | `/session/:sessionId/back` | Back | Ready
 POST | `/session/:sessionId/forward` | Forward | Ready
+POST | `/session/:sessionId/refresh` | Refresh | Ready
+GET | `/session/:sessionId/title` | getTitle | Ready
 
 ### Element Retrieval
 
 Method | URI Template | Command | Status
 --- | --- | --- | ---
 POST | `/session/:sessionId/element/:id` | FindElement | Ready
+
+### Element Interaction
+
+Method | URI Template | Command | Status
+--- | --- | --- | ---
+POST | `/session/:sessionId/element/:id/click` | ElementClick | Ready
 
 ### Element State
 

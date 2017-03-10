@@ -1,6 +1,6 @@
-import Endpoint from '.'
-import env from '../utils/env.js'
-import pkg from '../../package.json'
+import Endpoint from '..'
+import env from '../../utils/env.js'
+import pkg from '../../../package.json'
 import qrcode from 'qrcode-terminal'
 
 class NewSession extends Endpoint {

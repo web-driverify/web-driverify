@@ -1,4 +1,4 @@
-import Endpoint from '.'
+import Endpoint from '..'
 
 class GetTitle extends Endpoint {
   static express (router) {
