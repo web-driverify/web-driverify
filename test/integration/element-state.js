@@ -15,7 +15,7 @@ describe('element state', function() {
         id = browser.element('.control-label').value.ELEMENT;
     });
 
-    it('GET /session/{session id}/element/{element id}', function() {
+    it('GET /session/:sessionId/element/{element id}', function() {
         var text = browser.elementIdText(id);
         expect(text.value).to.equal('Homepage');
     });

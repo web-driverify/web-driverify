@@ -3,12 +3,12 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Wait for Click</title>
+  <title>interaction test</title>
 </head>
 
 <body>
   <script src="/node_modules/jquery/dist/jquery.min.js"></script>
-  <script src="../../node_modules/jquery.event.swipe/js/jquery.event.swipe.js"></script>
+  <script src="/node_modules/jquery.event.swipe/js/jquery.event.swipe.js"></script>
   <script>
     [
       'click',
@@ -19,7 +19,8 @@
 
     function watch(eventName) {
       $('body').on(eventName, function() {
-        this.title = eventName;
+        console.log('click on body triggered')
+        document.title = eventName;
       });
     }
   </script>

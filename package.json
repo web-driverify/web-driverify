@@ -7,11 +7,12 @@
     "start": "babel-node bin/www",
     "build": "babel --ignore assets/ src -d lib/src && babel test/fixtures -d lib/test/fixtures && babel bin -d lib/bin && webpack --progress",
     "debug": "NODE_ENV=development && webpack --progress && DEBUG=wd:* babel-node bin/wd.js",
-    "watch:assets": "webpack --watch --progress",
-    "watch:server": "NODE_ENV=development DEBUG=wd:* babel-watch bin/test-prepare.js",
+    "watch:assets": "webpack --watch",
+    "watch:server": "NODE_ENV=test DEBUG=wd:* babel-watch bin/test-prepare.js",
+    "wait": "wait-on http://localhost:${WD_PORT:=8089}",
     "test:unit": "NODE_ENV=development DEBUG=wd:* mocha test/unit/*.js --compilers js:babel-core/register",
-	"test:integration": "wait-on http://localhost:${WD_PORT:=8089} && wdio wdio.conf.js",
-    "test": "npm run test:unit && concurrently --kill-others \"npm run watch:server\" \"npm run watch:assets\" \"npm run test:integration\" "
+	"test:integration": "wdio wdio.conf.js",
+    "test": "concurrently --kill-others \"npm run watch:server\" \"npm run watch:assets\" \"npm run wait && npm run test:unit && npm run test:integration\" || true"
   },
   "repository": {
     "type": "git",
