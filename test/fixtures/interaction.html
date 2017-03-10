@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Wait for Click</title>
+</head>
+
+<body>
+  <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="../../node_modules/jquery.event.swipe/js/jquery.event.swipe.js"></script>
+  <script>
+    [
+      'click',
+      'swipeleft', 'swiperight',
+      'touchmove', 'touchstart', 'touchend'
+    ]
+    .forEach(watch);
+
+    function watch(eventName) {
+      $('body').on(eventName, function() {
+        this.title = eventName;
+      });
+    }
+  </script>
+</body>
+
+</html>

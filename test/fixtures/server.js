@@ -17,6 +17,8 @@ app.use(function(req, res, next) {
     next();
 });
 
+app.use(express.static(__dirname));
+
 app.get('/wellformed', (req, res) => {
     var html = '<html><head></head><body>foo</body></html>';
     res.set('content-type', 'text/html').end(html);

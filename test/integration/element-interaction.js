@@ -1,23 +1,22 @@
 /* globals browser: true */
 
-import env from '../../src/utils/env.js';
-import chai from 'chai';
+import env from '../../src/utils/env.js'
+import chai from 'chai'
 
-let expect = chai.expect;
+let expect = chai.expect
 
-describe('element interaction', function() {
+describe('element interaction', function () {
+  let url = `${env.stubUrl}/interaction`
+  let id
 
-    var plain = `${env.stubUrl}/plain-html`;
-    var id;
+  before(function () {
+    browser.url(url)
+    id = browser.element('body').value.ELEMENT
+  })
 
-    before(function() {
-        browser.url(plain);
-        id = browser.element('.control-label').value.ELEMENT;
-    });
-
-    it('GET /session/{session id}/element/{element id}', function() {
-        var text = browser.elementIdText(id);
-        expect(text.value).to.equal('Homepage');
-        browser.elementIdClick(id);
-    });
-});
+  it('GET /session/:sessionId/element/:id/click', function () {
+    browser.elementIdClick(id)
+    let title = browser.title()
+    expect(title).to.equal('click')
+  })
+})
