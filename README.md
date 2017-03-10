@@ -10,7 +10,7 @@ and can work without browser-specific binaries.
 
 There should be a boilerplate project soon.
 
-## Run the Tests
+## Development
 
 Download and install
 
@@ -20,19 +20,10 @@ git clone https://github.com/web-driverify/web-driverify.git
 cd web-driverify && npm install
 ```
 
-Run unit test
+Run test
 
 ```bash
 npm test
-```
-
-Run integration test
-
-```bash
-# Start integration test servers
-npm run test:prepare
-# Run test in another shell
-npm run test:integration
 ```
 
 ## Differences with WebDriver Protocol
@@ -76,12 +67,14 @@ POST | `/session/:sessionId/element/:id` | FindElement | Ready
 Method | URI Template | Command | Status
 --- | --- | --- | ---
 POST | `/session/:sessionId/element/:id/click` | ElementClick | Ready
+POST | `/session/:sessionId/element/:id/value` | ElementSendKeys | Ready
 
 ### Element State
 
 Method | URI Template | Command | Status
 --- | --- | --- | ---
 GET | `/session/:sessionId/element/:id/text` | GetElementText | Ready
+GET | `/session/:sessionId/element/:id/attribute/:name` | GetElementAttribute | Ready
 
 ### Screen Capture
 

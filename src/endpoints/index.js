@@ -67,9 +67,9 @@ class Endpoint {
     }
   }
 
-    /*
-     * post transform of browser returned data
-     */
+  /*
+   * post transform of browser returned data
+   */
   transform (data) {
     return data
   }
@@ -86,9 +86,9 @@ class Endpoint {
     return id - 1
   }
 
-    /*
-     * Register a Endpoint Implementation
-     */
+  /*
+   * Register a Endpoint Implementation
+   */
   static register (EndpointImpl) {
     if (registry.has(EndpointImpl.name)) {
       throw new Error(`command ${EndpointImpl.name} already registered`)
@@ -98,9 +98,9 @@ class Endpoint {
     return EndpointImpl
   }
 
-    /*
-     * Express middleware for WebDriver HTTP API
-     */
+  /*
+   * Express middleware for WebDriver HTTP API
+   */
   static express () {
     router.use('/session/:sid', sessionRequired)
     router.use(unkownEndpoint)
@@ -108,9 +108,9 @@ class Endpoint {
     return router
   }
 
-    /*
-     * Endpoint population middleware
-     */
+  /*
+   * Endpoint population middleware
+   */
   static endpointById (req, res, next, id) {
     req.endpoint = Endpoint.get(id)
     if (req.endpoint) {

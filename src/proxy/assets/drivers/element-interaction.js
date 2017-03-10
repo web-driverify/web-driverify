@@ -1,23 +1,26 @@
 import { getWD } from '../utils/wd.js'
-import { ClickEvent } from '../utils/events.js'
-import { StaleElementReference, ElementNotVisible } from '../utils/errors.js'
+import { ClickEvent, KeyboardEvent } from '../utils/events.js'
+import {getVisibleElement} from '../utils/element.js'
 
 let wd = getWD()
 
 wd.handlers.ElementClick = function (id) {
-  var el = wd.elements[id]
-  if (!el) {
-    throw new StaleElementReference()
-  }
-  if (isHidden(el)) {
-    throw new ElementNotVisible()
-  }
-  console.log('dispatching click event on', el)
+  let el = getVisibleElement(id)
   el.dispatchEvent(new ClickEvent())
   return 'element ' + id + ' clicked'
 }
 
-function isHidden (el) {
-  var style = window.getComputedStyle(el)
-  return (style.display === 'none')
+wd.handlers.ElementSendKeys = function (id, str) {
+  let el = getVisibleElement(id)
+  Array.prototype.forEach.call(str, function (c) {
+    el.dispatchEvent(new KeyboardEvent('keydown', c))
+    el.dispatchEvent(new KeyboardEvent('keypress', c))
+    el.dispatchEvent(new KeyboardEvent('keyup', c))
+  })
+  // Unicode Workaround
+  if (el.tagName.toLowerCase() === 'input') {
+    el.value += str
+    console.log(el.setAttribute('value', el.value))
+  }
+  return 'keys sent to element' + id
 }

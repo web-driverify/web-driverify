@@ -24,7 +24,7 @@ app.use('/wd/hub/', Endpoint.express())
 app.use(function (err, req, res, next) {
   var status = err.status || 500
   console.error(err.stack)
-  res.status(status).end(err.stack)
+  res.status(status).end(err.message)
 })
 
 export default app

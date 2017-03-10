@@ -142,31 +142,31 @@ function parseStack (stack) {
       return line.replace(/^\s*at\s+/, '')
     })
     .map(function (line) {
-      // phantomjs:
-      // ElementClick@http://harttle.com/index.js:535:42
-      // webkit:
-      // at Utils.ElementClick(http://harttle.com/index.js:535:42)
       let match = /^(.*)[(@](.*?)\)?$/.exec(line)
       if (!match) {
-        return {
-          methodName: line
-        }
+        return null
       }
       let text = match[1]
       let location = match[2].split(':')
       let lastDot = text.lastIndexOf('.')
-      let colNumber = location.pop()
-      let lineNumber = location.pop()
+      let colNumber, lineNumber
+      if (location.length >= 3) {
+        colNumber = location.pop()
+        lineNumber = location.pop()
+      }
       return {
         className: text.substr(0, lastDot),
-        methodName: text.substr(lastDot),
+        methodName: text.substr(lastDot + 1),
         fileName: location.join(':'),
-        lineNumber: lineNumber,
-        colNumber: colNumber
+        lineNumber: Number(lineNumber),
+        colNumber: Number(colNumber)
       }
+    })
+    .filter(function (obj) {
+      return !!obj
     })
 }
 
 function noop () {}
 
-export { init }
+export { init, parseStack }

@@ -15,7 +15,9 @@ export * from './navigation/get-title.js'
 export * from './element-retrieval/find-element.js'
 
 export * from './element-state/get-element-text.js'
+export * from './element-state/get-element-attribute.js'
 
 export * from './element-interaction/element-click.js'
+export * from './element-interaction/element-send-keys.js'
 
 export * from './screen-capture/screenshot.js'

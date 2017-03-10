@@ -1,22 +1,26 @@
 /* globals browser: true */
 
-import env from '../../src/utils/env.js';
-import chai from 'chai';
+import env from '../../src/utils/env.js'
+import chai from 'chai'
 
-let expect = chai.expect;
+let expect = chai.expect
 
-describe('element state', function() {
+describe('element state', function () {
+  let plain = `${env.stubUrl}/plain-html`
+  let id
 
-    var plain = `${env.stubUrl}/plain-html`;
-    var id;
+  before(function () {
+    browser.url(plain)
+    id = browser.element('.control-label').value.ELEMENT
+  })
 
-    before(function() {
-        browser.url(plain);
-        id = browser.element('.control-label').value.ELEMENT;
-    });
+  it('GET /session/:sessionId/element/:id', function () {
+    let result = browser.elementIdText(id)
+    expect(result).to.have.property('value', 'Homepage')
+  })
 
-    it('GET /session/:sessionId/element/{element id}', function() {
-        var text = browser.elementIdText(id);
-        expect(text.value).to.equal('Homepage');
-    });
-});
+  it('GET /session/:sessionId/element/:id/attribute/:name', function () {
+    let result = browser.elementIdAttribute(id, 'class')
+    expect(result).to.have.property('value', 'control-label')
+  })
+})

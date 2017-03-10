@@ -7,19 +7,21 @@
 </head>
 
 <body>
+  <form>
+    <input type="text" id="name">
+  </form>
   <script src="/node_modules/jquery/dist/jquery.min.js"></script>
   <script src="/node_modules/jquery.event.swipe/js/jquery.event.swipe.js"></script>
   <script>
     [
-      'click',
-      'swipeleft', 'swiperight',
-      'touchmove', 'touchstart', 'touchend'
-    ]
-    .forEach(watch);
+      "click",
+      "swipeleft", "swiperight",
+      "touchmove", "touchstart", "touchend"
+    ].forEach(watch);
 
     function watch(eventName) {
       $('body').on(eventName, function() {
-        console.log(eventName, 'on body triggered')
+        console.log(eventName, 'on body triggered');
         document.title = eventName;
       });
     }
