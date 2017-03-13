@@ -78,6 +78,9 @@ Method | URI Template | Command | Status
 --- | --- | --- | ---
 GET | `/session/:sessionId/element/:id/text` | GetElementText | Ready
 GET | `/session/:sessionId/element/:id/attribute/:name` | GetElementAttribute | Ready
+GET | `/session/:sessionId/element/:id/size` | GetElementSize | Ready
+GET | `/session/:sessionId/element/:id/location` | GetElementLocation | Ready
+GET | `/session/:sessionId/element/:id/rect` | GetElementRect | Ready
 
 ### Screen Capture
 
