@@ -60,7 +60,8 @@ GET | `/session/:sessionId/title` | getTitle | Ready
 
 Method | URI Template | Command | Status
 --- | --- | --- | ---
-POST | `/session/:sessionId/element/:id` | FindElement | Ready
+POST | `/session/:sessionId/element` | FindElement | Ready
+POST | `/session/:sessionId/elements` | FindElement | Ready
 
 ### Element Interaction
 
@@ -68,6 +69,8 @@ Method | URI Template | Command | Status
 --- | --- | --- | ---
 POST | `/session/:sessionId/element/:id/click` | ElementClick | Ready
 POST | `/session/:sessionId/element/:id/value` | ElementSendKeys | Ready
+POST | `/session/:sessionId/element/:id/clear` | ElementClear | Ready
+POST | `/session/:sessionId/element/:id/submit` | ElementSubmit | Ready
 
 ### Element State
 

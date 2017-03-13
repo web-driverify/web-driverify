@@ -1,6 +1,6 @@
 import { getWD } from '../utils/wd.js'
 import { ClickEvent, KeyboardEvent } from '../utils/events.js'
-import {getVisibleElement} from '../utils/element.js'
+import { getElement, getVisibleElement } from '../utils/element.js'
 
 let wd = getWD()
 
@@ -18,9 +18,24 @@ wd.handlers.ElementSendKeys = function (id, str) {
     el.dispatchEvent(new KeyboardEvent('keyup', c))
   })
   // Unicode Workaround
-  if (el.tagName.toLowerCase() === 'input') {
-    el.value += str
-    console.log(el.setAttribute('value', el.value))
+  if (/input|textarea/i.test(el.tagName)) {
+    // phantomjs wont respect to el.value = xxx
+    el.setAttribute('value', el.value + str)
   }
   return 'keys sent to element' + id
+}
+
+wd.handlers.ElementSubmit = function (id) {
+  let el = getElement(id)
+  console.log('sumbiting', el)
+  el.submit()
+}
+wd.handlers.ElementSubmit.silent = true
+
+wd.handlers.ElementClear = function (id, str) {
+  let el = getElement(id)
+  if (/input|textarea/i.test(el.tagName)) {
+    el.setAttribute('value', '')
+  }
+  return 'element cleared' + id
 }

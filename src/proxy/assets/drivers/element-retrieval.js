@@ -1,6 +1,8 @@
 import { getWD } from '../utils/wd.js'
 import { NoSuchElement, XPathLookupError } from '../utils/errors.js'
-import _ from 'lodash'
+import some from 'lodash/some'
+import map from 'lodash/map'
+import filter from 'lodash/filter'
 
 let wd = getWD()
 let elementId = 0
@@ -17,7 +19,7 @@ wd.handlers.FindElement = function (query) {
 wd.handlers.FindElements = function (query) {
   let strategy = elementStrategies[query.using]
   let els = strategy(query.value)
-  return _.map(els, el => webElement(el))
+  return map(els, el => webElement(el))
 }
 
 var singleElementStrategies = {
@@ -45,7 +47,7 @@ var singleElementStrategies = {
   },
   'partial link text': function (val) {
     let ret = null
-    _.some(document.querySelectorAll('a'), el => {
+    some(document.querySelectorAll('a'), el => {
       if (el.innerText.indexOf(val) > -1) {
         ret = el
         return true
@@ -79,10 +81,10 @@ var elementStrategies = {
     return document.getElementsByName(val)
   },
   'link text': function (val) {
-    return _.filter(document.querySelectorAll('a'), el => el.innerText === val)
+    return filter(document.querySelectorAll('a'), el => el.innerText === val)
   },
   'partial link text': function (val) {
-    return _.filter(document.querySelectorAll('a'), el => el.innerText.indexOf(val) > -1)
+    return filter(document.querySelectorAll('a'), el => el.innerText.indexOf(val) > -1)
   },
   'tag name': function (val) {
     return document.getElementsByTagName(val)

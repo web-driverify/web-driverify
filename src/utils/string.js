@@ -16,4 +16,9 @@ function string (str) {
   }
 }
 
+string.fromError = function (err) {
+  var name = err.name || 'unkown error'
+  var stack = err.stack || 'no stack available'
+  return string(`${name}: ${err.message}\n${stack}`)
+}
 export default string

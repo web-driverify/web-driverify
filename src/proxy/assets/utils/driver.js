@@ -1,6 +1,7 @@
 import { getWD } from './wd.js'
 import Promise from 'es6-promise'
 import string from '../../../utils/string.js'
+import { UnknownCommand } from '../utils/errors.js'
 
 let wd = getWD()
 
@@ -47,16 +48,14 @@ function cmdArrived (err, cmd) {
   Promise.resolve(handler)
         .then(function notFound (handler) {
           if (handler) return handler
-          var err = new Error('entrypoint ' + cmd.name + ' not found')
-          err.status = 9
-          throw err
+          throw new UnknownCommand()
         })
         .then(function exec (handler) {
           console.log('applying endpoint handler...')
           return handler.apply(cmd, cmd.args)
         })
         .then(function (result) {
-          console.log(cmdToString(cmd), 'result retieved:', string(result))
+          console.log(cmdToString(cmd), 'handler returned:', string(result))
           if (handler.silent) {
             console.log('silent set, skip sending...')
             return
@@ -64,9 +63,12 @@ function cmdArrived (err, cmd) {
           send('result/', cmd, result, handler.done)
         })
         .catch(function (err) {
-          err = normalizeError(err)
-          console.log(cmdToString(cmd), 'error occurred:', string(err))
-          send('error/', cmd, err, handler.fail)
+          let obj = normalizeError(err)
+          console.log(cmdToString(cmd), 'error occurred:', string.fromError(err))
+          send('error/', cmd, obj, handler.fail)
+        })
+        .catch(function (err) {
+          console.log('cannot recover from error', err.message, '\n', err.stack)
         })
 }
 
@@ -130,6 +132,7 @@ function normalizeError (err) {
     value: {
       message: message,
       class: err.constructor && err.constructor.name,
+      stack: stack,
       stackTrace: parseStack(stack)
     },
     status: err.status || 13
@@ -137,7 +140,7 @@ function normalizeError (err) {
 }
 
 function parseStack (stack) {
-  return stack.split('\n')
+  return String(stack).split('\n')
     .map(function (line) {
       return line.replace(/^\s*at\s+/, '')
     })

@@ -12,7 +12,7 @@
     "wait": "wait-on http://localhost:${WD_PORT:=8089}",
     "test:unit": "NODE_ENV=development DEBUG=wd:* mocha test/unit/*.js --compilers js:babel-core/register",
 	"test:integration": "wdio wdio.conf.js",
-    "test": "concurrently --kill-others \"npm run watch:server\" \"npm run watch:assets\" \"npm run wait && npm run test:unit && npm run test:integration\" || true"
+    "test": "concurrently --kill-others \"webpack && npm run watch:server\" \"npm run wait && npm run test:unit && npm run test:integration\"; true"
   },
   "repository": {
     "type": "git",

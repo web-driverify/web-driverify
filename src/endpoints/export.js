@@ -19,6 +19,8 @@ export * from './element-state/get-element-text.js'
 export * from './element-state/get-element-attribute.js'
 
 export * from './element-interaction/element-click.js'
+export * from './element-interaction/element-clear.js'
 export * from './element-interaction/element-send-keys.js'
+export * from './element-interaction/element-submit.js'
 
 export * from './screen-capture/screenshot.js'
