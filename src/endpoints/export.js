@@ -13,6 +13,7 @@ export * from './navigation/get-current-url.js'
 export * from './navigation/get-title.js'
 
 export * from './element-retrieval/find-element.js'
+export * from './element-retrieval/find-elements.js'
 
 export * from './element-state/get-element-text.js'
 export * from './element-state/get-element-attribute.js'

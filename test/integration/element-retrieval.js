@@ -16,4 +16,10 @@ describe('element retrieval', function () {
     var val = browser.element('.control-label')
     expect(val.value).to.have.property('ELEMENT')
   })
+
+  it('POST /session/:sessionId/elements', function () {
+    var val = browser.elements('.control-label')
+    expect(val.value).to.have.lengthOf(1)
+    expect(val.value[0]).to.have.property('ELEMENT')
+  })
 })
