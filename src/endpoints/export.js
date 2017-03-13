@@ -26,4 +26,6 @@ export * from './element-interaction/element-clear.js'
 export * from './element-interaction/element-send-keys.js'
 export * from './element-interaction/element-submit.js'
 
+export * from './actions/touch-click.js'
+
 export * from './screen-capture/screenshot.js'

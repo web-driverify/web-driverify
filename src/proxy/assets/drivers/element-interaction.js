@@ -1,17 +1,17 @@
 import { getWD } from '../utils/wd.js'
 import { ClickEvent, KeyboardEvent } from '../utils/events.js'
-import { getElement, getVisibleElement } from '../utils/element.js'
+import element from '../utils/element.js'
 
 let wd = getWD()
 
 wd.handlers.ElementClick = function (id) {
-  let el = getVisibleElement(id)
+  let el = element.getVisible(id)
   el.dispatchEvent(new ClickEvent())
-  return 'element ' + id + ' clicked'
+  return element.toString(id) + ' clicked'
 }
 
 wd.handlers.ElementSendKeys = function (id, str) {
-  let el = getVisibleElement(id)
+  let el = element.getVisible(id)
   Array.prototype.forEach.call(str, function (c) {
     el.dispatchEvent(new KeyboardEvent('keydown', c))
     el.dispatchEvent(new KeyboardEvent('keypress', c))
@@ -22,20 +22,19 @@ wd.handlers.ElementSendKeys = function (id, str) {
     // phantomjs wont respect to el.value = xxx
     el.setAttribute('value', el.value + str)
   }
-  return 'keys sent to element' + id
+  return 'keys sent to ' + element.toString(id)
 }
 
 wd.handlers.ElementSubmit = function (id) {
-  let el = getElement(id)
-  console.log('sumbiting', el)
+  let el = element.getById(id)
   el.submit()
 }
 wd.handlers.ElementSubmit.silent = true
 
 wd.handlers.ElementClear = function (id, str) {
-  let el = getElement(id)
+  let el = element.getById(id)
   if (/input|textarea/i.test(el.tagName)) {
     el.setAttribute('value', '')
   }
-  return 'element cleared' + id
+  return element.toString(id) + ` cleared`
 }

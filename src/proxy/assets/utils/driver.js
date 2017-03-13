@@ -55,7 +55,7 @@ function cmdArrived (err, cmd) {
           return handler.apply(cmd, cmd.args)
         })
         .then(function (result) {
-          console.log(cmdToString(cmd), 'handler returned:', string(result))
+          console.log(cmdToString(cmd), 'handler returned:', string(result).summary())
           if (handler.silent) {
             console.log('silent set, skip sending...')
             return

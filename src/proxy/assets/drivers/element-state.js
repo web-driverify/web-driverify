@@ -1,6 +1,7 @@
 import { getWD } from '../utils/wd.js'
-import { getElement } from '../utils/element.js'
+import element from '../utils/element.js'
 
+let getElement = element.getById
 let wd = getWD()
 
 wd.handlers.GetElementText = function (id) {
@@ -15,7 +16,7 @@ wd.handlers.GetElementAttribute = function (id, name) {
   return el.getAttribute(name)
 }
 
-wd.handlers.GetElementSize = function (id, name) {
+wd.handlers.GetElementSize = function (id) {
   let rect = getElement(id).getBoundingClientRect()
   return {
     width: rect.width,
@@ -23,7 +24,7 @@ wd.handlers.GetElementSize = function (id, name) {
   }
 }
 
-wd.handlers.GetElementLocation = function (id, name) {
+wd.handlers.GetElementLocation = function (id) {
   let rect = getElement(id).getBoundingClientRect()
   return {
     x: rect.left,
@@ -31,7 +32,7 @@ wd.handlers.GetElementLocation = function (id, name) {
   }
 }
 
-wd.handlers.GetElementRect = function (id, name) {
+wd.handlers.GetElementRect = function (id) {
   let rect = getElement(id).getBoundingClientRect()
   return {
     x: rect.left,

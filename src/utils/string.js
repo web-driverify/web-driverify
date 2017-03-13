@@ -1,7 +1,7 @@
 function string (str) {
   if (str === undefined) str = null
-  else if (typeof str === 'object') str = JSON.stringify(str)
-  else str = String(str)
+  if (typeof str === 'object') str = JSON.stringify(str)
+  str = String(str)
 
   return {
     summary: function (len) {

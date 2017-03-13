@@ -12,6 +12,13 @@ function ClickEvent () {
   }
 }
 
+function TouchEvent (evtName, touches) {
+  let evt = document.createEvent('Event')
+  evt.initEvent(evtName, true, true)
+  evt.touches = touches || []
+  return evt
+}
+
 function KeyboardEvent (type, code) {
   var oEvent = document.createEvent('KeyboardEvent')
 
@@ -40,4 +47,4 @@ function KeyboardEvent (type, code) {
   return oEvent
 }
 
-export { ClickEvent, KeyboardEvent }
+export { ClickEvent, KeyboardEvent, TouchEvent }

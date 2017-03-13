@@ -3,9 +3,9 @@ import { NoSuchElement, XPathLookupError } from '../utils/errors.js'
 import some from 'lodash/some'
 import map from 'lodash/map'
 import filter from 'lodash/filter'
+import element from '../utils/element.js'
 
 let wd = getWD()
-let elementId = 0
 
 wd.handlers.FindElement = function (query) {
   let strategy = singleElementStrategies[query.using]
@@ -13,13 +13,13 @@ wd.handlers.FindElement = function (query) {
   if (!el) {
     throw new NoSuchElement()
   }
-  return webElement(el)
+  return createWebElement(el)
 }
 
 wd.handlers.FindElements = function (query) {
   let strategy = elementStrategies[query.using]
   let els = strategy(query.value)
-  return map(els, el => webElement(el))
+  return map(els, el => createWebElement(el))
 }
 
 var singleElementStrategies = {
@@ -105,9 +105,9 @@ var elementStrategies = {
   }
 }
 
-function webElement (el) {
-  wd.elements[elementId] = el
+function createWebElement (el) {
+  let id = element.create(el)
   return {
-    ELEMENT: elementId++
+    ELEMENT: id
   }
 }
