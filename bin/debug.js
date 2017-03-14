@@ -8,5 +8,5 @@ Promise
       fixtures.setupProxy(),
       fixtures.setupStub()
     ])
-    .then(() => console.log('wd started'))
+    .then(() => console.log('test preparation complete.'))
     .catch(err => console.error(err))

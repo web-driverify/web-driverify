@@ -3,7 +3,9 @@
 // https://ngryman.sh/articles/simulate-mouse--touch-events-with-jquery-in-phantomjs-and-the-browser/
 import element from './element.js'
 import {TouchEvent} from './events.js'
+import Log from './log.js'
 
+let logger = new Log('utils:pointer')
 let hasTouch = 'ontouchstart' in window
 
 class Pointer {
@@ -15,7 +17,7 @@ class Pointer {
   trigger (evtName) {
     let el = document.elementFromPoint(this.x, this.y)
     let id = element.getOrCreate(el)
-    console.log('triggering', evtName, 'for', element.toString(id))
+    logger.log('triggering', evtName, 'for', element.toString(id))
 
     let evt = new TouchEvent(evtName, [{
       pageX: this.x,

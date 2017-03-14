@@ -1,21 +1,23 @@
 {
   "name": "web-driverify",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "A passive web driver endpoint for real browsers.",
   "main": "index.js",
   "scripts": {
     "start": "node lib/bin/wd",
-    "build": "rm -rf lib && babel . --ignore node_modules,assets,test,*.conf* -d lib/ && cp package.json lib/ && mkdir lib/src/proxy/assets && cp src/proxy/assets/index.bundle.js lib/src/proxy/assets/ && touch lib/src/proxy/assets/favicon.ico",
-    "debug": "NODE_ENV=development && webpack --progress && DEBUG=wd:* babel-node bin/wd-with-stub.js",
+    "build": "rm -rf lib && npm run build:assets && npm run build:babel && npm run build:files",
+    "build:assets": "webpack --progress",
+    "build:babel": "babel . --ignore node_modules,assets,test,*.conf* -d lib/",
+    "build:files": "cp package.json lib/ && mkdir lib/src/proxy/assets && cp src/proxy/assets/index.bundle.js lib/src/proxy/assets/ && touch lib/src/proxy/assets/favicon.ico && cp -r src/views lib/src/",
+    "debug": "NODE_ENV=development DEBUG=wd:* DEBUG_COLORS=true babel-node bin/debug.js",
+    "debug:phantom": "NODE_ENV=test DEBUG=wd:* DEBUG_COLORS=true babel-watch bin/debug-phantom.js",
+    "wait": "wait-on http://localhost:${WD_PORT:=8089}",
+    "test": "concurrently --kill-others \"webpack && npm run debug:phantom\" \"npm run wait && npm run test:unit && npm run test:integration\"; true",
+    "test:unit": "NODE_ENV=development mocha test/unit/*.js --compilers js:babel-core/register",
+	"test:integration": "wdio wdio.conf.js",
     "preversion": "npm test",
     "version": "npm run build",
-    "postversion": "git push && git push --tags",
-    "watch:assets": "webpack --watch",
-    "watch:server": "NODE_ENV=test DEBUG=wd:* babel-watch bin/wd-with-stub-and-phantom.js",
-    "wait": "wait-on http://localhost:${WD_PORT:=8089}",
-    "test:unit": "NODE_ENV=development DEBUG=wd:* mocha test/unit/*.js --compilers js:babel-core/register",
-	"test:integration": "wdio wdio.conf.js",
-    "test": "concurrently --kill-others \"webpack && npm run watch:server\" \"npm run wait && npm run test:unit && npm run test:integration\"; true"
+    "postversion": "git push && git push --tags"
   },
   "repository": {
     "type": "git",

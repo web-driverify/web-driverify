@@ -1,13 +1,15 @@
 import { getWD } from '../utils/wd.js'
 import element from '../utils/element.js'
+import Log from '../utils/log.js'
 
+let logger = new Log('element-state')
 let getElement = element.getById
 let wd = getWD()
 
 wd.handlers.GetElementText = function (id) {
   var el = getElement(id)
   var text = el.innerText
-  console.log('GetElementText sending:', text)
+  logger.log('GetElementText sending:', text)
   return text
 }
 

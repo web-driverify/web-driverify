@@ -21,4 +21,9 @@ string.fromError = function (err) {
   var stack = err.stack || 'no stack available'
   return string(`${name}: ${err.message}\n${stack}`)
 }
+
+string.fromCmd = function (cmd) {
+  return string(cmd.name + '(' + cmd.id + ')')
+}
+
 export default string

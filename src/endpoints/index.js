@@ -11,8 +11,6 @@ let id = 0
 let pool = new Map()
 let emitter = new EventEmitter()
 
-// https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#response-status-codes
-
 router.param('sid', session.sessionById)
 
 class Endpoint {
@@ -27,10 +25,9 @@ class Endpoint {
   }
 
   resultArrived (result, session) {
-    // create session
-    if (!this.session) {
-      debug('why no session here?')
-      this.session = session
+    if (this.status === 'exit') {
+      console.warn(`result arrived after exit, discarding...`)
+      return
     }
     result = this.transform(result, session)
     this.exit(0, result)

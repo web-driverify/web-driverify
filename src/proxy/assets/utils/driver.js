@@ -1,20 +1,19 @@
 import { getWD } from './wd.js'
 import Promise from 'es6-promise'
 import string from '../../../utils/string.js'
+import $ from 'jquery'
 import { UnknownCommand } from '../utils/errors.js'
+import Log from '../utils/log.js'
 
 let wd = getWD()
+let logger = new Log('driver')
 
 function init () {
   wd.state = 'init'
-  console.log('acquiring session')
-  ajax({
-    url: '/web-driverify/session?rand=' + Math.random(),
-    cb: function sessionAcquired (err, session) {
-      if (err) {
-        throw err
-      }
-      console.log('session acquired', JSON.stringify(session))
+  logger.log('acquiring session')
+  $.getJSON('/web-driverify/session?rand=' + Math.random())
+    .done(session => {
+      logger.log('session acquired', JSON.stringify(session))
       var confirm = session.confirm
       if (confirm) {
         send('result/', confirm.cmd, confirm.data, function () {
@@ -24,105 +23,68 @@ function init () {
         wd.state = 'running'
         poll()
       }
-    }
-  })
+    })
+    .fail(err => {
+      throw err
+    })
 }
 
 function poll () {
   if (wd.state !== 'running') return
-  console.log('polling')
-  ajax({
-    url: '/web-driverify/command',
-    cb: cmdArrived
-  })
+  logger.log('polling')
+  $.getJSON('/web-driverify/command')
+    .done(cmdArrived)
+    .fail(err => {
+      logger.log('error when polling:', err)
+      return setTimeout(poll, 1000)
+    })
 }
 
-function cmdArrived (err, cmd) {
-  console.log('command received', JSON.stringify(cmd))
+function cmdArrived (cmd) {
+  logger.log('command received', JSON.stringify(cmd))
   if (wd.state !== 'running') return
-  if (err) {
-    console.log('error when polling, status:', arguments[1])
-    return setTimeout(poll, 1000)
-  }
   var handler = wd.handlers[cmd.name]
   Promise.resolve(handler)
-        .then(function notFound (handler) {
-          if (handler) return handler
-          throw new UnknownCommand()
-        })
-        .then(function exec (handler) {
-          console.log('applying endpoint handler...')
-          return handler.apply(cmd, cmd.args)
-        })
-        .then(function (result) {
-          console.log(cmdToString(cmd), 'handler returned:', string(result).summary())
-          if (handler.silent) {
-            console.log('silent set, skip sending...')
-            return
-          }
-          send('result/', cmd, result, handler.done)
-        })
-        .catch(function (err) {
-          let obj = normalizeError(err)
-          console.log(cmdToString(cmd), 'error occurred:', string.fromError(err))
-          send('error/', cmd, obj, handler.fail)
-        })
-        .catch(function (err) {
-          console.log('cannot recover from error', err.message, '\n', err.stack)
-        })
+    .then(function notFound (handler) {
+      if (handler) return handler
+      throw new UnknownCommand()
+    })
+    .then(function exec (handler) {
+      logger.log('applying endpoint handler...')
+      return handler.apply(cmd, cmd.args)
+    })
+    .then(function (result) {
+      logger.log(string.fromCmd(cmd), 'handler returned:', string(result).summary())
+      if (handler.silent) {
+        logger.log('silent set, skip sending...')
+        return
+      }
+      send('result/', cmd, result, handler.done)
+    })
+    .catch(function (err) {
+      let obj = normalizeError(err)
+      logger.log(string.fromCmd(cmd), 'error occurred:', string.fromError(err))
+      send('error/', cmd, obj, handler.fail)
+    })
+    .catch(function (err) {
+      logger.log('cannot recover from error', err.message, '\n', err.stack)
+    })
 }
 
 function send (path, cmd, data, cb) {
-  ajax({
+  cb = cb || function () {}
+  $.ajax({
+    type: 'POST',
     url: '/web-driverify/' + path + cmd.id,
-    data: data,
-    method: 'POST',
-    cb: function () {
-      cb && cb.apply(null, arguments)
-      poll()
-    }
+    dataType: 'json',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    data: JSON.stringify(data)
   })
-}
-
-function ajax (settings) {
-  settings.cb = settings.cb || noop
-
-  var xhr = createXHR()
-
-  xhr.open(settings.method || 'GET', settings.url, true)
-  xhr.setRequestHeader('Content-Type', 'application/json')
-
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState !== 4) return
-    if (xhr.status >= 200 && xhr.status < 300) {
-      var data = xhr.responseText
-      var contentType = xhr.getResponseHeader('Content-Type')
-      if (/application\/json/.exec(contentType)) {
-        data = JSON.parse(data)
-      }
-      settings.cb(null, data, xhr)
-    } else {
-      settings.cb(xhr, xhr.statusText)
-    }
-  }
-  xhr.send(JSON.stringify(settings.data))
-}
-
-function createXHR () {
-  var xhr = false
-  if (window.XMLHttpRequest) { // Mozilla, Safari,...
-    xhr = new XMLHttpRequest()
-  } else if (window.ActiveXObject) { // IE
-    xhr = new window.ActiveXObject('Microsoft.XMLHTTP')
-  }
-  if (!xhr) {
-    throw new Error('Cannot create an XHR instance')
-  }
-  return xhr
-}
-
-function cmdToString (cmd) {
-  return cmd.name + '(' + cmd.id + ')'
+   .done(data => cb(null, data))
+   .fail(err => cb(err))
+   .always(poll)
 }
 
 function normalizeError (err) {
@@ -169,7 +131,5 @@ function parseStack (stack) {
       return !!obj
     })
 }
-
-function noop () {}
 
 export { init, parseStack }

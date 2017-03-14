@@ -2,6 +2,7 @@ import express from 'express'
 import morgan from 'morgan'
 import string from '../utils/string.js'
 import Liquid from 'shopify-liquid'
+import BodyParser from 'body-parser'
 import env from '../utils/env.js'
 import driverMiddleware from './routes/driver'
 import externalMiddleware from './routes/external.js'
@@ -9,6 +10,11 @@ import utils from './routes/utils.js'
 import session from '../utils/session.js'
 import path from 'path'
 
+let bodyParser = BodyParser.json({
+  // doc: https://www.npmjs.com/package/body-parser
+  limit: '50mb',
+  strict: false
+})
 let engine = new Liquid({
   cache: env.name === 'production',
   root: path.resolve(__dirname, '../views/'),
@@ -19,6 +25,8 @@ let app = express()
 app.engine('html', engine.express())
 app.set('views', path.resolve(__dirname, '../views'))
 app.set('view engine', 'html')
+
+app.post('/web-driverify/log/:level', bodyParser, utils.log)
 
 app.use(morgan((tokens, req, res) => [
   tokens.method(req, res),
@@ -32,7 +40,7 @@ app.use('/web-driverify/node_modules', express.static(
 app.use('/web-driverify/assets', express.static(
     path.resolve(__dirname, './assets')))
 
-app.use('/web-driverify', utils.pending, session.sessionByReq, utils.emitter, driverMiddleware)
+app.use('/web-driverify', utils.pending, session.sessionByReq, utils.emitter, bodyParser, driverMiddleware)
 app.use(externalMiddleware)
 
 export default app

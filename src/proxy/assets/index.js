@@ -6,10 +6,13 @@ import './drivers/element-retrieval.js'
 import './drivers/element-interaction.js'
 import './drivers/screen-capture.js'
 import './drivers/actions.js'
+import Log from './utils/log.js'
+
+let logger = new Log('index')
 
 if (window.top !== window) {
-  console.log('window not top (maybe iframe?) skipping...')
+  logger.log('window not top (maybe iframe?) skipping...')
 } else {
-  console.log('web-driverify loaded')
+  logger.log('web-driverify loaded')
   window.addEventListener('pageshow', init)
 }
