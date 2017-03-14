@@ -8,14 +8,37 @@ and can work without browser-specific binaries.
 
 ## Get Started
 
-There should be a boilerplate project soon.
+Install
+
+```bash
+npm i -g web-driverify
+```
+
+Start Server
+
+```bash
+wd
+```
+
+## ENV variables
+
+* `WD_PORT`: Port for the WebDriver Protocol, test runners like [webdriver.io][wdio] should connect to this port. Default: `8089`
+* `PROXY_PORT`: Port for the browser proxy. Default: `8088`
+* `DEBUG`: Used by [debug][debug] utility. To enable web-driverify debug, set `DEBUG=wd:*`
+
+Here's a boilerplate project: <https://github.com/web-driverify/wdio-boilerplate>
 
 ## Development
 
-Download and install
+Download
 
 ```bash
 git clone https://github.com/web-driverify/web-driverify.git
+```
+
+Install
+
+```bash
 # fibers in wdio requires -std=gnu++0x, thus make sure gcc4.3+ installed.
 cd web-driverify && npm install
 ```
@@ -23,7 +46,15 @@ cd web-driverify && npm install
 Run test
 
 ```bash
+# Run all test cases
 npm test
+
+# run unit/integration test cases separately
+# attach phantom.js
+npm run debug:phantom
+# run cases, in another shell
+npm run test:unit
+npm run test:integration
 ```
 
 ## Differences with WebDriver Protocol
@@ -82,6 +113,12 @@ GET | `/session/:sessionId/element/:id/size` | GetElementSize | Ready
 GET | `/session/:sessionId/element/:id/location` | GetElementLocation | Ready
 GET | `/session/:sessionId/element/:id/rect` | GetElementRect | Ready
 
+### Actions
+
+Method | URI Template | Command | Status
+--- | --- | --- | ---
+POST | `/session/:sessionId/touch/click` | TouchClick | Ready
+
 ### Screen Capture
 
 Method | URI Template | Command | Status
@@ -91,3 +128,4 @@ GET | `/session/:sessionId/screenshot` | Screenshot | Ready
 [jsonwire]: https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol
 [wdio]: http://webdriver.io
 [selenium]: http://www.seleniumhq.org
+[debug]: https://github.com/visionmedia/debug

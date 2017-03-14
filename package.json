@@ -4,6 +4,7 @@
   "description": "A passive web driver endpoint for real browsers.",
   "main": "bin/wd.js",
   "bin": {
+    "wd": "lib/bin/wd.js",
     "web-driverify": "lib/bin/wd.js"
   },
   "scripts": {
@@ -47,7 +48,6 @@
     "iconv-lite": "^0.4.15",
     "lodash": "^4.17.4",
     "morgan": "^1.8.0",
-    "node-mitmproxy": "^3.1.0",
     "qrcode-terminal": "^0.11.0",
     "request": "^2.79.0",
     "shopify-liquid": "^1.7.1"
