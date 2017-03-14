@@ -1,6 +1,6 @@
 {
   "name": "web-driverify",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A passive web driver endpoint for real browsers.",
   "main": "bin/wd.js",
   "bin": {
@@ -18,7 +18,7 @@
     "wait": "wait-on http://localhost:${WD_PORT:=8089}",
     "test": "concurrently --kill-others \"npm run debug:phantom\" \"npm run wait && npm run test:unit && npm run test:integration\"; true",
     "test:unit": "NODE_ENV=development mocha test/unit/*.js --compilers js:babel-core/register",
-	"test:integration": "wdio wdio.conf.js",
+    "test:integration": "wdio wdio.conf.js",
     "preversion": "npm test",
     "version": "npm run build",
     "postversion": "git push && git push --tags"
