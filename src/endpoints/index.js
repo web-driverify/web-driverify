@@ -3,11 +3,11 @@ import session from '../utils/session.js'
 import express from 'express'
 import _ from 'lodash'
 import Debug from 'debug'
+import random from 'lodash/random'
 
 let debug = Debug('Endpoint')
 let registry = new Map()
 let router = express.Router()
-let id = 0
 let pool = new Map()
 let emitter = new EventEmitter()
 
@@ -15,7 +15,7 @@ router.param('sid', session.sessionById)
 
 class Endpoint {
   constructor () {
-    this.id = id++
+    this.id = random(1000, 9999)
     this.status = 'waiting'
     this.args = _.slice(arguments)
     this.confirmationRequired = true
@@ -78,9 +78,6 @@ class Endpoint {
   }
   static once (name, cb) {
     return emitter.once(name, cb)
-  }
-  static getLastId () {
-    return id - 1
   }
 
   /*

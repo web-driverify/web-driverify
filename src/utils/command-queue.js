@@ -21,7 +21,7 @@ class CommandQueue {
     debug('retrieving command...')
     return new Promise((resolve) => {
       this.cmdReceiver = resolve
-            // make a try on requested
+      // make a try on requested
       this.trySendCmd()
     })
   }
@@ -31,6 +31,7 @@ class CommandQueue {
       return false
     }
     if (this.top().status === 'pending') {
+      return true;
       return debug(`${this.top()} still pending`)
     }
     if (!this.cmdReceiver) {

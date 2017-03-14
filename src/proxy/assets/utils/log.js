@@ -1,6 +1,8 @@
 import slice from 'lodash/slice'
 import $ from 'jquery'
 
+let pageId = Math.random().toString(36).substr(2, 4)
+
 class Log {
   constructor (id) {
     this.id = id || 'anonymous'
@@ -14,6 +16,7 @@ class Log {
   doLog (level, args) {
     args = slice(args)
     args.unshift(`[${this.id}]`)
+    args.unshift(`[page-id:${pageId}]`)
 
     console[level].apply(console, args)
     $.ajax({

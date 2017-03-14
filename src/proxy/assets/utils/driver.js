@@ -10,8 +10,12 @@ let logger = new Log('driver')
 
 function init () {
   wd.state = 'init'
-  logger.log('acquiring session')
-  $.getJSON('/web-driverify/session?rand=' + Math.random())
+  logger.log('acquiring session...')
+  $
+    .ajax({
+      url: '/web-driverify/session',
+      cache: false
+    })
     .done(session => {
       logger.log('session acquired', JSON.stringify(session))
       var confirm = session.confirm
@@ -32,10 +36,14 @@ function init () {
 function poll () {
   if (wd.state !== 'running') return
   logger.log('polling')
-  $.getJSON('/web-driverify/command')
+  $
+    .ajax({
+      url: '/web-driverify/command',
+      cache: false
+    })
     .done(cmdArrived)
-    .fail(err => {
-      logger.log('error when polling:', err)
+    .fail((jqXHR, textStatus) => {
+      logger.log('error when polling, status:', textStatus)
       return setTimeout(poll, 1000)
     })
 }
@@ -54,7 +62,7 @@ function cmdArrived (cmd) {
       return handler.apply(cmd, cmd.args)
     })
     .then(function (result) {
-      logger.log(string.fromCmd(cmd), 'handler returned:', string(result).summary())
+      logger.log(string.fromCmd(cmd).summary(), 'handler returned:', string(result).summary())
       if (handler.silent) {
         logger.log('silent set, skip sending...')
         return
@@ -63,7 +71,7 @@ function cmdArrived (cmd) {
     })
     .catch(function (err) {
       let obj = normalizeError(err)
-      logger.log(string.fromCmd(cmd), 'error occurred:', string.fromError(err))
+      logger.log(string.fromCmd(cmd), 'error occurred:', string.fromError(err).summary())
       send('error/', cmd, obj, handler.fail)
     })
     .catch(function (err) {

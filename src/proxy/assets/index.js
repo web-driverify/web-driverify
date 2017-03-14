@@ -14,5 +14,8 @@ if (window.top !== window) {
   logger.log('window not top (maybe iframe?) skipping...')
 } else {
   logger.log('web-driverify loaded')
-  window.addEventListener('pageshow', init)
+  window.addEventListener('DOMContentLoaded', () => {
+    init()
+    window.addEventListener('pageshow', init)
+  })
 }

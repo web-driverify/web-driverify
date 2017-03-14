@@ -15,9 +15,10 @@ function emitter (req, res, next) {
 }
 
 function log (req, res, next) {
-  let args = _.slice(req.body).map(x => String(x)).join(' ')
+  let args = _.slice(req.body)
   let level = '[remote:' + req.params.level + ']'
-  debug(level, args)
+  args.unshift(level)
+  debug.apply(null, args)
   res.status(204).end()
 }
 

@@ -51,11 +51,10 @@ function toString (id) {
     .split(/\s+/)
     .filter(cls => !!cls)
     .map(cls => '.' + cls)
+    .join('')
   let idStr = el.getAttribute('id')
-  if (idStr) {
-    idStr = '#' + idStr
-  }
-  return el.tagName.toLowerCase() + classList + idStr + `(${id})`
+  idStr = idStr ? '#' + idStr : ''
+  return el.tagName + classList + idStr + ` (${id})`
 }
 
 function create (el) {
