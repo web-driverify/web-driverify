@@ -1,9 +1,4 @@
-class WDError extends Error {
-  constructor () {
-    super()
-    this.stack = (new Error()).stack
-  }
-}
+class WDError extends Error {}
 class NoSuchDriver extends WDError {
   constructor () {
     super()

@@ -1,17 +1,13 @@
 import EventEmitter from 'events'
-import session from '../utils/session.js'
-import express from 'express'
 import _ from 'lodash'
 import Debug from 'debug'
 import random from 'lodash/random'
+import {NotFound} from '../utils/errors.js'
 
 let debug = Debug('Endpoint')
 let registry = new Map()
-let router = express.Router()
 let pool = new Map()
 let emitter = new EventEmitter()
-
-router.param('sid', session.sessionById)
 
 class Endpoint {
   constructor () {
@@ -38,9 +34,6 @@ class Endpoint {
     this.exit(err.status, err.value)
   }
 
-  /*
-   * return and exit a endpoint
-   */
   exit (status, value) {
     this.status = 'exit'
     this.data = {
@@ -53,9 +46,6 @@ class Endpoint {
     emitter.emit('exit', this)
   }
 
-  /*
-   * Data transfer object for rpc
-   */
   dto () {
     return {
       id: this.id,
@@ -64,9 +54,6 @@ class Endpoint {
     }
   }
 
-  /*
-   * post transform of browser returned data
-   */
   transform (data) {
     return data
   }
@@ -80,73 +67,29 @@ class Endpoint {
     return emitter.once(name, cb)
   }
 
-  /*
-   * Register a Endpoint Implementation
-   */
   static register (EndpointImpl) {
     if (registry.has(EndpointImpl.name)) {
       throw new Error(`command ${EndpointImpl.name} already registered`)
     }
     registry.set(EndpointImpl.name, EndpointImpl)
-    EndpointImpl.express(router)
     return EndpointImpl
   }
 
-  /*
-   * Express middleware for WebDriver HTTP API
-   */
-  static express () {
-    router.use('/session/:sid', sessionRequired)
-    router.use(unkownEndpoint)
-    router.use(pushIntoSessionQueue)
-    return router
-  }
-
-  /*
-   * Endpoint population middleware
-   */
   static endpointById (req, res, next, id) {
     req.endpoint = Endpoint.get(id)
     if (req.endpoint) {
       next()
     } else {
-      var err = new Error(`endpoint ${id} not found`)
-      err.status = 404
-      next(err)
+      next(new NotFound(`endpoint ${id} not found`))
     }
   }
 
   static get (id) {
-    debug(`finding endpoint in ${pool.keys()} by id ${id}...`)
-    id = Number(id)
-    return pool.get(id)
+    debug(`finding endpoint by id ${id}...`)
+    return pool.get(Number(id))
   }
 }
 
-function pushIntoSessionQueue (req, res) {
-  req.endpoint.session = req.session
-  req.endpoint.response = res
-  if (req.session) {
-    req.session.cmdQueue.push(req.endpoint)
-  }
-}
-
-function sessionRequired (req, res, next) {
-  if (req.session) return next()
-  res.json({
-    sessionId: req.sessionId,
-    status: 6,
-    value: 'NoSuchDriver'
-  })
-}
-
-function unkownEndpoint (req, res, next) {
-  if (req.endpoint) return next()
-  res.json({
-    sessionId: req.session.id,
-    status: 9,
-    value: 'UnknownCommand'
-  })
-}
+Endpoint.registry = registry
 
 export default Endpoint

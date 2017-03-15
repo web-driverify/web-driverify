@@ -1,8 +1,7 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-import Endpoint from '../endpoints'
 import morgan from 'morgan'
-import '../endpoints/export.js'
+import rpc from '../rpc.js'
 
 var app = express()
 
@@ -19,7 +18,7 @@ app.use(morgan((tokens, req, res) => [
 ].join(' ')))
 
 app.get('/', (req, res) => res.end('web driverify running'))
-app.use('/wd/hub/', Endpoint.express())
+app.use('/wd/hub/', rpc.express())
 
 app.use(function (err, req, res, next) {
   var status = err.status || 500
