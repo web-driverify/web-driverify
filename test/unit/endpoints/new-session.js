@@ -24,6 +24,6 @@ describe('NewSession', function () {
       body: { desiredCapabilities: { cmdId: '1234' } }
     }
     let endpoint = NewSession.create(req)
-    expect(endpoint.id).to.equal('1234')
+    expect(endpoint.id).to.equal(1234)
   })
 })
