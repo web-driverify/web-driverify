@@ -7,18 +7,18 @@ import element from '../utils/element.js'
 
 let wd = getWD()
 
-wd.handlers.FindElement = function (query) {
-  let strategy = singleElementStrategies[query.using]
-  let el = strategy(query.value)
+wd.handlers.FindElement = function (using, value) {
+  let strategy = singleElementStrategies[using]
+  let el = strategy(value)
   if (!el) {
     throw new NoSuchElement()
   }
   return createWebElement(el)
 }
 
-wd.handlers.FindElements = function (query) {
-  let strategy = elementStrategies[query.using]
-  let els = strategy(query.value)
+wd.handlers.FindElements = function (using, value) {
+  let strategy = elementStrategies[using]
+  let els = strategy(value)
   return map(els, el => createWebElement(el))
 }
 

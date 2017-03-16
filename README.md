@@ -71,59 +71,59 @@ and open a session by visiting the given URL.
 
 ### Session
 
-Method | URI Template | Command | Status
+Method | URI Template | Command | wdio API | Status
 --- | --- | --- | ---
-POST | `/session` | New Session | Ready
-DELETE | `/session/:sessionId` | New Session | Ready
+POST | `/session` | New Session | `.session()` Ready
+DELETE | `/session/:sessionId` | Delete Session | `.session('delete')` | Ready
 
 ### Navigation
 
-Method | URI Template | Command | Status
+Method | URI Template | Command | wdio API | Status
 --- | --- | --- | ---
-POST | `/session/:sessionId/url` | Go | Ready
-GET | `/session/:sessionId/url` | Get Current Url | Ready
-POST | `/session/:sessionId/back` | Back | Ready
-POST | `/session/:sessionId/forward` | Forward | Ready
-POST | `/session/:sessionId/refresh` | Refresh | Ready
-GET | `/session/:sessionId/title` | getTitle | Ready
+POST | `/session/:sessionId/url` | Go | `.url()` | Ready
+GET | `/session/:sessionId/url` | Get Current Url | `.getUrl()` | Ready
+POST | `/session/:sessionId/back` | Back | `.back()` | Ready
+POST | `/session/:sessionId/forward` | Forward | `.forward()` | Ready
+POST | `/session/:sessionId/refresh` | Refresh | `.refresh()` | Ready
+GET | `/session/:sessionId/title` | getTitle | `.title()` Ready
 
 ### Element Retrieval
 
-Method | URI Template | Command | Status
+Method | URI Template | Command | wdio API | Status
 --- | --- | --- | ---
-POST | `/session/:sessionId/element` | FindElement | Ready
-POST | `/session/:sessionId/elements` | FindElement | Ready
+POST | `/session/:sessionId/element` | Find Element | `.element()` | Ready
+POST | `/session/:sessionId/elements` | Find Elements | `.elements()` Ready
 
 ### Element Interaction
 
-Method | URI Template | Command | Status
+Method | URI Template | Command | wdio API | Status
 --- | --- | --- | ---
-POST | `/session/:sessionId/element/:id/click` | ElementClick | Ready
-POST | `/session/:sessionId/element/:id/value` | ElementSendKeys | Ready
-POST | `/session/:sessionId/element/:id/clear` | ElementClear | Ready
-POST | `/session/:sessionId/element/:id/submit` | ElementSubmit | Ready
+POST | `/session/:sessionId/element/:id/click` | Element Click | `.elementIdClick()` | Ready
+POST | `/session/:sessionId/element/:id/value` | Element Send Keys | `.elementIdValue()` | Ready
+POST | `/session/:sessionId/element/:id/clear` | Element Clear | `.elementIdClear()` | Ready
+POST | `/session/:sessionId/element/:id/submit` | Element Submit | `.submit()` | Ready
 
 ### Element State
 
-Method | URI Template | Command | Status
+Method | URI Template | Command | wdio API | Status
 --- | --- | --- | ---
-GET | `/session/:sessionId/element/:id/text` | GetElementText | Ready
-GET | `/session/:sessionId/element/:id/attribute/:name` | GetElementAttribute | Ready
-GET | `/session/:sessionId/element/:id/size` | GetElementSize | Ready
-GET | `/session/:sessionId/element/:id/location` | GetElementLocation | Ready
-GET | `/session/:sessionId/element/:id/rect` | GetElementRect | Ready
+GET | `/session/:sessionId/element/:id/text` | Get Element Text | `.elementIdText()` | Ready
+GET | `/session/:sessionId/element/:id/attribute/:name` | Get Element Attribute | `.elementIdAttribute())` | Ready
+GET | `/session/:sessionId/element/:id/size` | Get Element Size | `.elementIdSize()` | Ready
+GET | `/session/:sessionId/element/:id/location` | Get Element Location | `.elementIdLocation()` | Ready
+GET | `/session/:sessionId/element/:id/rect` | Get Element Rect | `.elementIdRect()` | Ready
 
 ### Actions
 
-Method | URI Template | Command | Status
+Method | URI Template | Command | wdio API | Status
 --- | --- | --- | ---
-POST | `/session/:sessionId/touch/click` | TouchClick | Ready
+POST | `/session/:sessionId/touch/click` | Touch Click | `.touchClick()` | Ready
 
 ### Screen Capture
 
-Method | URI Template | Command | Status
+Method | URI Template | Command | wdio API | Status
 --- | --- | --- | ---
-GET | `/session/:sessionId/screenshot` | Screenshot | Ready
+GET | `/session/:sessionId/screenshot` | Screenshot | `.screenshot()` | Ready
 
 [jsonwire]: https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol
 [wdio]: http://webdriver.io
