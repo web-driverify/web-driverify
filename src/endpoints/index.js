@@ -1,7 +1,6 @@
 import EventEmitter from 'events'
 import Debug from 'debug'
 import random from 'lodash/random'
-import {UnknownCommand} from '../utils/errors.js'
 import {wdio as wdioError} from '../utils/error-parser.js'
 
 let debug = Debug('wd:Endpoint')
@@ -82,20 +81,6 @@ class Endpoint {
     }
     registry.set(EndpointImpl.name, EndpointImpl)
     return EndpointImpl
-  }
-
-  static endpointById (req, res, next, id) {
-    req.endpoint = Endpoint.get(id)
-    if (req.endpoint) {
-      next()
-    } else {
-      let err = new UnknownCommand(`endpoint ${id} not found`)
-      res.json({
-        sessionId: req.session && req.session.id,
-        status: err.status,
-        value: err
-      })
-    }
   }
 
   static get (id) {

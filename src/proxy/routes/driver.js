@@ -3,11 +3,12 @@ import Session from '../../utils/session.js'
 import Debug from 'debug'
 import Endpoint from '../../endpoints'
 import { injectWdScripts } from '../../utils/injector.js'
+import {NotFound, UnknownCommand} from '../../utils/errors.js'
 
 let router = express.Router()
 let debug = Debug('wd:proxy:routes:command')
 
-router.param('eid', Endpoint.endpointById)
+router.param('eid', endpointById)
 
 router.get('/', function (req, res) {
   res.set('content-type', 'text/html')
@@ -34,14 +35,14 @@ router.get('/', function (req, res) {
 
 router.get('/command', Session.required, function (req, res, next) {
   req.session.cmdQueue.front()
-        .then(cmd => {
-          debug(`cmd ${cmd} retrieved, sending...`)
-          res.json(cmd.dto())
-        })
-        .catch(err => {
-          req.session.cmdQueue.sendFailed(err)
-          next(err)
-        })
+    .then(cmd => {
+      debug(`cmd ${cmd} retrieved, sending...`)
+      res.json(cmd.dto())
+    })
+    .catch(err => {
+      req.session.cmdQueue.sendFailed(err)
+      next(err)
+    })
 })
 
 router.get('/session', Session.required, function (req, res) {
@@ -65,17 +66,15 @@ router.post('/error/:eid', Session.required, function (req, res) {
 })
 
 router.use(function (req, res, next) {
-  var err = new Error('Not Found')
-  err.status = 404
-  next(err)
+  throw new NotFound(`not found: ${req.originalUrl}`)
 })
 
-router.use(function (err, req, res, next) {
-  var status = err.status || 500
-  if (status === 500) {
-    debug(err.stack)
+function endpointById (req, res, next, id) {
+  req.endpoint = Endpoint.get(id)
+  if (!req.endpoint) {
+    throw new UnknownCommand(`endpoint ${id} not found`)
   }
-  res.status(status).end(err.stack)
-})
+  next()
+}
 
 export default router

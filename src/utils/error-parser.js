@@ -1,4 +1,5 @@
 import includes from 'lodash/includes'
+import {UnknownError} from './errors.js'
 
 const BadRequestErrors = [
   'NoSuchDriver',
@@ -28,11 +29,16 @@ const BadRequestErrors = [
 ]
 
 function wdio (err) {
+  if (!err.status) {
+    err = new UnknownError(err)
+  }
   var message = err.message || 'unkown error'
   var stack = err.stack || (new Error(message)).stack
+  var httpStatus = err.httpStatus ||
+    (includes(BadRequestErrors, err.name) ? 400 : 500)
   return {
-    status: err.status || 13,
-    httpStatus: includes(BadRequestErrors, err.name) ? 400 : 500,
+    status: err.status,
+    httpStatus: httpStatus,
     message: message,
     class: parseClassName(stack),
     stack: stack,
@@ -77,6 +83,6 @@ function parseStack (stack) {
 }
 
 export {
-wdio,
-parseStack
+  wdio,
+  parseStack
 }

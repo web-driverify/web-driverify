@@ -9,7 +9,10 @@ import externalMiddleware from './routes/external.js'
 import utils from './routes/utils.js'
 import session from '../utils/session.js'
 import path from 'path'
+import {wdio as wdioError} from '../utils/error-parser.js'
+import Debug from 'debug'
 
+let debug = Debug('wd:proxy')
 let bodyParser = BodyParser.json({
   // doc: https://www.npmjs.com/package/body-parser
   limit: '50mb',
@@ -42,5 +45,13 @@ app.use('/web-driverify/assets', express.static(
 
 app.use('/web-driverify', utils.pending, session.sessionByReq, utils.emitter, bodyParser, driverMiddleware)
 app.use(externalMiddleware)
+
+app.use(function (err, req, res, next) {
+  err = wdioError(err)
+  if (status === 500) {
+    debug(err.message, err.stack)
+  }
+  res.status(err.httpStatus).end(err.stack)
+})
 
 export default app

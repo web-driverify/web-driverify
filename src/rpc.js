@@ -1,6 +1,7 @@
 import express from 'express'
 import session from './utils/session.js'
 import Endpoint from './endpoints'
+import {NoSuchDriver, UnkownCommand} from './utils/errors.js'
 import './endpoints/export.js'
 
 let rpc = {
@@ -11,9 +12,9 @@ let rpc = {
 
     Endpoint.registry.forEach(EndpointClass => {
       let {method, url, create} = EndpointClass
+
       router[method](url, (req, res, next) => {
-        var endpoint = create(req)
-        req.endpoint = endpoint
+        req.endpoint = create(req)
         next()
       })
     })
@@ -34,20 +35,12 @@ function pushIntoSessionQueue (req, res) {
 
 function sessionRequired (req, res, next) {
   if (req.session) return next()
-  res.json({
-    sessionId: req.sessionId,
-    status: 6,
-    value: 'NoSuchDriver'
-  })
+  throw new NoSuchDriver('session not established')
 }
 
 function unkownEndpoint (req, res, next) {
   if (req.endpoint) return next()
-  res.json({
-    sessionId: req.session.id,
-    status: 9,
-    value: 'UnknownCommand'
-  })
+  throw new UnkownCommand('endpiont not found')
 }
 
 export default rpc
