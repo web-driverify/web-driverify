@@ -1,5 +1,5 @@
 import { getWD } from '../utils/wd.js'
-import { NoSuchElement, XPathLookupError } from '../utils/errors.js'
+import { NoSuchElement, XPathLookupError } from '../../../utils/errors.js'
 import some from 'lodash/some'
 import map from 'lodash/map'
 import filter from 'lodash/filter'

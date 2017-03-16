@@ -2,7 +2,7 @@ import EventEmitter from 'events'
 import _ from 'lodash'
 import Debug from 'debug'
 import random from 'lodash/random'
-import {NotFound} from '../utils/errors.js'
+import {UnknownCommand} from '../utils/errors.js'
 
 let debug = Debug('Endpoint')
 let registry = new Map()
@@ -80,7 +80,12 @@ class Endpoint {
     if (req.endpoint) {
       next()
     } else {
-      next(new NotFound(`endpoint ${id} not found`))
+      let err = new UnknownCommand(`endpoint ${id} not found`)
+      res.json({
+        sessionId: this.session.id,
+        status: err.status,
+        value: err.value
+      })
     }
   }
 

@@ -2,7 +2,7 @@ import { getWD } from './wd.js'
 import Promise from 'es6-promise'
 import string from '../../../utils/string.js'
 import $ from 'jquery'
-import { UnknownCommand } from '../utils/errors.js'
+import { UnknownCommand } from '../../../utils/errors.js'
 import Log from '../utils/log.js'
 
 let wd = getWD()

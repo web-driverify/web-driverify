@@ -1,5 +1,5 @@
 import { getWD } from '../utils/wd.js'
-import { StaleElementReference, ElementNotVisible } from '../utils/errors.js'
+import { StaleElementReference, ElementNotVisible } from '../../../utils/errors.js'
 import some from 'lodash/some'
 
 let elementId = 0
