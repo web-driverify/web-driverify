@@ -5,7 +5,8 @@ import qrcode from 'qrcode-terminal'
 
 class NewSession extends Endpoint {
   static create (req) {
-    let endpoint = new NewSession([req.body])
+    let caps = req.body.desiredCapabilities
+    let endpoint = new NewSession(caps.cmdId, [caps])
     let url = `${env.proxyUrl}/web-driverify?cmd=${endpoint.id}`
     console.log(`newSession requested, open this URL: ${url}`)
     if (env.name !== 'test') {

@@ -1,8 +1,8 @@
 import express from 'express'
-import session from './utils/session.js'
-import Endpoint from './endpoints'
-import {NoSuchDriver, UnkownCommand} from './utils/errors.js'
-import './endpoints/export.js'
+import session from '../../utils/session.js'
+import Endpoint from '../../endpoints'
+import {NoSuchDriver, UnkownCommand} from '../../utils/errors.js'
+import '../../endpoints/export.js'
 
 let rpc = {
   express: function () {

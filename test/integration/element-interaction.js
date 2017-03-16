@@ -21,6 +21,7 @@ describe('element interaction', function () {
 
   it('POST /session/:sessionId/element/:id/value', function () {
     let id = browser.element('#name').value.ELEMENT
+    browser.elementIdClear(id)
     browser.elementIdValue(id, 'harttle')
     expect(browser.getValue('#name', 'value')).to.have.equal('harttle')
   })

@@ -15,7 +15,7 @@ class Endpoint {
       id = random(1000, 9999)
     }
 
-    this.id = id
+    this.id = Number(id)
     this.args = args
     this.status = 'waiting'
     this.confirmationRequired = true

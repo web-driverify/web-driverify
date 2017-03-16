@@ -1,8 +1,8 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import morgan from 'morgan'
-import rpc from '../rpc.js'
-import {wdio as wdioError} from '../utils/errors.js'
+import driver from './routes/driver.js'
+import {errorHandler, hookMiddleware} from './routes/utils.js'
 
 var app = express()
 
@@ -19,19 +19,9 @@ app.use(morgan((tokens, req, res) => [
 ].join(' ')))
 
 app.get('/', (req, res) => res.end('web driverify running'))
-app.use('/wd/hub/', rpc.express())
+app.use('/wd/hub/', driver.express())
+app.use('/hooks', hookMiddleware)
 
-app.use(function (err, req, res, next) {
-  err = wdioError(err)
-  console.error('WebDriver Error', err.message, err.stack)
-
-  res
-    .status(err.httpStatus || 500)
-    .json({
-      sessionId: req.sessionId,
-      status: err.status,
-      value: err
-    })
-})
+app.use(errorHandler)
 
 export default app

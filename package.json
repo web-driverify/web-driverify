@@ -16,9 +16,9 @@
     "debug": "npm run build:assets && NODE_ENV=development DEBUG=wd:* DEBUG_COLORS=true babel-node bin/debug.js",
     "debug:phantom": "webpack && NODE_ENV=test DEBUG=wd:* DEBUG_COLORS=true babel-watch bin/debug-phantom.js",
     "wait": "wait-on http://localhost:${WD_PORT:=8089}",
-    "test": "concurrently --kill-others \"npm run debug:phantom\" \"npm run wait && npm run test:unit && npm run test:integration\"; true",
-    "test:unit": "NODE_ENV=development mocha test/unit/*.js --compilers js:babel-core/register",
-    "test:integration": "wdio wdio.conf.js",
+    "test": "npm run test:unit && npm run test:integration",
+    "test:unit": "NODE_ENV=development mocha test/unit --recursive --compilers js:babel-core/register",
+    "test:integration": "concurrently --kill-others \"npm run debug:phantom\" \"npm run wait && wdio wdio.conf.js\"; true",
     "preversion": "npm test",
     "version": "npm run build",
     "postversion": "git push && git push --tags"

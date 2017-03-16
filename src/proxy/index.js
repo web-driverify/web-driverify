@@ -48,7 +48,7 @@ app.use(externalMiddleware)
 
 app.use(function (err, req, res, next) {
   err = wdioError(err)
-  if (status === 500) {
+  if (err.httpStatus === 500) {
     debug(err.message, err.stack)
   }
   res.status(err.httpStatus).end(err.stack)

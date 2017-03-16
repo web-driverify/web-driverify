@@ -2,14 +2,24 @@ import chai from 'chai'
 import request from 'superagent'
 import env from '../../src/utils/env'
 import superagentProxy from 'superagent-proxy'
-import superagentCarset from 'superagent-charset'
+import superagentCharset from 'superagent-charset'
+import fixtures from '../fixtures'
 
 superagentProxy(request)
-superagentCarset(request)
+superagentCharset(request)
 
 let expect = chai.expect
 
 describe('proxy', function () {
+  before(() => Promise.all([
+    fixtures.setupProxy(),
+    fixtures.setupStub()
+  ]))
+  after(() => Promise.all([
+    fixtures.teardownProxy(),
+    fixtures.teardownStub()
+  ]))
+
   it('should proxy stylesheets', function (done) {
     request.get(`${env.stubUrl}/css`)
             .proxy(env.proxyUrl)
