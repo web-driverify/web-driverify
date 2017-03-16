@@ -72,14 +72,14 @@ and open a session by visiting the given URL.
 ### Session
 
 Method | URI Template | Command | wdio API | Status
---- | --- | --- | ---
+--- | --- | --- | --- | ---
 POST | `/session` | New Session | `.session()` Ready
 DELETE | `/session/:sessionId` | Delete Session | `.session('delete')` | Ready
 
 ### Navigation
 
 Method | URI Template | Command | wdio API | Status
---- | --- | --- | ---
+--- | --- | --- | --- | ---
 POST | `/session/:sessionId/url` | Go | `.url()` | Ready
 GET | `/session/:sessionId/url` | Get Current Url | `.getUrl()` | Ready
 POST | `/session/:sessionId/back` | Back | `.back()` | Ready
@@ -90,14 +90,14 @@ GET | `/session/:sessionId/title` | getTitle | `.title()` Ready
 ### Element Retrieval
 
 Method | URI Template | Command | wdio API | Status
---- | --- | --- | ---
+--- | --- | --- | --- | ---
 POST | `/session/:sessionId/element` | Find Element | `.element()` | Ready
 POST | `/session/:sessionId/elements` | Find Elements | `.elements()` Ready
 
 ### Element Interaction
 
 Method | URI Template | Command | wdio API | Status
---- | --- | --- | ---
+--- | --- | --- | --- | ---
 POST | `/session/:sessionId/element/:id/click` | Element Click | `.elementIdClick()` | Ready
 POST | `/session/:sessionId/element/:id/value` | Element Send Keys | `.elementIdValue()` | Ready
 POST | `/session/:sessionId/element/:id/clear` | Element Clear | `.elementIdClear()` | Ready
@@ -106,7 +106,7 @@ POST | `/session/:sessionId/element/:id/submit` | Element Submit | `.submit()` |
 ### Element State
 
 Method | URI Template | Command | wdio API | Status
---- | --- | --- | ---
+--- | --- | --- | --- | ---
 GET | `/session/:sessionId/element/:id/text` | Get Element Text | `.elementIdText()` | Ready
 GET | `/session/:sessionId/element/:id/attribute/:name` | Get Element Attribute | `.elementIdAttribute())` | Ready
 GET | `/session/:sessionId/element/:id/size` | Get Element Size | `.elementIdSize()` | Ready
@@ -116,13 +116,13 @@ GET | `/session/:sessionId/element/:id/rect` | Get Element Rect | `.elementIdRec
 ### Actions
 
 Method | URI Template | Command | wdio API | Status
---- | --- | --- | ---
+--- | --- | --- | --- | ---
 POST | `/session/:sessionId/touch/click` | Touch Click | `.touchClick()` | Ready
 
 ### Screen Capture
 
 Method | URI Template | Command | wdio API | Status
---- | --- | --- | ---
+--- | --- | --- | --- | ---
 GET | `/session/:sessionId/screenshot` | Screenshot | `.screenshot()` | Ready
 
 [jsonwire]: https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol
