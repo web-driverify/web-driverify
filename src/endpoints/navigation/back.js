@@ -4,16 +4,14 @@ import Debug from 'debug'
 let debug = Debug('wd:endpoints:Back')
 
 class Back extends Endpoint {
-  static express (router) {
-    router.post('/session/:sid/back', (req, res, next) => {
-      req.endpoint = new Back()
-      req.session.storage.confirm = {
-        cmd: req.endpoint.dto(),
-        data: 'navigation(Back) complete'
-      }
-      debug('setting storage', JSON.stringify(req.session.storage))
-      next()
-    })
+  static create (req) {
+    let endpoint = new Back()
+    req.session.storage.confirm = {
+      cmd: endpoint.dto(),
+      data: 'navigation(Back) complete'
+    }
+    debug('setting storage', JSON.stringify(req.session.storage))
+    return endpoint
   }
   transform (data, session) {
     debug('client refreshed, clearing session.confirm...')
@@ -22,4 +20,6 @@ class Back extends Endpoint {
   }
 }
 
+Back.method = 'post'
+Back.url = '/session/:sid/back'
 export default Endpoint.register(Back)

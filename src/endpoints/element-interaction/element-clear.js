@@ -1,13 +1,11 @@
 import Endpoint from '..'
-import Debug from 'debug'
 
 class ElementClear extends Endpoint {
-  static express (router) {
-    router.post('/session/:sid/element/:id/clear', function (req, res, next) {
-      req.endpoint = new ElementClear([req.params.id])
-      next()
-    })
+  static create (req) {
+    return new ElementClear([req.params.id])
   }
 }
+ElementClear.method = 'post'
+ElementClear.url = '/session/:sid/element/:id/clear'
 
 export default Endpoint.register(ElementClear)

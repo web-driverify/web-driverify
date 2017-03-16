@@ -1,12 +1,11 @@
 import Endpoint from '..'
 
 class GetTitle extends Endpoint {
-  static express (router) {
-    router.get('/session/:sid/title', (req, res, next) => {
-      req.endpoint = new GetTitle()
-      next()
-    })
+  static create (req) {
+    return new GetTitle()
   }
 }
 
+GetTitle.method = 'get'
+GetTitle.url = '/session/:sid/title'
 export default Endpoint.register(GetTitle)

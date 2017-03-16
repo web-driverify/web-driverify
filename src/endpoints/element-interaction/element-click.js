@@ -1,12 +1,11 @@
 import Endpoint from '..'
 
 class ElementClick extends Endpoint {
-  static express (router) {
-    router.post('/session/:sid/element/:id/click', function (req, res, next) {
-      req.endpoint = new ElementClick([req.params.id])
-      next()
-    })
+  static create (req) {
+    return new ElementClick([req.params.id])
   }
 }
+ElementClick.method = 'post'
+ElementClick.url = '/session/:sid/element/:id/click'
 
 export default Endpoint.register(ElementClick)

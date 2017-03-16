@@ -1,12 +1,12 @@
 import Endpoint from '..'
 
 class GetCurrentUrl extends Endpoint {
-  static express (router) {
-    router.get('/session/:sid/url', (req, res, next) => {
-      req.endpoint = new GetCurrentUrl()
-      next()
-    })
+  static create (req) {
+    return new GetCurrentUrl()
   }
 }
+
+GetCurrentUrl.url = '/session/:sid/url'
+GetCurrentUrl.method = 'get'
 
 export default Endpoint.register(GetCurrentUrl)

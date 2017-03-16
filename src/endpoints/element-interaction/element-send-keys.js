@@ -10,12 +10,11 @@ class ElementSendKeys extends Endpoint {
     let str = arr.join('')
     super([elementId, str])
   }
-  static express (router) {
-    router.post('/session/:sid/element/:id/value', function (req, res, next) {
-      req.endpoint = new ElementSendKeys([req.params.id, req.body.value])
-      next()
-    })
+  static create (req) {
+    return new ElementSendKeys([req.params.id, req.body.value])
   }
 }
+ElementSendKeys.method = 'post'
+ElementSendKeys.url = '/session/:sid/element/:id/value'
 
 export default Endpoint.register(ElementSendKeys)

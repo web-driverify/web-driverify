@@ -1,16 +1,15 @@
 import Endpoint from '..'
 
 class ElementSubmit extends Endpoint {
-  static express (router) {
-    router.post('/session/:sid/element/:id/submit', function (req, res, next) {
-      req.endpoint = new ElementSubmit([req.params.id])
-      req.session.storage.confirm = {
-        cmd: req.endpoint.dto(),
-        data: 'navigation(Submit) complete'
-      }
-      next()
-    })
+  static create (req) {
+    let endpoint = new ElementSubmit([req.params.id])
+    req.session.storage.confirm = {
+      cmd: endpoint.dto(),
+      data: 'navigation(Submit) complete'
+    }
+    return endpoint
   }
 }
-
+ElementSubmit.method = 'post'
+ElementSubmit.url = '/session/:sid/element/:id/submit'
 export default Endpoint.register(ElementSubmit)

@@ -4,16 +4,14 @@ import Debug from 'debug'
 let debug = Debug('wd:endpoints:Go')
 
 class Go extends Endpoint {
-  static express (router) {
-    router.post('/session/:sid/url', (req, res, next) => {
-      req.endpoint = new Go([req.body.url])
-      req.session.storage.confirm = {
-        cmd: req.endpoint.dto(),
-        data: 'navigation(Go) complete'
-      }
-      debug('setting storage', JSON.stringify(req.session.storage))
-      next()
-    })
+  static create (req) {
+    let endpoint = new Go([req.body.url])
+    req.session.storage.confirm = {
+      cmd: endpoint.dto(),
+      data: 'navigation(Go) complete'
+    }
+    debug('setting storage', JSON.stringify(req.session.storage))
+    return endpoint
   }
   transform (data, session) {
     debug('client refreshed, clearing session.confirm...')
@@ -21,5 +19,8 @@ class Go extends Endpoint {
     return data
   }
 }
+
+Go.method = 'post'
+Go.url = '/session/:sid/url'
 
 export default Endpoint.register(Go)

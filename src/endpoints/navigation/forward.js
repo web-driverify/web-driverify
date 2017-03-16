@@ -4,15 +4,13 @@ import Debug from 'debug'
 let debug = Debug('wd:endpoints:Forward')
 
 class Forward extends Endpoint {
-  static express (router) {
-    router.post('/session/:sid/forward', (req, res, next) => {
-      req.endpoint = new Forward()
-      req.session.storage.confirm = {
-        cmd: req.endpoint.dto(),
-        data: 'forward complete'
-      }
-      next()
-    })
+  static create (req) {
+    let endpoint = new Forward()
+    req.session.storage.confirm = {
+      cmd: endpoint.dto(),
+      data: 'forward complete'
+    }
+    return endpoint
   }
   transform (data, session) {
     debug('client loaded, clearing session.confirm...')
@@ -20,5 +18,6 @@ class Forward extends Endpoint {
     return data
   }
 }
-
+Forward.url = '/session/:sid/forward'
+Forward.method = 'post'
 export default Endpoint.register(Forward)

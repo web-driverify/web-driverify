@@ -4,16 +4,14 @@ import pkg from '../../../package.json'
 import qrcode from 'qrcode-terminal'
 
 class NewSession extends Endpoint {
-  static express (router) {
-    router.post('/session', (req, res, next) => {
-      req.endpoint = new NewSession([req.body])
-      let url = `${env.proxyUrl}/web-driverify?cmd=${req.endpoint.id}`
-      console.log(`newSession requested, open this URL: ${url}`)
-      if (env.name !== 'test') {
-        qrcode.generate(url)
-      }
-      next()
-    })
+  static create (req) {
+    let endpoint = new NewSession([req.body])
+    let url = `${env.proxyUrl}/web-driverify?cmd=${endpoint.id}`
+    console.log(`newSession requested, open this URL: ${url}`)
+    if (env.name !== 'test') {
+      qrcode.generate(url)
+    }
+    return endpoint
   }
   transform () {
     return {
@@ -47,4 +45,6 @@ class NewSession extends Endpoint {
   }
 }
 
+NewSession.method = 'post'
+NewSession.url = '/session'
 export default Endpoint.register(NewSession)

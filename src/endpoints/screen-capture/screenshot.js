@@ -4,13 +4,13 @@ import Debug from 'debug'
 let debug = Debug('wd:endpoints:Screenshot')
 
 class Screenshot extends Endpoint {
-  static express (router) {
-    router.get('/session/:sid/screenshot', (req, res, next) => {
-      debug('taking screenshot')
-      req.endpoint = new Screenshot()
-      next()
-    })
+  static create (req) {
+    debug('taking screenshot')
+    return new Screenshot()
   }
 }
+
+Screenshot.method = 'get'
+Screenshot.url = '/session/:sid/screenshot'
 
 export default Endpoint.register(Screenshot)

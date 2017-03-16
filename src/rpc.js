@@ -10,7 +10,12 @@ let rpc = {
     router.use('/session/:sid', sessionRequired)
 
     Endpoint.registry.forEach(EndpointClass => {
-      EndpointClass.express(router)
+      let {method, url, create} = EndpointClass
+      router[method](url, (req, res, next) => {
+        var endpoint = create(req)
+        req.endpoint = endpoint
+        next()
+      })
     })
 
     router.use(unkownEndpoint)

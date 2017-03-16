@@ -1,12 +1,11 @@
 import Endpoint from '..'
 
 class GetElementRect extends Endpoint {
-  static express (router) {
-    router.get('/session/:sid/element/:id/rect', function (req, res, next) {
-      req.endpoint = new GetElementRect([req.params.id])
-      next()
-    })
+  static create (req) {
+    return new GetElementRect([req.params.id])
   }
 }
 
+GetElementRect.method = 'get'
+GetElementRect.url = '/session/:sid/element/:id/rect'
 export default Endpoint.register(GetElementRect)

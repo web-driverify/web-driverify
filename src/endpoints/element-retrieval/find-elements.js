@@ -1,12 +1,11 @@
 import Endpoint from '..'
 
 class FindElements extends Endpoint {
-  static express (router) {
-    router.post('/session/:sid/elements', function (req, res, next) {
-      req.endpoint = new FindElements([req.body])
-      next()
-    })
+  static create (req) {
+    return new FindElements([req.body])
   }
 }
+FindElements.method = 'post'
+FindElements.url = '/session/:sid/elements'
 
 export default Endpoint.register(FindElements)
