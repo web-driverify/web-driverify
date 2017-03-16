@@ -1,8 +1,17 @@
-class WDError extends Error {}
+class WDError extends Error { }
 
+class MissingCommandParameters extends WDError {
+  constructor (msg) {
+    super()
+    this.name = 'MissingCommandParameters'
+    this.httpStatus = 400
+    this.message = msg || 'missing command parameters'
+  }
+}
 class NoSuchDriver extends WDError {
   constructor () {
     super()
+    this.name = 'NoSuchDriver'
     this.status = 6
     this.message = 'NoSuchDriver: A session is either terminated or not started'
   }
@@ -193,6 +202,7 @@ class MoveTargetOutOfBounds extends WDError {
 }
 
 export {
+  MissingCommandParameters,
   NoSuchDriver,
   NoSuchElement,
   NoSuchFrame,

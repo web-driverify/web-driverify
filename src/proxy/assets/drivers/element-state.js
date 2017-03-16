@@ -7,14 +7,17 @@ let getElement = element.getById
 let wd = getWD()
 
 wd.handlers.GetElementText = function (id) {
-  var el = getElement(id)
-  var text = el.innerText
+  let el = getElement(id)
+  let text = el.innerText
   logger.log('GetElementText sending:', text)
   return text
 }
 
 wd.handlers.GetElementAttribute = function (id, name) {
-  var el = getElement(id)
+  let el = getElement(id)
+  if (name === 'painted egg') {
+    throw new Error('painted egg')
+  }
   return el.getAttribute(name)
 }
 

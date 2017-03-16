@@ -1,22 +1,27 @@
 import EventEmitter from 'events'
-import _ from 'lodash'
 import Debug from 'debug'
 import random from 'lodash/random'
 import {UnknownCommand} from '../utils/errors.js'
+import {wdio as wdioError} from '../utils/error-parser.js'
 
-let debug = Debug('Endpoint')
+let debug = Debug('wd:Endpoint')
 let registry = new Map()
 let pool = new Map()
 let emitter = new EventEmitter()
 
 class Endpoint {
-  constructor () {
-    this.id = random(1000, 9999)
-    this.status = 'waiting'
-    this.args = _.slice(arguments)
-    this.confirmationRequired = true
-    pool.set(this.id, this)
+  constructor (id = random(1000, 9999), args = []) {
+    if (id instanceof Array) {
+      args = id
+      id = random(1000, 9999)
+    }
 
+    this.id = id
+    this.args = args
+    this.status = 'waiting'
+    this.confirmationRequired = true
+
+    pool.set(this.id, this)
     emitter.emit('created', this)
   }
 
@@ -30,8 +35,12 @@ class Endpoint {
   }
 
   errorArrived (err) {
-    this.response.status(500)
-    this.exit(err.status, err.value)
+    err = wdioError(err)
+    if (err.httpStatus === 500) {
+      console.error('error occurred:', err.message, err.stack)
+    }
+    this.response.status(err.httpStatus)
+    this.exit(err.status, err)
   }
 
   exit (status, value) {
@@ -82,9 +91,9 @@ class Endpoint {
     } else {
       let err = new UnknownCommand(`endpoint ${id} not found`)
       res.json({
-        sessionId: this.session.id,
+        sessionId: req.session && req.session.id,
         status: err.status,
-        value: err.value
+        value: err
       })
     }
   }

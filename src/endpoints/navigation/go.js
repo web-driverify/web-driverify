@@ -6,7 +6,7 @@ let debug = Debug('wd:endpoints:Go')
 class Go extends Endpoint {
   static express (router) {
     router.post('/session/:sid/url', (req, res, next) => {
-      req.endpoint = new Go(req.body.url)
+      req.endpoint = new Go([req.body.url])
       req.session.storage.confirm = {
         cmd: req.endpoint.dto(),
         data: 'navigation(Go) complete'

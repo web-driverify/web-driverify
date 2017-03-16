@@ -17,6 +17,13 @@ describe('element retrieval', function () {
     expect(val.value).to.have.property('ELEMENT')
   })
 
+  it('POST /session/:sessionId/element NoSuchElement', function () {
+    var val = browser.element('.foo')
+    expect(val).to.have.property('type', 'NoSuchElement')
+    expect(val).to.have.property('sessionId')
+    expect(val).to.have.property('message')
+  })
+
   it('POST /session/:sessionId/elements', function () {
     var val = browser.elements('.control-label')
     expect(val.value).to.have.lengthOf(1)

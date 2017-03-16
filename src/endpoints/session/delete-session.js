@@ -3,7 +3,7 @@ import Endpoint from '..'
 class DeleteSession extends Endpoint {
   static express (router) {
     router.delete('/session/:sid', (req, res, next) => {
-      req.endpoint = new DeleteSession(req.params.sid)
+      req.endpoint = new DeleteSession([req.params.sid])
       next()
     })
   }

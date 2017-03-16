@@ -6,7 +6,7 @@ import qrcode from 'qrcode-terminal'
 class NewSession extends Endpoint {
   static express (router) {
     router.post('/session', (req, res, next) => {
-      req.endpoint = new NewSession(req.body)
+      req.endpoint = new NewSession([req.body])
       let url = `${env.proxyUrl}/web-driverify?cmd=${req.endpoint.id}`
       console.log(`newSession requested, open this URL: ${url}`)
       if (env.name !== 'test') {

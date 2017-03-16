@@ -4,6 +4,7 @@ import string from '../../../utils/string.js'
 import $ from 'jquery'
 import { UnknownCommand } from '../../../utils/errors.js'
 import Log from '../utils/log.js'
+import pick from 'lodash/pick'
 
 let wd = getWD()
 let logger = new Log('driver')
@@ -70,8 +71,8 @@ function cmdArrived (cmd) {
       send('result/', cmd, result, handler.done)
     })
     .catch(function (err) {
-      let obj = normalizeError(err)
       logger.log(string.fromCmd(cmd), 'error occurred:', string.fromError(err).summary())
+      let obj = pick(err, ['name', 'message', 'stack', 'status'])
       send('error/', cmd, obj, handler.fail)
     })
     .catch(function (err) {
@@ -95,49 +96,4 @@ function send (path, cmd, data, cb) {
    .always(poll)
 }
 
-function normalizeError (err) {
-  var message = err.message || 'unkown error'
-  var stack = err.stack || (new Error(message)).stack
-  return {
-    value: {
-      message: message,
-      class: err.constructor && err.constructor.name,
-      stack: stack,
-      stackTrace: parseStack(stack)
-    },
-    status: err.status || 13
-  }
-}
-
-function parseStack (stack) {
-  return String(stack).split('\n')
-    .map(function (line) {
-      return line.replace(/^\s*at\s+/, '')
-    })
-    .map(function (line) {
-      let match = /^(.*)[(@](.*?)\)?$/.exec(line)
-      if (!match) {
-        return null
-      }
-      let text = match[1]
-      let location = match[2].split(':')
-      let lastDot = text.lastIndexOf('.')
-      let colNumber, lineNumber
-      if (location.length >= 3) {
-        colNumber = location.pop()
-        lineNumber = location.pop()
-      }
-      return {
-        className: text.substr(0, lastDot),
-        methodName: text.substr(lastDot + 1),
-        fileName: location.join(':'),
-        lineNumber: Number(lineNumber),
-        colNumber: Number(colNumber)
-      }
-    })
-    .filter(function (obj) {
-      return !!obj
-    })
-}
-
-export { init, parseStack }
+export { init }

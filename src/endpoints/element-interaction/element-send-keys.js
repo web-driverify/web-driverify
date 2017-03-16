@@ -1,22 +1,18 @@
 import Endpoint from '..'
-import Debug from 'debug'
-
-let debug = Debug('wd:endpoints:element-send-keys')
+import { MissingCommandParameters } from '../../utils/errors.js'
 
 class ElementSendKeys extends Endpoint {
-  constructor (elementId, arr) {
+  constructor (args) {
+    let [elementId, arr] = args
     if (!(arr instanceof Array)) {
-      debug('second argument expected to be Array, got', arr)
-      let err = new Error('MissingCommandParameters')
-      err.status = 400
-      throw err
+      throw MissingCommandParameters(`second argument expected to be Array, got ${arr}`)
     }
     let str = arr.join('')
-    super(elementId, str)
+    super([elementId, str])
   }
   static express (router) {
     router.post('/session/:sid/element/:id/value', function (req, res, next) {
-      req.endpoint = new ElementSendKeys(req.params.id, req.body.value)
+      req.endpoint = new ElementSendKeys([req.params.id, req.body.value])
       next()
     })
   }

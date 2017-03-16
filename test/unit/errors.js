@@ -1,9 +1,9 @@
 import chai from 'chai'
-import {parseStack} from '../../src/proxy/assets/utils/driver.js'
+import {parseStack} from '../../src/utils/error-parser.js'
 
 let expect = chai.expect
 
-describe('driver', function () {
+describe('errors', function () {
   describe('.parseStack()', function () {
     it('should parse phantom.js user JavaScript', function () {
       var result = parseStack('ElementClick@http://harttle.com/index.js:535:42')
