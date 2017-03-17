@@ -6,6 +6,7 @@ import './drivers/element-retrieval.js'
 import './drivers/element-interaction.js'
 import './drivers/screen-capture.js'
 import './drivers/actions.js'
+import './drivers/document-handling.js'
 import Log from './utils/log.js'
 
 let logger = new Log('index')

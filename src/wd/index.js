@@ -2,6 +2,7 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import morgan from 'morgan'
 import driver from './routes/driver.js'
+import homeMiddleware from './routes/home.js'
 import {errorHandler, hookMiddleware} from './routes/utils.js'
 
 var app = express()
@@ -18,7 +19,7 @@ app.use(morgan((tokens, req, res) => [
   tokens['response-time'](req, res) || '-', 'ms'
 ].join(' ')))
 
-app.get('/', (req, res) => res.end('web driverify running'))
+app.get('/', homeMiddleware)
 app.use('/wd/hub/', driver.express())
 app.use('/hooks', hookMiddleware)
 

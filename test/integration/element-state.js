@@ -20,7 +20,7 @@ describe('element state', function () {
   })
 
   it('GET /session/:sessionId/element/:id/attribute/:name', function () {
-    let result = browser.elementIdAttribute(id, 'className')
+    let result = browser.elementIdAttribute(id, 'class')
     expect(result).to.have.property('value', 'control-label')
   })
 

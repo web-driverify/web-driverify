@@ -24,7 +24,7 @@ wd.handlers.GetElementAttribute = function (id, name) {
   if (name === 'painted egg') {
     throw new Error('painted egg')
   }
-  return el[name]
+  return el.getAttribute(name)
 }
 
 /*

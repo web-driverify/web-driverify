@@ -119,6 +119,12 @@ Method | URI Template | Command | wdio API | Status
 --- | --- | --- | --- | ---
 POST | `/session/:sessionId/touch/click` | Touch Click | `.touchClick()` | Ready
 
+### Document Handling
+
+Method | URI Template | Command | wdio API | Status
+--- | --- | --- | --- | ---
+POST | `/session/:sessionId/execute` | Execute Script | `.execute()`` | Ready
+
 ### Screen Capture
 
 Method | URI Template | Command | wdio API | Status

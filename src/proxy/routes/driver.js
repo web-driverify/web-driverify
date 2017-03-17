@@ -6,7 +6,7 @@ import { injectWdScripts } from '../../utils/injector.js'
 import {NotFound, UnknownCommand} from '../../utils/errors.js'
 
 let router = express.Router()
-let debug = Debug('wd:proxy:routes:command')
+let debug = Debug('wd:proxy:routes:driver')
 
 router.param('eid', endpointById)
 
