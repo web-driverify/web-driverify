@@ -1,9 +1,8 @@
-import { getWD } from '../utils/wd.js'
+import wd from '../utils/wd.js'
 import { StaleElementReference, ElementNotVisible } from '../../../utils/errors.js'
 import some from 'lodash/some'
 
 let elementId = 0
-let wd = getWD()
 
 function getById (id) {
   let el = wd.elements[id]

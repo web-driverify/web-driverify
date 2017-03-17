@@ -1,4 +1,4 @@
-import { init } from './utils/driver.js'
+import { start, stop } from './utils/driver.js'
 import './drivers/session.js'
 import './drivers/navigation.js'
 import './drivers/element-state.js'
@@ -15,8 +15,7 @@ if (window.top !== window) {
   logger.log('window not top (maybe iframe?) skipping...')
 } else {
   logger.log('web-driverify loaded')
-  window.addEventListener('DOMContentLoaded', () => {
-    init()
-    window.addEventListener('pageshow', init)
-  })
+  window.addEventListener('DOMContentLoaded', start)
+  window.addEventListener('pageshow', start)
+  window.addEventListener('pagehide', stop)
 }

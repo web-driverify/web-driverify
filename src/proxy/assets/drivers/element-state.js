@@ -1,10 +1,9 @@
-import { getWD } from '../utils/wd.js'
+import wd from '../utils/wd.js'
 import element from '../utils/element.js'
 import Log from '../utils/log.js'
 
 let logger = new Log('element-state')
 let getElement = element.getById
-let wd = getWD()
 
 /*
  * GetElementText

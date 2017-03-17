@@ -1,6 +1,7 @@
 import crypto from 'crypto'
 import CommandQueue from './command-queue.js'
 import Debug from 'debug'
+import Endpoint from '../endpoints'
 
 let debug = Debug('wd:utils:session')
 let sessions = new Map()
@@ -24,30 +25,22 @@ class Session {
     return this.storage
   }
   touch () {
-    if (this.initEndpoint.status === 'waiting') {
+    if (this.initEndpoint.state === Endpoint.STATES.WAITING) {
       this.initEndpoint.resultArrived(null, this)
     }
   }
   remove () {
     return sessions.delete(this.id)
   }
-  static sessionById (req, res, next, id) {
-    req.sessionId = id
-    req.session = sessions.get(id)
-    next()
+  static get (id) {
+    return sessions.get(id)
   }
-  static sessionByReq (req, res, next) {
-    var id = hash(req)
-    req.session = sessions.get(id)
-    next()
-  }
-  static required (req, res, next) {
-    if (!req.session) {
-      var e = new Error('session not connected')
-      e.status = 403
-      next(e)
-    } else {
-      next()
+  static populate (req) {
+    let id = hash(req)
+    let session = Session.get(id)
+    if (session) {
+      req.sessionId = id
+      req.session = session
     }
   }
 }

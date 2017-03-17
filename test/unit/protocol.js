@@ -1,5 +1,5 @@
 import chai from 'chai'
-import {parseStack} from '../../src/utils/error-parser.js'
+import {parseStack} from '../../src/utils/protocol.js'
 
 let expect = chai.expect
 

@@ -1,13 +1,13 @@
 import Endpoint from '../../endpoints'
 import express from 'express'
-import {wdio as wdioError} from '../../utils/errors.js'
+import {parseError} from '../../utils/protocol.js'
 
 let hooks = express.Router()
 let pendingResponses = new Map()
 const NEW_SESSION_REQUESTED = 'new-session-requested'
 
 function errorHandler (err, req, res, next) {
-  err = wdioError(err)
+  err = parseError(err)
   console.error('WebDriver Error', err.message, err.stack)
 
   res

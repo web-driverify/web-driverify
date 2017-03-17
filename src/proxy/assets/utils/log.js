@@ -1,7 +1,8 @@
 import slice from 'lodash/slice'
 import $ from 'jquery'
+import wd from '../utils/wd.js'
 
-let pageId = Math.random().toString(36).substr(2, 4)
+let pageId = wd.pageId
 
 class Log {
   constructor (id) {

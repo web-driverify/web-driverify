@@ -1,6 +1,4 @@
-import { getWD } from '../utils/wd.js'
-
-let wd = getWD()
+import wd from '../utils/wd.js'
 
 wd.handlers.DeleteSession = function () {
   wd.state = 'closing'

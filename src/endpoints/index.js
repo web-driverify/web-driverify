@@ -1,12 +1,17 @@
 import EventEmitter from 'events'
 import Debug from 'debug'
 import random from 'lodash/random'
-import {wdio as wdioError} from '../utils/error-parser.js'
+import {parseError} from '../utils/protocol.js'
 
 let debug = Debug('wd:Endpoint')
 let registry = new Map()
 let pool = new Map()
 let emitter = new EventEmitter()
+let STATES = {
+  WAITING: 'waiting',
+  EXIT: 'exit',
+  ERROR: 'error'
+}
 
 class Endpoint {
   constructor (id = random(1000, 9999), args = []) {
@@ -17,7 +22,7 @@ class Endpoint {
 
     this.id = Number(id)
     this.args = args
-    this.status = 'waiting'
+    this.state = STATES.WAITING
     this.confirmationRequired = true
 
     pool.set(this.id, this)
@@ -25,7 +30,7 @@ class Endpoint {
   }
 
   resultArrived (result, session) {
-    if (this.status === 'exit') {
+    if (this.state === STATES.EXIT) {
       console.warn(`result arrived after exit, discarding...`)
       return
     }
@@ -34,16 +39,16 @@ class Endpoint {
   }
 
   errorArrived (err) {
-    err = wdioError(err)
+    err = parseError(err)
     if (err.httpStatus === 500) {
-      console.error('error occurred:', err.message, err.stack)
+      console.error('error occurred:', err.message + '\n' + err.stack)
     }
     this.response.status(err.httpStatus)
     this.exit(err.status, err)
   }
 
   exit (status, value) {
-    this.status = 'exit'
+    this.state = STATES.EXIT
     this.data = {
       sessionId: this.session.id,
       status: status || 0,
@@ -90,5 +95,6 @@ class Endpoint {
 }
 
 Endpoint.registry = registry
+Endpoint.STATES = STATES
 
 export default Endpoint

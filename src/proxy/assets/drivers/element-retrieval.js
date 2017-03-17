@@ -1,11 +1,9 @@
-import { getWD } from '../utils/wd.js'
+import wd from '../utils/wd.js'
 import { NoSuchElement, XPathLookupError } from '../../../utils/errors.js'
 import some from 'lodash/some'
 import map from 'lodash/map'
 import filter from 'lodash/filter'
 import element from '../utils/element.js'
-
-let wd = getWD()
 
 wd.handlers.FindElement = function (using, value) {
   let strategy = singleElementStrategies[using]

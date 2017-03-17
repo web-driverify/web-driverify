@@ -2,13 +2,7 @@ const rhead = /(<head[^>]*>)/
 const rbody = /(<body[^>]*>)/
 const rhtml = /(<html[^>]*>)/
 
-let externalScripts = [
-  'assets/index.bundle.js',
-  'node_modules/html2canvas/dist/html2canvas.min.js'
-]
-    .map(src => '/web-driverify/' + src)
-    .map(src => `<script src="${src}"></script>`)
-    .join('\n')
+let externalScripts = '<script src="/web-driverify/assets/index.bundle.js"></script>'
 
 function injectScript (html, script) {
   if (rhead.exec(html)) {
@@ -24,8 +18,7 @@ function injectScript (html, script) {
 }
 
 function injectWdScripts (html) {
-  let initScript = `<script>window.webDriverify={handlers:{}, elements:{}}</script>`
-  return injectScript(html, initScript + externalScripts)
+  return injectScript(html, externalScripts)
 }
 
 export { injectWdScripts, injectScript }

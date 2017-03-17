@@ -7,9 +7,7 @@ import env from '../utils/env.js'
 import driverMiddleware from './routes/driver'
 import externalMiddleware from './routes/external.js'
 import utils from './routes/utils.js'
-import session from '../utils/session.js'
 import path from 'path'
-import {wdio as wdioError} from '../utils/error-parser.js'
 import Debug from 'debug'
 
 let debug = Debug('wd:proxy')
@@ -43,15 +41,13 @@ app.use('/web-driverify/node_modules', express.static(
 app.use('/web-driverify/assets', express.static(
     path.resolve(__dirname, './assets')))
 
-app.use('/web-driverify', utils.pending, session.sessionByReq, utils.emitter, bodyParser, driverMiddleware)
+app.use('/web-driverify', utils.pending, utils.emitter, bodyParser, driverMiddleware)
 app.use(externalMiddleware)
 
 app.use(function (err, req, res, next) {
-  err = wdioError(err)
-  if (err.httpStatus === 500) {
-    debug(err.message, err.stack)
-  }
-  res.status(err.httpStatus).end(err.stack)
+  debug(err.message || 'unkown')
+  debug(err.stack)
+  res.status(err.httpStatus || 500).end(err.stack)
 })
 
 export default app

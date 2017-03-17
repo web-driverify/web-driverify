@@ -1,9 +1,7 @@
-import { getWD } from '../utils/wd.js'
+import wd from '../utils/wd.js'
 import { ClickEvent, KeyboardEvent } from '../utils/events.js'
 import element from '../utils/element.js'
 import $ from 'jquery'
-
-let wd = getWD()
 
 /*
  * ElementClick

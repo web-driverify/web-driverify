@@ -1,41 +1,12 @@
-import includes from 'lodash/includes'
 import {UnknownError} from './errors.js'
 
-const BadRequestErrors = [
-  'NoSuchDriver',
-  'NoSuchElement',
-  'NoSuchFrame',
-  'UnknownCommand',
-  'StaleElementReference',
-  'ElementNotVisible',
-  'InvalidElementState',
-  'UnknownError',
-  'ElementIsNotSelectable',
-  'JavaScriptError',
-  'XPathLookupError',
-  'Timeout',
-  'NoSuchWindow',
-  'InvalidCookieDomain',
-  'UnableToSetCookie',
-  'UnexpectedAlertOpen',
-  'NoAlertOpenError',
-  'ScriptTimeout',
-  'InvalidElementCoordinates',
-  'IMENotAvailable',
-  'IMEEngineActivationFailed',
-  'InvalidSelector',
-  'SessionNotCreatedException',
-  'MoveTargetOutOfBound'
-]
-
-function wdio (err) {
+function parseError (err) {
   if (!err.status) {
     err = new UnknownError(err)
   }
   var message = err.message || 'unkown error'
   var stack = err.stack || (new Error(message)).stack
-  var httpStatus = err.httpStatus ||
-    (includes(BadRequestErrors, err.name) ? 400 : 500)
+  var httpStatus = err.httpStatus || 500
   return {
     status: err.status,
     httpStatus: httpStatus,
@@ -83,6 +54,6 @@ function parseStack (stack) {
 }
 
 export {
-  wdio,
+  parseError,
   parseStack
 }

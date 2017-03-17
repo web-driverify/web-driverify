@@ -1,6 +1,4 @@
-import { getWD } from '../utils/wd.js'
-
-let wd = getWD()
+import wd from '../utils/wd.js'
 
 wd.handlers.GetCurrentUrl = function () {
   return window.location.href

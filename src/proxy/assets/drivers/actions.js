@@ -1,8 +1,6 @@
-import { getWD } from '../utils/wd.js'
+import wd from '../utils/wd.js'
 import Pointer from '../utils/pointer.js'
 import element from '../utils/element.js'
-
-let wd = getWD()
 
 wd.handlers.TouchClick = function (id) {
   let pos = wd.handlers.GetElementRect(id)

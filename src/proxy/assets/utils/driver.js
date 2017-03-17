@@ -1,4 +1,4 @@
-import { getWD } from './wd.js'
+import wd from './wd.js'
 import Promise from 'es6-promise'
 import string from '../../../utils/string.js'
 import $ from 'jquery'
@@ -6,36 +6,45 @@ import { UnknownCommand } from '../../../utils/errors.js'
 import Log from '../utils/log.js'
 import pick from 'lodash/pick'
 
-let wd = getWD()
 let logger = new Log('driver')
+let STATES = wd.STATES
 
-function init () {
-  wd.state = 'init'
-  logger.log('acquiring session...')
+function stop () {
+  wd.state = wd.STATES.STOPED
+}
+
+function start () {
+  logger.log('start called, current state:', wd.state)
+  if (wd.state === STATES.PREPARING || wd.state === STATES.RUNNING) {
+    return
+  }
+  wd.state = STATES.PREPARING
+  logger.log('fetching session...')
   $
     .ajax({
       url: '/web-driverify/session',
       cache: false
     })
     .done(session => {
-      logger.log('session acquired', JSON.stringify(session))
+      logger.log('session fetched', JSON.stringify(session))
       var confirm = session.confirm
       if (confirm) {
         send('result/', confirm.cmd, confirm.data, function () {
-          wd.state = 'running'
+          wd.state = STATES.RUNNING
         })
       } else {
-        wd.state = 'running'
+        wd.state = STATES.RUNNING
         poll()
       }
     })
-    .fail(err => {
-      throw err
+    .fail((xhr, status) => {
+      console.error('error fetch session, status', status)
+      setTimeout(poll, 3000)
     })
 }
 
 function poll () {
-  if (wd.state !== 'running') return
+  if (wd.state !== STATES.RUNNING) return
   logger.log('polling')
   $
     .ajax({
@@ -50,8 +59,8 @@ function poll () {
 }
 
 function cmdArrived (cmd) {
+  if (wd.state !== STATES.RUNNING) return
   logger.log('command received', JSON.stringify(cmd))
-  if (wd.state !== 'running') return
   var handler = wd.handlers[cmd.name]
   Promise.resolve(handler)
     .then(function notFound (handler) {
@@ -96,4 +105,4 @@ function send (path, cmd, data, cb) {
    .always(poll)
 }
 
-export { init }
+export { start, stop }
