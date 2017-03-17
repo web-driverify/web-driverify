@@ -6,6 +6,9 @@ let logger = new Log('element-state')
 let getElement = element.getById
 let wd = getWD()
 
+/*
+ * GetElementText
+ */
 wd.handlers.GetElementText = function (id) {
   let el = getElement(id)
   let text = el.innerText
@@ -13,14 +16,20 @@ wd.handlers.GetElementText = function (id) {
   return text
 }
 
+/*
+ * GetElementAttribute
+ */
 wd.handlers.GetElementAttribute = function (id, name) {
   let el = getElement(id)
   if (name === 'painted egg') {
     throw new Error('painted egg')
   }
-  return el.getAttribute(name)
+  return el[name]
 }
 
+/*
+ * GetElementSize
+ */
 wd.handlers.GetElementSize = function (id) {
   let rect = getElement(id).getBoundingClientRect()
   return {
@@ -29,6 +38,9 @@ wd.handlers.GetElementSize = function (id) {
   }
 }
 
+/*
+ * GetElementLocation
+ */
 wd.handlers.GetElementLocation = function (id) {
   let rect = getElement(id).getBoundingClientRect()
   return {
@@ -37,6 +49,9 @@ wd.handlers.GetElementLocation = function (id) {
   }
 }
 
+/*
+ * GetElementRect
+ */
 wd.handlers.GetElementRect = function (id) {
   let rect = getElement(id).getBoundingClientRect()
   return {
