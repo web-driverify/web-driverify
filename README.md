@@ -73,7 +73,7 @@ and open a session by visiting the given URL.
 
 Method | URI Template | Command | wdio API | Status
 --- | --- | --- | --- | ---
-POST | `/session` | New Session | `.session()` Ready
+POST | `/session` | New Session | `.session()` | Ready
 DELETE | `/session/:sessionId` | Delete Session | `.session('delete')` | Ready
 
 ### Navigation
@@ -85,14 +85,14 @@ GET | `/session/:sessionId/url` | Get Current Url | `.getUrl()` | Ready
 POST | `/session/:sessionId/back` | Back | `.back()` | Ready
 POST | `/session/:sessionId/forward` | Forward | `.forward()` | Ready
 POST | `/session/:sessionId/refresh` | Refresh | `.refresh()` | Ready
-GET | `/session/:sessionId/title` | getTitle | `.title()` Ready
+GET | `/session/:sessionId/title` | getTitle | `.title()` | Ready
 
 ### Element Retrieval
 
 Method | URI Template | Command | wdio API | Status
 --- | --- | --- | --- | ---
 POST | `/session/:sessionId/element` | Find Element | `.element()` | Ready
-POST | `/session/:sessionId/elements` | Find Elements | `.elements()` Ready
+POST | `/session/:sessionId/elements` | Find Elements | `.elements()` | Ready
 
 ### Element Interaction
 
@@ -123,7 +123,7 @@ POST | `/session/:sessionId/touch/click` | Touch Click | `.touchClick()` | Ready
 
 Method | URI Template | Command | wdio API | Status
 --- | --- | --- | --- | ---
-POST | `/session/:sessionId/execute` | Execute Script | `.execute()`` | Ready
+POST | `/session/:sessionId/execute` | Execute Script | `.execute()` | Ready
 
 ### Screen Capture
 
