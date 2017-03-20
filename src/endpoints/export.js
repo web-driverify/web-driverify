@@ -14,12 +14,15 @@ export * from './navigation/get-title.js'
 
 export * from './element-retrieval/find-element.js'
 export * from './element-retrieval/find-elements.js'
+export * from './element-retrieval/find-element-from-element.js'
+export * from './element-retrieval/find-elements-from-element.js'
 
 export * from './element-state/get-element-text.js'
 export * from './element-state/get-element-attribute.js'
 export * from './element-state/get-element-rect.js'
 export * from './element-state/get-element-size.js'
 export * from './element-state/get-element-location.js'
+export * from './element-state/get-element-displayed.js'
 
 export * from './element-interaction/element-click.js'
 export * from './element-interaction/element-clear.js'

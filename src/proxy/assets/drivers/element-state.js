@@ -60,3 +60,8 @@ wd.handlers.GetElementRect = function (id) {
     height: rect.height
   }
 }
+
+wd.handlers.GetElementDisplayed = function (id) {
+  let el = getElement(id)
+  return !element.isHidden(el)
+}
