@@ -18,4 +18,5 @@ if (window.top !== window) {
   window.addEventListener('DOMContentLoaded', start)
   window.addEventListener('pageshow', start)
   window.addEventListener('pagehide', stop)
+  window.addEventListener('popstate', start)
 }
