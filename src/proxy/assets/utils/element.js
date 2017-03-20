@@ -1,6 +1,7 @@
 import wd from '../utils/wd.js'
 import { StaleElementReference, ElementNotVisible } from '../../../utils/errors.js'
 import some from 'lodash/some'
+import $ from 'jquery'
 
 let elementId = 0
 
@@ -40,8 +41,8 @@ function getOrCreate (el) {
 }
 
 function isHidden (el) {
-  var style = window.getComputedStyle(el)
-  return (style.display === 'none')
+  let $el = $(el)
+  return ($el.width() + $el.height() < 1)
 }
 
 function toString (id) {
@@ -61,4 +62,4 @@ function create (el) {
   return elementId++
 }
 
-export default {getVisible, getById, getByLocation, toString, getOrCreate, create}
+export default {getVisible, getById, getByLocation, toString, getOrCreate, create, isHidden}
