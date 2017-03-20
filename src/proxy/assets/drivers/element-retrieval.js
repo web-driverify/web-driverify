@@ -5,36 +5,44 @@ import map from 'lodash/map'
 import filter from 'lodash/filter'
 import element from '../utils/element.js'
 
-wd.handlers.FindElement = function (using, value) {
+wd.handlers.FindElement = findElement
+wd.handlers.FindElements = findElements
+
+wd.handlers.FindElementFromElement = findElement
+wd.handlers.FindElementsFromElement = findElements
+
+function findElement (using, value, id) {
+  let root = (typeof id === 'undefined') ? document : element.getById(id)
   let strategy = singleElementStrategies[using]
-  let el = strategy(value)
+  let el = strategy(value, root)
   if (!el) {
     throw new NoSuchElement()
   }
   return createWebElement(el)
 }
 
-wd.handlers.FindElements = function (using, value) {
+function findElements (using, value, id) {
+  let root = (typeof id === 'undefined') ? document : element.getById(id)
   let strategy = elementStrategies[using]
-  let els = strategy(value)
+  let els = strategy(value, root)
   return map(els, el => createWebElement(el))
 }
 
 var singleElementStrategies = {
-  'class name': function (val) {
-    return document.getElementsByClassName(val)[0]
+  'class name': function (val, root = document) {
+    return root.getElementsByClassName(val)[0]
   },
-  'css selector': function (val) {
-    return document.querySelector(val)
+  'css selector': function (val, root = document) {
+    return root.querySelector(val)
   },
-  'id': function (val) {
-    return document.getElementById(val)
+  'id': function (val, root = document) {
+    return root.getElementById(val)
   },
-  'name': function (val) {
-    return document.getElementsByName(val)[0]
+  'name': function (val, root = document) {
+    return root.getElementsByName(val)[0]
   },
-  'link text': function (val) {
-    var els = document.querySelectorAll('a')
+  'link text': function (val, root = document) {
+    var els = root.querySelectorAll('a')
     for (var i = 0; i < els.length; i++) {
       var el = els[i]
       if (el.innerText === val) {
@@ -43,9 +51,9 @@ var singleElementStrategies = {
     }
     return null
   },
-  'partial link text': function (val) {
+  'partial link text': function (val, root = document) {
     let ret = null
-    some(document.querySelectorAll('a'), el => {
+    some(root.querySelectorAll('a'), el => {
       if (el.innerText.indexOf(val) > -1) {
         ret = el
         return true
@@ -53,12 +61,12 @@ var singleElementStrategies = {
     })
     return ret
   },
-  'tag name': function (val) {
-    return document.getElementsByTagName(val)[0]
+  'tag name': function (val, root = document) {
+    return root.getElementsByTagName(val)[0]
   },
-  'xpath': function (val) {
+  'xpath': function (val, root = document) {
     try {
-      return document.evaluate(val, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue
+      return root.evaluate(val, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue
     } catch (err) {
       throw new XPathLookupError()
     }
@@ -66,30 +74,30 @@ var singleElementStrategies = {
 }
 
 var elementStrategies = {
-  'class name': function (val) {
-    return document.getElementsByClassName(val)
+  'class name': function (val, root = document) {
+    return root.getElementsByClassName(val)
   },
-  'css selector': function (val) {
-    return document.querySelectorAll(val)
+  'css selector': function (val, root = document) {
+    return root.querySelectorAll(val)
   },
-  'id': function (val) {
-    return [document.getElementById(val)]
+  'id': function (val, root = document) {
+    return [root.getElementById(val)]
   },
-  'name': function (val) {
-    return document.getElementsByName(val)
+  'name': function (val, root = document) {
+    return root.getElementsByName(val)
   },
-  'link text': function (val) {
-    return filter(document.querySelectorAll('a'), el => el.innerText === val)
+  'link text': function (val, root = document) {
+    return filter(root.querySelectorAll('a'), el => el.innerText === val)
   },
-  'partial link text': function (val) {
-    return filter(document.querySelectorAll('a'), el => el.innerText.indexOf(val) > -1)
+  'partial link text': function (val, root = document) {
+    return filter(root.querySelectorAll('a'), el => el.innerText.indexOf(val) > -1)
   },
-  'tag name': function (val) {
-    return document.getElementsByTagName(val)
+  'tag name': function (val, root = document) {
+    return root.getElementsByTagName(val)
   },
-  'xpath': function (val) {
+  'xpath': function (val, root = document) {
     try {
-      let it = document.evaluate(val, document, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null)
+      let it = root.evaluate(val, root, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null)
       let ret = []
       let node = it.iterateNext()
       while (node) {
