@@ -8,8 +8,15 @@ import $ from 'jquery'
  */
 wd.handlers.ElementClick = function (id) {
   let el = element.getVisible(id)
-  el.dispatchEvent(new ClickEvent())
-  return element.toString(id) + ' clicked'
+  let via = ''
+  if (typeof el.click === 'function') {
+    via = 'native'
+    el.click()
+  } else {
+    via = 'jQuery'
+    $(el).click()
+  }
+  return `${element.toString(id)} clicked via ${via}`
 }
 
 /*
