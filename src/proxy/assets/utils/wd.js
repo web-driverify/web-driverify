@@ -1,8 +1,9 @@
 let STATES = {
-  INIT: 0,
-  PREPARING: 1,
-  RUNNING: 2,
-  STOPED: 3
+  INIT: 'WebDriverify.STATES.INIT',
+  PREPARING: 'WebDriverify.STATES.PREPARING',
+  RUNNING: 'WebDriverify.STATES.RUNNING',
+  STOPED: 'WebDriverify.STATES.RUNNING',
+  NAVIGATING: 'WebDriverify.STATES.NAVIGATING'
 }
 
 let wd = {

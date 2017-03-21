@@ -9,6 +9,16 @@ import pick from 'lodash/pick'
 let logger = new Log('driver')
 let STATES = wd.STATES
 
+wd._state = wd.state
+Object.defineProperty(wd, 'state', {
+  configurable: false,
+  get: () => wd._state,
+  set: (val) => {
+    logger.log(`state changed from ${wd._state} to ${val}`)
+    wd._state = val
+  }
+})
+
 function stop () {
   wd.state = wd.STATES.STOPED
 }
