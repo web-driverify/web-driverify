@@ -41,8 +41,7 @@ function getOrCreate (el) {
 }
 
 function isHidden (el) {
-  let $el = $(el)
-  return ($el.width() + $el.height() < 1)
+  return $(el).is(':hidden')
 }
 
 function toString (id) {
