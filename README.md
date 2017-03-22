@@ -69,6 +69,8 @@ and open a session by visiting the given URL.
 
 ## Implementation Status
 
+APIs are categorized as [WebDriver W3C Working Draft][wd-w3c].
+
 ### Session
 
 | Method | URI Template          | Command        | wdio API             | Status |
@@ -138,3 +140,5 @@ and open a session by visiting the given URL.
 [wdio]: http://webdriver.io
 [selenium]: http://www.seleniumhq.org
 [debug]: https://github.com/visionmedia/debug
+
+[wd-w3c]: https://www.w3.org/TR/webdriver/
