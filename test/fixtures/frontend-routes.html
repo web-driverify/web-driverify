@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+
+<body>
+  <a class="page-1" href="#">Page 1</a>
+  <a class="back" href="#">Back</a>
+
+  <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+  <script>
+    var logger = window.webDriverify.logger
+    $('.page-1').click(function() {
+      history.pushState({}, 'page 1', '/page/1')
+      return false
+    })
+    $('.back').click(function() {
+      logger.log('clicked! url:', location.href)
+      history.back()
+      return false
+    })
+    $(window).on('popstate', function(){
+      logger.log('popstate called! url:', location.href)
+    })
+  </script>
+</body>
+
+</html>

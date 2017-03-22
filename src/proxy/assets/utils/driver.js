@@ -9,22 +9,13 @@ import pick from 'lodash/pick'
 let logger = new Log('driver')
 let STATES = wd.STATES
 
-wd._state = wd.state
-Object.defineProperty(wd, 'state', {
-  configurable: false,
-  get: () => wd._state,
-  set: (val) => {
-    logger.log(`state changed from ${wd._state} to ${val}`)
-    wd._state = val
-  }
-})
-
 function stop () {
   wd.state = wd.STATES.STOPED
 }
 
-function start () {
-  logger.log('start called, current state:', wd.state)
+function start (event) {
+  let eventType = (event && event.type) || 'manually'
+  logger.log(`start called (${eventType}), current state:`, wd.state)
   if (wd.state === STATES.PREPARING || wd.state === STATES.RUNNING) {
     return
   }

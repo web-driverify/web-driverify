@@ -66,7 +66,8 @@ function startBrowserClient (cmd) {
             .viewport(375, 667)
             .userAgent('Mozilla/5.0 (Windows NT 6.1; WOW64; rv:27.0) Gecko/20100101 Firefox/27.0')
             .on('consoleMessage', msg => {
-              debug('[browser console]', msg)
+              // use remote:log instead
+              // debug('[remote:log]', msg)
             })
             .on('error', (msg, trace) => {
               var msgStack = ['ERROR: ' + msg]
