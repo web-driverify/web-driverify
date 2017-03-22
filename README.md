@@ -84,7 +84,7 @@ APIs are categorized as [WebDriver W3C Working Draft][wd-w3c].
 | *Get Session*                  | GET [/session/:sessionId](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionid) | `.session(id)`            | Not Started |
 | Delete Session                 | DELETE [/session/:sessionId](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionid) | `.session('delete')`      | Completed   |
 | Set Timeouts                   | POST [/session/:sessionId/timeouts](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidtimeouts) | `.timeouts()`             | Not Started |
-| *Set Timeout for Async Script* | POST [/session/:sessionId/timeouts/async_script](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidtimeoutsasync_script) | `.timeoutsAsyncScript()`  | Not Started |
+| *Set Timeout for Async Script* | POST [/session/:sessionId/timeouts/async_script](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidtimeoutsasync_script) | `.timeoutsAsyncScript()`  | Completed   |
 | *Set Timout for Implicit Wait* | POST [/session/:sessionId/timeouts/implicit_wait](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidtimeoutsimplicit_wait) | `.timeoutsImplicitWait()` | Not Started |
 
 

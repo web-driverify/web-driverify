@@ -17,4 +17,13 @@ describe('document handling', function () {
     }, 'hello ')
     expect(result.value).to.equal('hello interaction test')
   })
+
+  it.only('POST /session/:sid/execute_async', function () {
+    let result = browser.executeAsync(function (a, b, c, d, done) {
+      setTimeout(function () {
+        done(a + b + c + d)
+      }, 1000)
+    }, 1, 2, 3, 4)
+    expect(result.value).to.equal(10)
+  })
 })
