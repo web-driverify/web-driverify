@@ -18,7 +18,7 @@ describe('document handling', function () {
     expect(result.value).to.equal('hello interaction test')
   })
 
-  it.only('POST /session/:sid/execute_async', function () {
+  it('POST /session/:sid/execute_async', function () {
     let result = browser.executeAsync(function (a, b, c, d, done) {
       setTimeout(function () {
         done(a + b + c + d)

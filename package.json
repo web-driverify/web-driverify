@@ -15,6 +15,7 @@
     "build:files": "cp package.json lib/ && mkdir lib/src/proxy/assets && cp src/proxy/assets/index.bundle.js lib/src/proxy/assets/ && touch lib/src/proxy/assets/favicon.ico && cp -r src/views lib/src/",
     "debug": "webpack && NODE_ENV=development DEBUG=wd:* DEBUG_COLORS=true babel-node bin/debug.js",
     "debug:phantom": "webpack && NODE_ENV=test DEBUG=wd:* DEBUG_COLORS=true babel-node bin/debug-phantom.js",
+    "watch": "concurrently \"webpack --watch\" \"NODE_ENV=test DEBUG=wd:* DEBUG_COLORS=true babel-watch bin/debug.js\"",
     "watch:phantom": "concurrently \"webpack --watch\" \"NODE_ENV=test DEBUG=wd:* DEBUG_COLORS=true babel-watch bin/debug-phantom.js\"",
     "wait": "wait-on http://localhost:${WD_PORT:=8089}",
     "test": "npm run test:unit && npm run test:integration",

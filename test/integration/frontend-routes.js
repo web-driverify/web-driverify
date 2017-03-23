@@ -5,10 +5,10 @@ import chai from 'chai'
 
 let expect = chai.expect
 
-describe.only('frontend routes', function () {
+describe('frontend routes', function () {
   var url = `${env.stubUrl}/frontend-routes.html`
 
-  before(function () {
+  beforeEach(function () {
     browser.url(url)
   })
   it('pushState', function () {
@@ -17,9 +17,7 @@ describe.only('frontend routes', function () {
   })
   it('script back', function () {
     browser.click('.page-1')
-    browser.pause(2000)
     browser.click('.back')
-    browser.pause(2000)
     expect(browser.getUrl()).to.equal(url)
   })
   it('browser back', function () {
