@@ -56,7 +56,7 @@ class Endpoint {
     }
     this.response.json(this.data)
     pool.delete(this.id)
-    emitter.emit('exit', this)
+    emitter.emit('exited', this)
   }
 
   dto () {

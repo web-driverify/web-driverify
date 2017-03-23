@@ -6,7 +6,7 @@ let STATES = {
   INIT: 'WebDriverify.STATES.INIT',
   PREPARING: 'WebDriverify.STATES.PREPARING',
   RUNNING: 'WebDriverify.STATES.RUNNING',
-  STOPED: 'WebDriverify.STATES.RUNNING',
+  STOPPED: 'WebDriverify.STATES.STOPPED',
   NAVIGATING: 'WebDriverify.STATES.NAVIGATING'
 }
 

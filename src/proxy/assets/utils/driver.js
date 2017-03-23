@@ -10,7 +10,7 @@ let logger = new Log('driver')
 let STATES = wd.STATES
 
 function stop () {
-  wd.state = wd.STATES.STOPED
+  wd.state = STATES.STOPPED
 }
 
 function start (event) {
@@ -74,8 +74,9 @@ function cmdArrived (cmd) {
     })
     .then(function (result) {
       logger.log(string.fromCmd(cmd).summary(), 'handler returned:', string(result).summary())
-      if (handler.silent) {
-        logger.log('silent set, skip sending...')
+      if (handler.halt) {
+        logger.log('halt set, skip sending...')
+        stop()
         return
       }
       send('result/', cmd, result, handler.done)

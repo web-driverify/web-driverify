@@ -7,6 +7,8 @@ import wd from '../../src/wd'
 import proxy from '../../src/proxy'
 import stub from './server.js'
 import Endpoint from '../../src/endpoints'
+import NewSession from '../../src/endpoints/session/new-session.js'
+import DeleteSession from '../../src/endpoints/session/delete-session.js'
 
 let session = null
 let proxyServer, browserClient, stubServer, wdServer
@@ -15,9 +17,15 @@ let debug = Debug('wd:fixtures')
 function setupPhantom () {
   debug('setting up wd with phantomjs...')
   Endpoint.on('created', endpoint => {
-    if (endpoint.constructor.name === 'NewSession') {
-      debug('endpoint created, starting browser...')
+    if (endpoint instanceof NewSession) {
+      debug('NewSession endpoint created, starting browser...')
       return startBrowserClient(endpoint)
+    }
+  })
+  Endpoint.on('exited', endpoint => {
+    if (endpoint instanceof DeleteSession) {
+      debug('DeleteSession endpoint exited, closing browser...')
+      exitBrowserClient()
     }
   })
 }
