@@ -33,7 +33,7 @@ function getOrCreate (el) {
   let ret = -1
   some(wd.elements, (v, k) => {
     if (v === el) {
-      ret = k
+      ret = parseInt(k, 10)
       return true
     }
   })

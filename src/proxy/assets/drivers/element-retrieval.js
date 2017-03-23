@@ -112,7 +112,7 @@ var elementStrategies = {
 }
 
 function createWebElement (el) {
-  let id = element.create(el)
+  let id = element.getOrCreate(el)
   return {
     ELEMENT: id
   }
