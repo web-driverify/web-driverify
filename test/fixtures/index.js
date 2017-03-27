@@ -15,7 +15,7 @@ let proxyServer, browserClient, stubServer, wdServer
 let debug = Debug('wd:fixtures')
 
 function setupPhantom () {
-  debug('setting up wd with phantomjs...')
+  console.log('setting up wd with phantomjs...')
   Endpoint.on('created', endpoint => {
     if (endpoint instanceof NewSession) {
       debug('NewSession endpoint created, starting browser...')
