@@ -1,5 +1,5 @@
 import wd from '../utils/wd.js'
-import { ClickEvent, KeyboardEvent } from '../utils/events.js'
+import { KeyboardEvent } from '../utils/events.js'
 import element from '../utils/element.js'
 import $ from 'jquery'
 

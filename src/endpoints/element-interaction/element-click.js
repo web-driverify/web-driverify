@@ -1,8 +1,21 @@
 import Endpoint from '..'
+import Debug from 'debug'
+
+let debug = Debug('wd:endpoints:Click')
 
 class ElementClick extends Endpoint {
   static create (req) {
-    return new ElementClick([req.params.id])
+    let endpoint = new ElementClick([req.params.id])
+    req.session.storage.confirm = {
+      cmd: endpoint.dto(),
+      data: 'click complete after load'
+    }
+    return endpoint
+  }
+  transform (data, session) {
+    debug('click arrived, clearing session.confirm...')
+    session.storage.confirm = null
+    return data
   }
 }
 ElementClick.method = 'post'
