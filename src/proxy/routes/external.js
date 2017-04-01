@@ -15,6 +15,7 @@ function proxy (req, res) {
     url: req.originalUrl,
     followRedirect: false,
     jar: true,
+    timeout: 60000,
     encoding: null
   }
   let response = null

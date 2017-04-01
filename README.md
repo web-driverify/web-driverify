@@ -17,8 +17,11 @@ npm i -g web-driverify
 Start Server
 
 ```bash
-wd
+wd          # equivalent to web-driverify
+wd-phantom  # equivalent to web-driverify-phantom
 ```
+
+`wd-phantom` will attach a phantomjs (one of the brilliant headless browsers) instance automatically everytime NewSession requested.
 
 ## ENV variables
 

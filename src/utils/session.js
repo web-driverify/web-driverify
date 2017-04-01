@@ -19,7 +19,7 @@ class Session {
     debug(`session created: ${this}`)
   }
   toString () {
-    return `${this.id}:${this.ip}:${this.ua}`
+    return `${this.id}, ${this.ip}, ${this.ua}`
   }
   dto () {
     return this.storage
@@ -47,8 +47,9 @@ class Session {
 
 function hash (req) {
   var sum = crypto.createHash('md5')
+  // UA is not trusted since browsers tend to use different UA strings,
+  // depends on netowrk condition and type of the HTTP request
   sum.update(req.ip)
-  sum.update(req.headers['user-agent'] || 'anonymous')
   return sum.digest('hex')
 }
 
