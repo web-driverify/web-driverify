@@ -1,5 +1,6 @@
 import Promise from 'bluebird'
 import Debug from 'debug'
+import Endpoint from '../endpoints/index'
 
 let debug = Debug('wd:utils:command-queue')
 
@@ -30,9 +31,8 @@ class CommandQueue {
       debug('empty command queue')
       return false
     }
-    if (this.top().status === 'pending') {
-      return true;
-      return debug(`${this.top()} still pending`)
+    if (this.top().status === Endpoint.STATES.PENDING) {
+      return true
     }
     if (!this.cmdReceiver) {
       debug('cmdReceiver does not exist')
@@ -46,7 +46,7 @@ class CommandQueue {
       return
     }
     var cmd = this.top()
-    cmd.status = 'pending'
+    cmd.status = Endpoint.STATES.PENDING
     if (cmd.confirmationRequired) {
       this.cmdReceiver(cmd)
       this.cmdReceiver = null
@@ -58,7 +58,7 @@ class CommandQueue {
   sendFailed () {
     debug('send failed, recovering front command')
     if (this.queue.length === 0) return
-    this.queue[0].status = 'waiting'
+    this.queue[0].status = Endpoint.STATES.WAITING
   }
   top () {
     return this.queue[0]

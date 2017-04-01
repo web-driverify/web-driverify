@@ -10,7 +10,8 @@ let emitter = new EventEmitter()
 let STATES = {
   WAITING: 'waiting',
   EXIT: 'exit',
-  ERROR: 'error'
+  ERROR: 'error',
+  PENDING: 'pending'
 }
 
 class Endpoint {
