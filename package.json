@@ -50,12 +50,13 @@
     "connect-timeout": "^1.8.0",
     "debug": "^2.6.1",
     "express": "^4.14.1",
+    "glob": "^7.1.1",
     "iconv-lite": "^0.4.15",
     "lodash": "^4.17.4",
     "morgan": "^1.8.0",
+    "node-horseman": "^3.2.0",
     "qrcode-terminal": "^0.11.0",
     "request": "^2.79.0",
-    "node-horseman": "^3.2.0",
     "shopify-liquid": "^1.7.1"
   },
   "devDependencies": {
