@@ -8,4 +8,4 @@ class ExecuteScript extends Endpoint {
 }
 ExecuteScript.url = '/session/:sid/execute'
 ExecuteScript.method = 'post'
-export default Endpoint.register(ExecuteScript)
+export default ExecuteScript

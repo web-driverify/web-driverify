@@ -9,4 +9,4 @@ class GetElementSize extends Endpoint {
 GetElementSize.method = 'get'
 GetElementSize.url = '/session/:sid/element/:id/size'
 
-export default Endpoint.register(GetElementSize)
+export default GetElementSize

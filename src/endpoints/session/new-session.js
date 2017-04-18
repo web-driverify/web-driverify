@@ -48,4 +48,4 @@ class NewSession extends Endpoint {
 
 NewSession.method = 'post'
 NewSession.url = '/session'
-export default Endpoint.register(NewSession)
+export default NewSession

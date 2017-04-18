@@ -13,4 +13,4 @@ class FindElementsFromElement extends Endpoint {
 FindElementsFromElement.method = 'post'
 FindElementsFromElement.url = '/session/:sessionId/element/:id/elements'
 
-export default Endpoint.register(FindElementsFromElement)
+export default FindElementsFromElement

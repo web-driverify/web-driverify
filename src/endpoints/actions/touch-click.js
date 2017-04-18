@@ -8,4 +8,4 @@ class TouchClick extends Endpoint {
 TouchClick.method = 'post'
 TouchClick.url = '/session/:sid/touch/click'
 
-export default Endpoint.register(TouchClick)
+export default TouchClick

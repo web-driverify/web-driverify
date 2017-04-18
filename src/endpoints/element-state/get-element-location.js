@@ -7,4 +7,4 @@ class GetElementLocation extends Endpoint {
 }
 GetElementLocation.method = 'get'
 GetElementLocation.url = '/session/:sid/element/:id/location'
-export default Endpoint.register(GetElementLocation)
+export default GetElementLocation

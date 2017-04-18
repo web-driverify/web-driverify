@@ -8,4 +8,4 @@ class ElementClear extends Endpoint {
 ElementClear.method = 'post'
 ElementClear.url = '/session/:sid/element/:id/clear'
 
-export default Endpoint.register(ElementClear)
+export default ElementClear

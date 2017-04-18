@@ -17,4 +17,4 @@ class ElementSendKeys extends Endpoint {
 ElementSendKeys.method = 'post'
 ElementSendKeys.url = '/session/:sid/element/:id/value'
 
-export default Endpoint.register(ElementSendKeys)
+export default ElementSendKeys

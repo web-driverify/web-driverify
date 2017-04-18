@@ -20,4 +20,4 @@ class Forward extends Endpoint {
 }
 Forward.url = '/session/:sid/forward'
 Forward.method = 'post'
-export default Endpoint.register(Forward)
+export default Forward

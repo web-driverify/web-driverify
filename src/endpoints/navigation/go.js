@@ -23,4 +23,4 @@ class Go extends Endpoint {
 Go.method = 'post'
 Go.url = '/session/:sid/url'
 
-export default Endpoint.register(Go)
+export default Go

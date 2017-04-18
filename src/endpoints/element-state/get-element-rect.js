@@ -8,4 +8,4 @@ class GetElementRect extends Endpoint {
 
 GetElementRect.method = 'get'
 GetElementRect.url = '/session/:sid/element/:id/rect'
-export default Endpoint.register(GetElementRect)
+export default GetElementRect

@@ -13,4 +13,4 @@ class Screenshot extends Endpoint {
 Screenshot.method = 'get'
 Screenshot.url = '/session/:sid/screenshot'
 
-export default Endpoint.register(Screenshot)
+export default Screenshot

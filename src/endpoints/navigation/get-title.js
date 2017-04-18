@@ -8,4 +8,4 @@ class GetTitle extends Endpoint {
 
 GetTitle.method = 'get'
 GetTitle.url = '/session/:sid/title'
-export default Endpoint.register(GetTitle)
+export default GetTitle

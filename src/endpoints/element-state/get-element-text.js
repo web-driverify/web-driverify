@@ -7,4 +7,4 @@ class GetElementText extends Endpoint {
 }
 GetElementText.method = 'get'
 GetElementText.url = '/session/:sid/element/:id/text'
-export default Endpoint.register(GetElementText)
+export default GetElementText

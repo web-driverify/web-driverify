@@ -12,4 +12,4 @@ class ElementSubmit extends Endpoint {
 }
 ElementSubmit.method = 'post'
 ElementSubmit.url = '/session/:sid/element/:id/submit'
-export default Endpoint.register(ElementSubmit)
+export default ElementSubmit

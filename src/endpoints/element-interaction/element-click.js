@@ -21,4 +21,4 @@ class ElementClick extends Endpoint {
 ElementClick.method = 'post'
 ElementClick.url = '/session/:sid/element/:id/click'
 
-export default Endpoint.register(ElementClick)
+export default ElementClick

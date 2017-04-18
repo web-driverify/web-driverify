@@ -9,4 +9,4 @@ class GetElementDisplayed extends Endpoint {
 GetElementDisplayed.method = 'get'
 GetElementDisplayed.url = '/session/:sid/element/:id/displayed'
 
-export default Endpoint.register(GetElementDisplayed)
+export default GetElementDisplayed

@@ -9,4 +9,4 @@ class GetCurrentUrl extends Endpoint {
 GetCurrentUrl.url = '/session/:sid/url'
 GetCurrentUrl.method = 'get'
 
-export default Endpoint.register(GetCurrentUrl)
+export default GetCurrentUrl

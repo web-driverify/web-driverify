@@ -22,4 +22,4 @@ class Back extends Endpoint {
 
 Back.method = 'post'
 Back.url = '/session/:sid/back'
-export default Endpoint.register(Back)
+export default Back

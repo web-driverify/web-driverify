@@ -9,4 +9,4 @@ class GetElementAttribute extends Endpoint {
 GetElementAttribute.method = 'get'
 GetElementAttribute.url = '/session/:sid/element/:id/attribute/:name'
 
-export default Endpoint.register(GetElementAttribute)
+export default GetElementAttribute

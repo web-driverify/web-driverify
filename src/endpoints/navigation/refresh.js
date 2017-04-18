@@ -23,4 +23,4 @@ class Refresh extends Endpoint {
 Refresh.url = '/session/:sid/refresh'
 Refresh.method = 'post'
 
-export default Endpoint.register(Refresh)
+export default Refresh

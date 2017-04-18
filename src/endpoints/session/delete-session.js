@@ -13,4 +13,4 @@ class DeleteSession extends Endpoint {
 
 DeleteSession.method = 'delete'
 DeleteSession.url = '/session/:sid'
-export default Endpoint.register(DeleteSession)
+export default DeleteSession

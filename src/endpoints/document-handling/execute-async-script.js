@@ -8,4 +8,4 @@ class ExecuteAsyncScript extends Endpoint {
 }
 ExecuteAsyncScript.url = '/session/:sid/execute_async'
 ExecuteAsyncScript.method = 'post'
-export default Endpoint.register(ExecuteAsyncScript)
+export default ExecuteAsyncScript
