@@ -83,7 +83,7 @@ class Endpoint {
 
   static register (EndpointImpl) {
     if (registry.has(EndpointImpl.name)) {
-      throw new Error(`command ${EndpointImpl.name} already registered`)
+      debug(`command ${EndpointImpl.name} has been replaced, but it's common if you have plugins`)
     }
     registry.set(EndpointImpl.name, EndpointImpl)
     return EndpointImpl
