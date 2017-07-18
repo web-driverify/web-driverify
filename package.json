@@ -23,7 +23,7 @@
     "test": "npm run test:unit && npm run test:integration",
     "test:unit": "NODE_ENV=test mocha test/unit --recursive --compilers js:babel-core/register",
     "test:integration": "concurrently --success first --kill-others \"npm run debug:phantom\" \"npm run wait && npm run test:manually\"",
-    "test:integration2": "concurrently --success first --kill-others \"npm run debug\" \"npm run wait && npm run test:manually\"",
+    "test:integration:without-phantom": "concurrently --success first --kill-others \"npm run debug\" \"npm run wait && npm run test:manually\"",
     "test:manually": "wdio wdio.conf.js",
     "preversion": "npm test",
     "version": "npm run build",
