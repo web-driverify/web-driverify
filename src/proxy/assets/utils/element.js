@@ -1,6 +1,6 @@
 import wd from '../utils/wd.js'
 import { StaleElementReference, ElementNotVisible } from '../../../utils/errors.js'
-import some from 'lodash/some'
+import { some } from 'lodash'
 import $ from 'jquery'
 
 let elementId = 0

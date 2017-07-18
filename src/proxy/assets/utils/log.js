@@ -1,4 +1,4 @@
-import slice from 'lodash/slice'
+import { slice } from 'lodash'
 import $ from 'jquery'
 
 let pageId = Math.random().toString(36).substr(2, 4)

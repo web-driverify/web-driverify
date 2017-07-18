@@ -4,7 +4,7 @@ import string from '../../../utils/string.js'
 import $ from 'jquery'
 import { UnknownCommand } from '../../../utils/errors.js'
 import Log from '../utils/log.js'
-import pick from 'lodash/pick'
+import { pick } from 'lodash'
 
 let logger = new Log('driver')
 let STATES = wd.STATES

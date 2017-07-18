@@ -1,8 +1,6 @@
 import wd from '../utils/wd.js'
 import { NoSuchElement, XPathLookupError } from '../../../utils/errors.js'
-import some from 'lodash/some'
-import map from 'lodash/map'
-import filter from 'lodash/filter'
+import { some, map, filter } from 'lodash'
 import element from '../utils/element.js'
 
 wd.handlers.FindElement = findElement

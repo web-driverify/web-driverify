@@ -1,7 +1,7 @@
 import wd from '../utils/wd.js'
 import Promise from 'es6-promise'
 import element from '../utils/element'
-import forEach from 'lodash/forEach'
+import { forEach } from 'lodash'
 
 wd.handlers.ExecuteScript = function (script, args) {
   // eslint-disable-next-line no-new-func

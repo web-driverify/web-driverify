@@ -1,20 +1,40 @@
 var webpack = require('webpack')
+var path = require('path')
 var isDev = process.env.NODE_ENV !== 'production'
 
 var config = {
   devtool: isDev && '#source-map',
   entry: {
-    index: './src/proxy/assets/index.js'
+    index: path.join(__dirname, '/src/proxy/assets/index.js')
   },
   output: {
-    path: './src/proxy/assets',
+    path: path.join(__dirname, '/src/proxy/assets'),
     filename: '[name].bundle.js'
   },
   module: {
-    loaders: [{
-      test: /\.js$/,
-      loader: 'babel-loader?presets[]=es2015'
-    }]
+    rules: [
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        options: {
+          presets: ['es2015']
+        },
+        exclude: [
+          path.join(__dirname, 'node_modules')
+        ]
+      }
+    ],
+    noParse: [
+      /(jquery|lodash|es6-promise)/
+    ]
+  },
+  resolve: {
+    alias: {
+      'jquery': 'jquery/dist/jquery.min.js',
+      'es6-promise': 'es6-promise/dist/es6-promise.min.js',
+      'lodash': 'lodash/lodash.min.js',
+      'http': path.join(__dirname, '/src/proxy/assets/utils/http.js')
+    }
   },
   plugins: [
     new webpack.DefinePlugin({
