@@ -1,4 +1,5 @@
 import os from 'os'
+import config from './config'
 
 function getIPAddr () {
   var ifaces = os.networkInterfaces()
@@ -20,16 +21,16 @@ function getIPAddr () {
 }
 
 let exports = {
-  name: process.env.NODE_ENV || 'production',
-  ip: getIPAddr(),
-  stubPort: process.env.STUB_PORT || 8087,
-  proxyPort: process.env.PROXY_PORT || 8088,
-  wdPort: process.env.WD_PORT || 8089
+  name: config.env,
+  ip: config.ip || getIPAddr(),
+  stubPort: config.stub.port,
+  proxyPort: config.proxy.port,
+  wdPort: config.wd.port
 }
 
-exports.host = process.env.HOST || exports.ip
-exports.proxyUrl = 'http://' + exports.host + ':' + exports.proxyPort
-exports.stubUrl = 'http://' + exports.host + ':' + exports.stubPort
-exports.wdUrl = 'http://' + exports.host + ':' + exports.wdPort
+exports.host = config.host || exports.ip
+exports.proxyUrl = 'http://' + (config.proxy.host || exports.host) + ':' + exports.proxyPort
+exports.stubUrl = 'http://' + (config.stub.host || exports.host) + ':' + exports.stubPort
+exports.wdUrl = 'http://' + (config.wd.host || exports.host) + ':' + exports.wdPort
 
 export default exports

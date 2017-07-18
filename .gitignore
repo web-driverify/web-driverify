@@ -44,3 +44,4 @@ lib/
 
 screenshots
 *.bundle.*
+config.yaml

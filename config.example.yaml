@@ -1,0 +1,12 @@
+env: test    # NODE_ENV overwrites it
+# ip: 1.1.1.1
+# host: baidu.com
+stub:
+  port: 8087 # STUB_PORT overwrites it
+proxy:
+  port: 8088 # PROXY_PORT overwrites it
+wd:
+  port: 8089 # WD_PORT overwrites it
+plugin:
+  web-driverify-endpoint-abc:
+    disable: true

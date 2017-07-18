@@ -1,6 +1,7 @@
 import path from 'path'
 import glob from 'glob'
 import env from '../utils/env'
+import config from '../utils/config'
 
 import Endpoint from '.'
 
@@ -11,10 +12,15 @@ glob.sync(path.join(__dirname, '*/*.js'))
   })
 // require plugins
 glob.sync(path.join(__dirname, '../../node_modules/web-driverify-endpoint-*'))
-  .map(require)
-  .forEach((plugin) => {
+  .forEach((pluginPath) => {
+    let pluginName = path.basename(pluginPath)
+    let conf = config.plugin[pluginName]
+    if (conf.disable) {
+      return
+    }
+    let plugin = require(pluginPath)
     if (plugin.default) {
       plugin = plugin.default
     }
-    plugin({Endpoint, env})
+    plugin({Endpoint, env, config: conf})
   })
