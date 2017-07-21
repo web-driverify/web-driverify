@@ -41,8 +41,8 @@ config = defaultsDeep(envConfig, config)
 
 // load config from environment variables
 Object.keys(process.env).filter((key) => key.startsWith('WD_')).forEach((key) => {
-  let path = key.replace(/_/g, '.')
-  set(config, path, process.env[key])
+  let path = key.replace(/_/g, '.').replace(/^WD./, '')
+  config = set(config, path, process.env[key])
 })
 
 export default config
