@@ -28,6 +28,7 @@ wd-phantom  # equivalent to web-driverify-phantom
 * `WD_PORT`: Port for the WebDriver Protocol, test runners like [webdriver.io][wdio] should connect to this port. Default: `8089`
 * `PROXY_PORT`: Port for the browser proxy. Default: `8088`
 * `DEBUG`: Used by [debug][debug] utility. To enable web-driverify debug, set `DEBUG=wd:*`
+* `WD_CONFIG`: config yml file
 
 Here's a boilerplate project: <https://github.com/web-driverify/wdio-boilerplate>
 
