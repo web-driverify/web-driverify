@@ -15,11 +15,11 @@ config.plugins
 .filter((plugin) => plugin.enable)
 .forEach((plugin) => {
   try {
-    let plugin = require(plugin.id)
-    if (plugin.default) {
-      plugin = plugin.default
+    let pluginInstance = require(plugin.id)
+    if (pluginInstance.default) {
+      pluginInstance = pluginInstance.default
     }
-    plugin({Endpoint, env, config: conf})
+    pluginInstance({Endpoint, env, config: conf})
   } catch (err) {
     console.error(`Failed to load plugin: ${plugin.id}`, err)
   }
