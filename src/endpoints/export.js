@@ -19,7 +19,7 @@ config.plugins
     if (pluginInstance.default) {
       pluginInstance = pluginInstance.default
     }
-    pluginInstance({Endpoint, env, config: conf})
+    pluginInstance({Endpoint, env, config: plugin})
   } catch (err) {
     console.error(`Failed to load plugin: ${plugin.id}`, err)
   }
