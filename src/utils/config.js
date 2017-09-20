@@ -3,9 +3,13 @@ import fs from 'fs'
 import path from 'path'
 import { defaultsDeep, set } from 'lodash'
 
-const baseDir = path.dirname(path.dirname(__dirname))
+let baseDir = path.dirname(path.dirname(__dirname))
 const configFile = process.env.WD_CONFIG || path.resolve(baseDir, 'config.yaml')
-const baseConfigFile = path.resolve(baseDir, 'config.example.yaml')
+let baseConfigFile = path.resolve(baseDir, 'config.example.yaml')
+if (!fs.existsSync(baseConfigFile)) {
+  baseDir = path.dirname(baseDir)
+  baseConfigFile = path.join(baseDir, 'config.example.yaml')
+}
 
 // base config stub
 let config = {
