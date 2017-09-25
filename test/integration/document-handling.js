@@ -33,7 +33,7 @@ describe('document handling', function () {
       return document.querySelector('#touch')
     })
     expect(result.value).to.have.property('ELEMENT')
-    expect(result.value).to.deep.equal(element.value)
+    expect(result.value.ELEMENT).to.equal(element.value.ELEMENT)
   })
 
   it('execute with element argument', function () {
@@ -52,7 +52,7 @@ describe('document handling', function () {
       }, 1000)
     })
     expect(result.value).to.have.property('ELEMENT')
-    expect(result.value).to.deep.equal(element.value)
+    expect(result.value.ELEMENT).to.equal(element.value.ELEMENT)
   })
 
   it('execute async with element argument', function () {
