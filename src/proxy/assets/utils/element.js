@@ -3,7 +3,7 @@ import { StaleElementReference, ElementNotVisible } from '../../../utils/errors.
 import { some } from 'lodash'
 import $ from 'jquery'
 
-let elementId = 0
+let elementId = 1
 
 function getById (id) {
   let el = wd.elements[id]
