@@ -12,6 +12,12 @@ describe('element interaction', function () {
     browser.url(url)
   })
 
+  it('POST /session/:sessionId/element/:id/submit', function () {
+    browser.setValue('#name', 'harttle')
+    browser.submitForm('#form-login')
+    expect(browser.getUrl()).to.contain('?name=harttle')
+  })
+
   it('GET /session/:sessionId/element/:id/click', function () {
     let id = browser.element('body').value.ELEMENT
     browser.elementIdClick(id)
@@ -31,12 +37,6 @@ describe('element interaction', function () {
     browser.elementIdValue(id, 'harttle')
     browser.elementIdClear(id)
     expect(browser.execute(getName).value).to.have.equal('')
-  })
-
-  it('POST /session/:sessionId/element/:id/submit', function () {
-    browser.setValue('#name', 'harttle')
-    browser.submitForm('#form-login')
-    expect(browser.getUrl()).to.contain('?name=harttle')
   })
 
   function getName () {
