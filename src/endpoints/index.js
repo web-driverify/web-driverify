@@ -1,12 +1,12 @@
 import EventEmitter from 'events'
 import Debug from 'debug'
-import random from 'lodash/random'
 import {parseError} from '../utils/protocol.js'
 
 let debug = Debug('wd:Endpoint')
 let registry = new Map()
 let pool = new Map()
 let emitter = new EventEmitter()
+let cmdCount = 0
 let STATES = {
   WAITING: 'waiting',
   EXIT: 'exit',
@@ -15,10 +15,16 @@ let STATES = {
 }
 
 class Endpoint {
-  constructor (id = random(1000, 9999), args = []) {
+  constructor (id, args = []) {
     if (id instanceof Array) {
       args = id
-      id = random(1000, 9999)
+      id = cmdCount++
+    } else if (id === undefined) {
+      id = cmdCount++
+    }
+    if (cmdCount === Number.MAX_SAFE_INTEGER) {
+      console.warn('max command count reached, reseting to 0...')
+      cmdCount = 0
     }
 
     this.id = Number(id)
@@ -27,7 +33,9 @@ class Endpoint {
     this.confirmationRequired = true
 
     pool.set(this.id, this)
-    emitter.emit('created', this)
+    setTimeout(() => {
+      emitter.emit('created', this)
+    })
   }
 
   resultArrived (result, session) {

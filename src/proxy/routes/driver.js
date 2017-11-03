@@ -1,4 +1,5 @@
 import express from 'express'
+import NewSession from '../../endpoints/session/new-session.js'
 import Session from '../../utils/session.js'
 import Debug from 'debug'
 import Endpoint from '../../endpoints'
@@ -12,13 +13,11 @@ router.param('eid', endpointById)
 
 router.get('/', function (req, res) {
   res.set('content-type', 'text/html')
-  let endpoint = Endpoint.get(req.query.cmd)
+  let endpoint = NewSession.useToken(req.query.token)
+
   if (!endpoint) {
-    console.warn('init session failed:', `endpoint not found for: ${req.query.cmd}`)
+    console.warn('init session failed:', `endpoint not found for: ${req.query.token}`)
     res.status(404).render('connect-fail.html')
-  } else if (endpoint.constructor.name !== 'NewSession') {
-    console.warn('init session failed:', `endpoint ${req.query.cmd} not a NewSession`)
-    res.status(400).render('connect-fail.html')
   } else {
     console.log(`initializing session with cmd ${req.query.cmd}...`)
     let session = new Session(req, endpoint)

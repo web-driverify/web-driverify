@@ -62,7 +62,7 @@ function teardownProxy () {
 }
 
 function startBrowserClient (cmd) {
-  var initUrl = `${env.proxyUrl}/web-driverify?cmd=${cmd.id}`
+  var initUrl = `${env.proxyUrl}/web-driverify?token=${cmd.token}`
   var options = {
     timeout: 10000,
     injectJquery: false
@@ -70,33 +70,33 @@ function startBrowserClient (cmd) {
   debug('starting browser client:', initUrl, 'with proxy:', env.proxyUrl)
   return new Promise((resolve) => {
     browserClient = new Horseman(options)
-            .setProxy(env.proxyUrl)
-            .viewport(375, 667)
-            .userAgent('Mozilla/5.0 (Windows NT 6.1; WOW64; rv:27.0) Gecko/20100101 Firefox/27.0')
-            .on('consoleMessage', msg => {
-              // use remote:log instead
-              // debug('[remote:log]', msg)
-            })
-            .on('error', (msg, trace) => {
-              var msgStack = ['ERROR: ' + msg]
-              if (trace && trace.length) {
-                msgStack.push('TRACE:')
-                trace.forEach(function (t) {
-                  msgStack.push(' -> ' + t.file + ': ' + t.line + (t.function ? ' (in function "' + t.function + '")' : ''))
-                })
-              }
-              debug('[browser error]', msgStack.join('\n'))
-            })
-            .then(() => {
-              debug('browser started')
-            })
-            .open(initUrl)
-            .waitForNextPage()
-            .html()
-            .then((text) => {
-              debug('browser connected, html length:', text.length)
-              resolve()
-            })
+    .setProxy(env.proxyUrl)
+    .viewport(375, 667)
+    .userAgent('Mozilla/5.0 (Windows NT 6.1; WOW64; rv:27.0) Gecko/20100101 Firefox/27.0')
+    .on('consoleMessage', msg => {
+      // use remote:log instead
+      // debug('[remote:log]', msg)
+    })
+    .on('error', (msg, trace) => {
+      var msgStack = ['ERROR: ' + msg]
+      if (trace && trace.length) {
+        msgStack.push('TRACE:')
+        trace.forEach(function (t) {
+          msgStack.push(' -> ' + t.file + ': ' + t.line + (t.function ? ' (in function "' + t.function + '")' : ''))
+        })
+      }
+      debug('[browser error]', msgStack.join('\n'))
+    })
+    .then(() => {
+      debug('browser started')
+    })
+    .open(initUrl)
+    .waitForNextPage()
+    .html()
+    .then((text) => {
+      debug('browser connected, html length:', text.length)
+      resolve()
+    })
   })
 }
 

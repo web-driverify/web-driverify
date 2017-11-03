@@ -26,9 +26,9 @@ wd-phantom  # equivalent to web-driverify-phantom
 ## ENV variables
 
 * `WD_PORT`: Port for the WebDriver Protocol, test runners like [webdriver.io][wdio] should connect to this port. Default: `8089`
-* `PROXY_PORT`: Port for the browser proxy. Default: `8088`
-* `DEBUG`: Used by [debug][debug] utility. To enable web-driverify debug, set `DEBUG=wd:*`
+* `WD_PROXY_PORT`: Port for the browser proxy. Default: `8088`
 * `WD_CONFIG`: config yml file
+* `DEBUG`: Used by [debug][debug] utility. To enable web-driverify debug, set `DEBUG=wd:*`
 
 Here's a boilerplate project: <https://github.com/web-driverify/wdio-boilerplate>
 
@@ -53,12 +53,12 @@ Run test
 # Run all test cases
 npm test
 
-# run unit/integration test cases separately
+# run unit/e2e test cases separately
 # attach phantom.js
 npm run debug:phantom
 # run cases, in another shell
 npm run test:unit
-npm run test:integration
+npm run test:e2e
 ```
 
 ## Differences with WebDriver Protocol

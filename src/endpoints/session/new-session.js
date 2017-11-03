@@ -3,11 +3,14 @@ import env from '../../utils/env.js'
 import pkg from '../../../package.json'
 import qrcode from 'qrcode-terminal'
 
+let endpoints = new Map()
+
 class NewSession extends Endpoint {
   static create (req) {
     let caps = req.body.desiredCapabilities
-    let endpoint = new NewSession(caps.cmdId, [caps])
-    let url = `${env.proxyUrl}/web-driverify?cmd=${endpoint.id}`
+    let endpoint = new NewSession([caps])
+    NewSession.recordToken(caps.token, endpoint)
+    let url = `${env.proxyUrl}/web-driverify?token=${endpoint.token}`
     console.log(`newSession requested, open this URL: ${url}`)
     if (env.name !== 'test') {
       qrcode.generate(url)
@@ -45,7 +48,19 @@ class NewSession extends Endpoint {
     }
   }
 }
-
+NewSession.recordToken = function (token, endpoint) {
+  token = token || Math.random().toString(36).substr(2)
+  endpoint.token = token
+  return endpoints.set(token, endpoint)
+}
+NewSession.clearTokens = function () {
+  return endpoints.clear()
+}
+NewSession.useToken = function (token) {
+  let endpoint = endpoints.get(token)
+  endpoints.delete(token)
+  return endpoint
+}
 NewSession.method = 'post'
 NewSession.url = '/session'
 export default NewSession

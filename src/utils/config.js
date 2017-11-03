@@ -1,52 +1,29 @@
 import yaml from 'js-yaml'
 import fs from 'fs'
 import path from 'path'
-import { defaultsDeep, set } from 'lodash'
+import { defaultsDeep } from 'lodash'
 
-let baseDir = path.dirname(path.dirname(__dirname))
-const configFile = process.env.WD_CONFIG || path.resolve(baseDir, 'config.yaml')
-let baseConfigFile = path.resolve(baseDir, 'config.example.yaml')
-if (!fs.existsSync(baseConfigFile)) {
-  baseDir = path.dirname(baseDir)
-  baseConfigFile = path.join(baseDir, 'config.example.yaml')
-}
+let defaultFile = path.resolve(__dirname, '../../config.example.yaml')
+var defaultConfig = yaml.safeLoad(fs.readFileSync(defaultFile, 'utf8'))
 
-// base config stub
-let config = {
-  stub: {},
-  proxy: {},
-  wd: {},
-  plugin: {}
-}
-// load example config
-let baseConfig = yaml.safeLoad(fs.readFileSync(baseConfigFile).toString())
-config = defaultsDeep(baseConfig, config)
+let userFile = process.env.WD_CONFIG || path.resolve(__dirname, '../../config.yaml')
+let userConfig = fs.existsSync(userFile) ? yaml.safeLoad(fs.readFileSync(userFile, 'utf8')) : {}
 
-// load custom config
-try {
-  let userConfig = yaml.safeLoad(fs.readFileSync(configFile).toString())
-  config = defaultsDeep(userConfig, config)
-} catch (e) {}
-
-// load config from old environment variables
 let envConfig = {
   env: process.env.NODE_ENV,
   stub: {
-    port: process.env.STUB_PORT
+    port: process.env.WD_STUB_PORT || process.env.STUB_PORT
   },
   proxy: {
-    port: process.env.PROXY_PORT
+    port: process.env.WD_PROXY_PORT || process.env.PROXY_PORT
   },
   wd: {
     port: process.env.WD_PORT
   }
 }
-config = defaultsDeep(envConfig, config)
 
-// load config from environment variables
-Object.keys(process.env).filter((key) => key.startsWith('WD_')).forEach((key) => {
-  let path = key.replace(/_/g, '.').replace(/^WD./, '')
-  config = set(config, path, process.env[key])
-})
+let config = defaultsDeep(envConfig, userConfig, defaultConfig)
+console.log('config loaded:')
+console.log(JSON.stringify(config, null, 4))
 
 export default config

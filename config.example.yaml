@@ -1,10 +1,23 @@
-env: test    # NODE_ENV overwrites it
-# ip: 1.1.1.1
-# host: baidu.com
+# affects logging, one of: development, test, production
+env: test
+
+# config for the stub server
 stub:
-  port: 8087 # STUB_PORT overwrites it
+  port: 8087
+
+# config for the proxy server
 proxy:
-  port: 8088 # PROXY_PORT overwrites it
+  port: 8088
+
+# config for the WebDriver server
 wd:
-  port: 8089 # WD_PORT overwrites it
-plugins: []
+  port: 8089
+
+# Plugins should be installed manually, key is the package name, value
+# is passed to the plugin directly. For example:
+#
+# plugins: 
+#   web-driverify-screenshot:
+#     - timming: 5s
+#     - savedir: /Users/harttle/pictures/wd
+plugins: {}

@@ -4,26 +4,21 @@ import NewSession from '../../../src/endpoints/session/new-session.js'
 let expect = chai.expect
 
 describe('NewSession', function () {
-  it('should generate random ID by default', function () {
+  beforeEach(() => NewSession.clearTokens())
+  it('should generate random token by default', function () {
     let req = {
       body: {desiredCapabilities: {}}
     }
     let endpoint = NewSession.create(req)
-    console.log(endpoint.id)
-    expect(String(endpoint.id)).to.match(/^\d+$/)
+    expect(NewSession.useToken(endpoint.token)).to.equal(endpoint)
+    expect(NewSession.useToken(endpoint.token)).to.equal(undefined)
   })
-  it('should respect to cmdId in desiredCapabilities', function () {
+  it('should respect to token in desiredCapabilities', function () {
     let req = {
-      body: { desiredCapabilities: { cmdId: 1234 } }
+      body: { desiredCapabilities: { token: 'my perfect token' } }
     }
     let endpoint = NewSession.create(req)
-    expect(endpoint.id).to.equal(1234)
-  })
-  it('should respect to cmdId (String) in desiredCapabilities', function () {
-    let req = {
-      body: { desiredCapabilities: { cmdId: '1234' } }
-    }
-    let endpoint = NewSession.create(req)
-    expect(endpoint.id).to.equal(1234)
+    let retrieved = NewSession.useToken('my perfect token')
+    expect(endpoint).to.equal(retrieved)
   })
 })
