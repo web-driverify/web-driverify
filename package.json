@@ -27,7 +27,7 @@
     "test:once": "wdio wdio.conf.js",
     "preversion": "npm test",
     "version": "npm run build",
-    "postversion": "git push && git push --tags && npm publish"
+    "postversion": "git push && git push --tags"
   },
   "repository": {
     "type": "git",
