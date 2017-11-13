@@ -2,6 +2,9 @@ import Endpoint from '..'
 import env from '../../utils/env.js'
 import pkg from '../../../package.json'
 import qrcode from 'qrcode-terminal'
+import Debug from 'debug'
+
+let debug = Debug('wd:endpoints:NewSession')
 
 let endpoints = new Map()
 
@@ -51,12 +54,15 @@ class NewSession extends Endpoint {
 NewSession.recordToken = function (token, endpoint) {
   token = token || Math.random().toString(36).substr(2)
   endpoint.token = token
+  debug('recording token', token)
   return endpoints.set(token, endpoint)
 }
 NewSession.clearTokens = function () {
+  debug('clearing token')
   return endpoints.clear()
 }
 NewSession.useToken = function (token) {
+  debug('using token', token)
   let endpoint = endpoints.get(token)
   endpoints.delete(token)
   return endpoint

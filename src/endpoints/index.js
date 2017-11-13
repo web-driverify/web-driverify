@@ -53,13 +53,13 @@ class Endpoint {
       console.error('error occurred:', err.message + '\n' + err.stack)
     }
     this.response.status(err.httpStatus)
-    this.exit(err.status, err)
+    this.exit(1, err)
   }
 
   exit (status, value) {
     this.state = STATES.EXIT
     this.data = {
-      sessionId: this.session.id,
+      sessionId: this.session && this.session.id,
       status: status || 0,
       value: value
     }
