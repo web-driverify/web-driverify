@@ -53,7 +53,7 @@ class Endpoint {
       console.error('error occurred:', err.message + '\n' + err.stack)
     }
     this.response.status(err.httpStatus)
-    this.exit(1, err)
+    this.exit(err.status, err)
   }
 
   exit (status, value) {
