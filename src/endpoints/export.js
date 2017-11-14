@@ -1,7 +1,6 @@
 import path from 'path'
 import _ from 'lodash'
 import glob from 'glob'
-import env from '../utils/env'
 import config from '../utils/config'
 import Endpoint from '.'
 
@@ -12,11 +11,11 @@ glob.sync(path.join(__dirname, '*/*.js'))
     Endpoint.register(require(endpoint).default)
   })
 // require plugins
-_.forEach(config.plugins, (config, name) => {
+_.forEach(config.plugins, (pluginConfig, name) => {
   try {
     // CMD modules
     let pluginInstance = require(name)
-    pluginInstance({Endpoint, env, config})
+    pluginInstance({Endpoint, config, pluginConfig})
   } catch (err) {
     console.error(`Failed to load plugin: ${name}`, err)
   }

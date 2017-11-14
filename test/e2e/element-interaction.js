@@ -1,12 +1,12 @@
 /* globals browser: true */
 
-import env from '../../src/utils/env.js'
+import config from '../../src/utils/config.js'
 import chai from 'chai'
 
 let expect = chai.expect
 
 describe('element interaction', function () {
-  let url = `${env.stubUrl}/interaction.html`
+  let url = `${config.stub.url}/interaction.html`
 
   before(function () {
     browser.url(url)

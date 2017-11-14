@@ -1,13 +1,13 @@
 /* globals browser: true */
 
-import env from '../../src/utils/env.js'
+import config from '../../src/utils/config.js'
 import chai from 'chai'
 
 let expect = chai.expect
 
 describe('document handling', function () {
   before(function () {
-    let url = `${env.stubUrl}/interaction.html`
+    let url = `${config.stub.url}/interaction.html`
     browser.url(url)
   })
 

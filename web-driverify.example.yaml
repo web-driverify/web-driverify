@@ -1,6 +1,12 @@
 # affects logging, one of: development, test, production
 env: test
 
+# host for your server
+# host: example.com
+
+# IP of your server
+# ip: 192.168.1.1
+
 # config for the stub server
 stub:
   port: 8087
@@ -18,6 +24,6 @@ wd:
 #
 # plugins: 
 #   web-driverify-screenshot:
-#     - timming: 5s
-#     - savedir: /Users/harttle/pictures/wd
+#     timming: 5s
+#     savedir: /Users/harttle/pictures/wd
 plugins: {}

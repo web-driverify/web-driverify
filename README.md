@@ -17,20 +17,23 @@ npm i -g web-driverify
 Start Server
 
 ```bash
-wd          # equivalent to web-driverify
-wd-phantom  # equivalent to web-driverify-phantom
+$ wd -h
+  Usage: wd [options] [configFile]
+
+  Options:
+
+    -V, --version       output the version number
+    -p, --port [num]    port number [8089]
+    --proxy-port [num]  proxy port number [8088]
+    --stub-port [num]   stub port number for debug use [8087]
+    --host [hostname]   hostname for the server
+    -h, --help          output usage information
 ```
 
-`wd-phantom` will attach a phantomjs (one of the brilliant headless browsers) instance automatically everytime NewSession requested.
-
-## ENV variables
-
-* `WD_PORT`: Port for the WebDriver Protocol, test runners like [webdriver.io][wdio] should connect to this port. Default: `8089`
-* `WD_PROXY_PORT`: Port for the browser proxy. Default: `8088`
-* `WD_CONFIG`: config yml file
-* `DEBUG`: Used by [debug][debug] utility. To enable web-driverify debug, set `DEBUG=wd:*`
-
+`configFile` defaults to `web-driverify.yaml` in currrent work directory, [here][conf]'s an example.
 Here's a boilerplate project: <https://github.com/web-driverify/wdio-boilerplate>
+
+> Set `DEBUG=wd:*` to enable [debug][debug] output. `wd-phantom` will attach a phantomjs (one of the brilliant headless browsers) instance automatically everytime NewSession requested.
 
 ## Development
 
@@ -294,5 +297,5 @@ Notes:
 [wdio]: http://webdriver.io
 [selenium]: http://www.seleniumhq.org
 [debug]: https://github.com/visionmedia/debug
-
 [wd-w3c]: https://www.w3.org/TR/webdriver/
+[conf]: https://github.com/web-driverify/web-driverify/blob/master/web-driverify.example.yaml

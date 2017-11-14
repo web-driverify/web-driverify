@@ -1,12 +1,12 @@
 /* globals browser: true */
 
-import env from '../../src/utils/env.js'
+import config from '../../src/utils/config.js'
 import chai from 'chai'
 
 let expect = chai.expect
 
 describe('element retrieval', function () {
-  var plain = `${env.stubUrl}/plain-html`
+  var plain = `${config.stub.url}/plain-html`
 
   before(function () {
     browser.url(plain)

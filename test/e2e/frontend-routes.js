@@ -1,12 +1,12 @@
 /* globals browser: true */
 
-import env from '../../src/utils/env.js'
+import config from '../../src/utils/config.js'
 import chai from 'chai'
 
 let expect = chai.expect
 
 describe('frontend routes', function () {
-  var url = `${env.stubUrl}/frontend-routes.html`
+  var url = `${config.stub.url}/frontend-routes.html`
 
   beforeEach(function () {
     browser.url(url)

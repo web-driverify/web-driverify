@@ -1,13 +1,13 @@
 /* globals browser: true */
 
-import env from '../../src/utils/env.js'
+import config from '../../src/utils/config.js'
 import chai from 'chai'
 
 let expect = chai.expect
 
 describe('navigation', function () {
-  var url1 = `${env.stubUrl}/wellformed`
-  var url2 = `${env.stubUrl}/emptyhtml`
+  var url1 = `${config.stub.url}/wellformed`
+  var url2 = `${config.stub.url}/emptyhtml`
 
   it('GET /session/:sessionId/url', function () {
     browser.url(url1)
@@ -37,7 +37,7 @@ describe('navigation', function () {
     expect(browser.getUrl()).to.equal(url2)
   })
   it('GET /session/:sessionId/title', function () {
-    browser.url(`${env.stubUrl}/interaction.html`)
+    browser.url(`${config.stub.url}/interaction.html`)
     expect(browser.getTitle()).to.equal('interaction test')
   })
 })

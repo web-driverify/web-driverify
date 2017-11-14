@@ -2,7 +2,7 @@ import Horseman from 'node-horseman'
 import Debug from 'debug'
 import Promise from 'bluebird'
 
-import env from '../../src/utils/env.js'
+import config from '../../src/utils/config.js'
 import wd from '../../src/wd'
 import proxy from '../../src/proxy'
 import stub from './server.js'
@@ -31,8 +31,8 @@ function setupPhantom () {
 }
 
 function setupWD () {
-  return Promise.fromCallback(cb => (wdServer = wd.listen(env.wdPort, cb)))
-        .then(() => console.log('wd server listening to port', env.wdPort))
+  return Promise.fromCallback(cb => (wdServer = wd.listen(config.wd.port, cb)))
+        .then(() => console.log('wd server listening to port', config.wd.port))
 }
 
 function teardownWD () {
@@ -42,13 +42,13 @@ function teardownWD () {
 
 function setupProxy () {
   debug('setting up proxy...')
-  return Promise.fromCallback(cb => (proxyServer = proxy.listen(env.proxyPort, cb)))
-        .then(() => console.log('proxy server listening to port', env.proxyPort))
+  return Promise.fromCallback(cb => (proxyServer = proxy.listen(config.proxy.port, cb)))
+        .then(() => console.log('proxy server listening to port', config.proxy.port))
 }
 
 function setupStub () {
-  return Promise.fromCallback(cb => (stubServer = stub.listen(env.stubPort, cb)))
-        .then(() => console.log('stub server listening to port', env.stubPort))
+  return Promise.fromCallback(cb => (stubServer = stub.listen(config.stub.port, cb)))
+        .then(() => console.log('stub server listening to port', config.stub.port))
 }
 
 function teardownStub () {
@@ -62,15 +62,15 @@ function teardownProxy () {
 }
 
 function startBrowserClient (cmd) {
-  var initUrl = `${env.proxyUrl}/web-driverify?token=${cmd.token}`
+  var initUrl = `${config.proxy.url}/web-driverify?token=${cmd.token}`
   var options = {
     timeout: 10000,
     injectJquery: false
   }
-  debug('starting browser client:', initUrl, 'with proxy:', env.proxyUrl)
+  debug('starting browser client:', initUrl, 'with proxy:', config.proxy.url)
   return new Promise((resolve) => {
     browserClient = new Horseman(options)
-    .setProxy(env.proxyUrl)
+    .setProxy(config.proxy.url)
     .viewport(375, 667)
     .userAgent('Mozilla/5.0 (Windows NT 6.1; WOW64; rv:27.0) Gecko/20100101 Firefox/27.0')
     .on('consoleMessage', msg => {

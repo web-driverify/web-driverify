@@ -1,5 +1,5 @@
 import Endpoint from '..'
-import env from '../../utils/env.js'
+import config from '../../utils/config.js'
 import pkg from '../../../package.json'
 import qrcode from 'qrcode-terminal'
 import Debug from 'debug'
@@ -13,9 +13,9 @@ class NewSession extends Endpoint {
     let caps = req.body.desiredCapabilities
     let endpoint = new NewSession([caps])
     NewSession.recordToken(caps.token, endpoint)
-    let url = `${env.proxyUrl}/web-driverify?token=${endpoint.token}`
+    let url = `${config.proxy.url}/web-driverify?token=${endpoint.token}`
     console.log(`newSession requested, open this URL: ${url}`)
-    if (env.name !== 'test') {
+    if (config.env !== 'test') {
       qrcode.generate(url)
     }
     return endpoint

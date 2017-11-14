@@ -1,12 +1,12 @@
 /* globals browser: true */
 
-import env from '../../src/utils/env.js'
+import config from '../../src/utils/config.js'
 import chai from 'chai'
 
 let expect = chai.expect
 
 describe('screen capture', function () {
-  var url = `${env.stubUrl}/wellformed`
+  var url = `${config.stub.url}/wellformed`
 
   it('GET /session/:sessionId/screenshot', function () {
     browser.url(url)

@@ -3,7 +3,7 @@ import morgan from 'morgan'
 import string from '../utils/string.js'
 import Liquid from 'shopify-liquid'
 import BodyParser from 'body-parser'
-import env from '../utils/env.js'
+import config from '../utils/config.js'
 import driverMiddleware from './routes/driver'
 import externalMiddleware from './routes/external.js'
 import utils from './routes/utils.js'
@@ -17,7 +17,7 @@ let bodyParser = BodyParser.json({
   strict: false
 })
 let engine = new Liquid({
-  cache: env.name === 'production',
+  cache: config.name === 'production',
   root: path.resolve(__dirname, '../views/'),
   extname: '.html'
 })

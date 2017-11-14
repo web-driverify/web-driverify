@@ -1,29 +1,75 @@
+import os from 'os'
+import process from 'process'
+import _ from 'lodash'
 import yaml from 'js-yaml'
 import fs from 'fs'
 import path from 'path'
-import { defaultsDeep } from 'lodash'
 
-let defaultFile = path.resolve(__dirname, '../../config.example.yaml')
-var defaultConfig = yaml.safeLoad(fs.readFileSync(defaultFile, 'utf8'))
-
-let userFile = process.env.WD_CONFIG || path.resolve(__dirname, '../../config.yaml')
-let userConfig = fs.existsSync(userFile) ? yaml.safeLoad(fs.readFileSync(userFile, 'utf8')) : {}
-
-let envConfig = {
+let exports = {
+  init: function (args, file) {
+    loadFromFile(file || 'web-driverify.yaml')
+    loadFromArgs(args || {})
+    normalize()
+    console.log('config loaded:\n', JSON.stringify(exports, null, 4))
+  },
+  ip: getIPAddr(),
+  host: getIPAddr(),
   env: process.env.NODE_ENV,
-  stub: {
-    port: process.env.WD_STUB_PORT || process.env.STUB_PORT
+  wd: {
+    port: '8089'
   },
   proxy: {
-    port: process.env.WD_PROXY_PORT || process.env.PROXY_PORT
+    port: '8088'
   },
-  wd: {
-    port: process.env.WD_PORT
-  }
+  stub: {
+    port: '8087'
+  },
+  plugins: {}
 }
 
-let config = defaultsDeep(envConfig, userConfig, defaultConfig)
-console.log('config loaded:')
-console.log(JSON.stringify(config, null, 4))
+normalize()
 
-export default config
+function loadFromFile (file) {
+  let filepath = path.resolve(process.cwd(), file)
+  if (!fs.existsSync(filepath)) {
+    return
+  }
+  console.log('loading configuration from', filepath)
+  let fileConf = yaml.safeLoad(fs.readFileSync(filepath, 'utf8'))
+  _.merge(exports, fileConf)
+}
+
+function loadFromArgs (args) {
+  exports.host = args.host || exports.host
+  exports.wd.port = args.port || exports.wd.port
+  exports.stub.port = args.stubPort || exports.stub.port
+  exports.proxy.port = args.proxyPort || exports.proxy.port
+}
+
+function normalize () {
+  let host = exports.host
+  exports.stub.url = 'http://' + host + ':' + exports.stub.port
+  exports.proxy.url = 'http://' + host + ':' + exports.proxy.port
+  exports.wd.url = 'http://' + host + ':' + exports.wd.port
+}
+
+function getIPAddr () {
+  var ifaces = os.networkInterfaces()
+  var ip = null
+
+  Object.keys(ifaces).forEach(function (ifname) {
+    ifaces[ifname].forEach(function (iface) {
+      if (iface.family !== 'IPv4' || iface.internal !== false) {
+        return
+      }
+      ip = iface.address
+    })
+  })
+  if (ip === null) {
+    var msg = 'non-localhost ip required to run phantomjs with proxy set'
+    throw new Error(msg)
+  }
+  return ip
+}
+
+export default exports
