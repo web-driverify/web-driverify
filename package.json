@@ -45,7 +45,6 @@
   },
   "homepage": "https://github.com/web-driverify/web-driverify#readme",
   "dependencies": {
-    "@baidu/web-driverify-endpoint-rmtc-enhancement": "0.0.3",
     "bluebird": "^3.4.7",
     "body-parser": "^1.16.0",
     "charset": "^1.0.0",
