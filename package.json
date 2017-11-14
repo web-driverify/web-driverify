@@ -1,6 +1,6 @@
 {
   "name": "web-driverify",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A passive web driver endpoint for real browsers.",
   "main": "bin/wd.js",
   "bin": {
