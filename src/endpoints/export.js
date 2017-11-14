@@ -10,13 +10,18 @@ glob.sync(path.join(__dirname, '*/*.js'))
     // babel bulit es6 moduels
     Endpoint.register(require(endpoint).default)
   })
-// require plugins
-_.forEach(config.plugins, (pluginConfig, name) => {
-  try {
-    // CMD modules
-    let pluginInstance = require(name)
-    pluginInstance({Endpoint, config, pluginConfig})
-  } catch (err) {
-    console.error(`Failed to load plugin: ${name}`, err)
-  }
-})
+
+function loadPlugins (plugins) {
+  // require plugins
+  _.forEach(plugins, (pluginConfig, name) => {
+    try {
+      let pluginInstance = require(name)
+      pluginInstance({Endpoint, config, pluginConfig})
+      console.error(`Plugin loaded: ${name}`)
+    } catch (err) {
+      console.error(`Failed to load plugin: ${name}`, err)
+    }
+  })
+}
+
+export default {loadPlugins}

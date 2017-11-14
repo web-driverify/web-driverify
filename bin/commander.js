@@ -2,6 +2,7 @@ import program from 'commander'
 import pkg from '../package.json'
 import process from 'process'
 import config from '../src/utils/config.js'
+import Endpoint from '../src/endpoints/export.js'
 
 program
   .version(pkg.version)
@@ -13,3 +14,4 @@ program
   .parse(process.argv)
 
 config.init(program, program.args[0])
+Endpoint.loadPlugins(config.plugins)

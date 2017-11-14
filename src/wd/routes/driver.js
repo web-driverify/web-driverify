@@ -1,7 +1,7 @@
 import express from 'express'
 import Session from '../../utils/session.js'
 import Endpoint from '../../endpoints'
-import {NoSuchDriver, UnkownCommand} from '../../utils/errors.js'
+import {NoSuchDriver, UnknownCommand} from '../../utils/errors.js'
 import '../../endpoints/export.js'
 
 let rpc = {
@@ -46,7 +46,7 @@ function sessionRequired (req, res, next) {
 
 function unkownEndpoint (req, res, next) {
   if (req.endpoint) return next()
-  throw new UnkownCommand('endpiont not found')
+  throw new UnknownCommand('endpoint not found')
 }
 
 export default rpc

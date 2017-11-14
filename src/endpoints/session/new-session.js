@@ -69,4 +69,5 @@ NewSession.useToken = function (token) {
 }
 NewSession.method = 'post'
 NewSession.url = '/session'
+
 export default NewSession
