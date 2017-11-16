@@ -20,6 +20,10 @@ wd.handlers.ExecuteAsyncScript = function (script, args) {
   })
 }
 
+wd.handlers.Source = function () {
+  return document.documentElement.outerHTML
+}
+
 function tryParseWebElement (json) {
   if (json.value && json.value.hasOwnProperty('ELEMENT')) {
     return element.getById(json.value.ELEMENT)

@@ -7,7 +7,7 @@ let expect = chai.expect
 
 describe('document handling', function () {
   before(function () {
-    let url = `${config.stub.url}/interaction.html`
+    let url = `${config.stub.url}/document-handling.html`
     browser.url(url)
   })
 
@@ -15,7 +15,7 @@ describe('document handling', function () {
     let result = browser.execute(function (prefix) {
       return prefix + document.title
     }, 'hello ')
-    expect(result.value).to.equal('hello interaction test')
+    expect(result.value).to.equal('hello document handling')
   })
 
   it('POST /session/:sid/execute_async', function () {
@@ -26,42 +26,58 @@ describe('document handling', function () {
     }, 1, 2, 3, 4)
     expect(result.value).to.equal(10)
   })
-
-  it('execute with element result', function () {
-    let element = browser.element('#touch')
-    let result = browser.execute(function () {
-      return document.querySelector('#touch')
+  it('GET /session/:sessionId/source', function () {
+    let source = browser.getSource()
+    expect(source).to.match(/^<html lang="en">[\s\S]*<title>document handling<\/title>[\s\S]*<\/html>$/)
+  })
+  it('GET /session/:sessionId/source', function () {
+    let source = browser.getSource()
+    expect(source).to.match(/^<html lang="en">[\s\S]*<title>document handling<\/title>[\s\S]*<\/html>$/)
+  })
+  describe('/session/:sessionId/execute', function () {
+    it('should get html for certain elements', function () {
+      var outerHTML = browser.getHTML('#test')
+      expect(outerHTML).to.equal('<div id="test"><span>Lorem ipsum dolor amet</span></div>')
+      var innerHTML = browser.getHTML('#test', false)
+      expect(innerHTML).to.equal('<span>Lorem ipsum dolor amet</span>')
     })
-    expect(result.value).to.have.property('ELEMENT')
-    expect(result.value.ELEMENT).to.equal(element.value.ELEMENT)
-  })
-
-  it('execute with element argument', function () {
-    let element = browser.element('#touch')
-    let result = browser.execute(function (el) {
-      return el === document.querySelector('#touch')
-    }, element)
-    expect(result.value).to.be.equal(true)
-  })
-
-  it('execute async with element result', function () {
-    let element = browser.element('#touch')
-    let result = browser.executeAsync(function (done) {
-      setTimeout(function () {
-        done(document.querySelector('#touch'))
-      }, 1000)
+    it('element serialization/deserialization', function () {
+      let element = browser.element('#test')
+      let result = browser.execute(function () {
+        return document.querySelector('#test')
+      })
+      expect(result.value).to.have.property('ELEMENT')
+      expect(result.value.ELEMENT).to.equal(element.value.ELEMENT)
     })
-    expect(result.value).to.have.property('ELEMENT')
-    expect(result.value.ELEMENT).to.equal(element.value.ELEMENT)
+    it('element retriving and passing back', function () {
+      let element = browser.element('#test')
+      let result = browser.execute(function (el) {
+        return el === document.querySelector('#test')
+      }, element)
+      expect(result.value).to.be.equal(true)
+    })
   })
 
-  it('execute async with element argument', function () {
-    let element = browser.element('#touch')
-    let result = browser.executeAsync(function (el, done) {
-      setTimeout(function () {
-        done(el === document.querySelector('#touch'))
-      }, 1000)
-    }, element)
-    expect(result.value).to.be.equal(true)
+  describe('/session/:sessionId/execute_async', function () {
+    it('element serialization/deserialization', function () {
+      let element = browser.element('#test')
+      let result = browser.executeAsync(function (done) {
+        setTimeout(function () {
+          done(document.querySelector('#test'))
+        }, 1000)
+      })
+      expect(result.value).to.have.property('ELEMENT')
+      expect(result.value.ELEMENT).to.equal(element.value.ELEMENT)
+    })
+
+    it('element retriving and passing back', function () {
+      let element = browser.element('#test')
+      let result = browser.executeAsync(function (el, done) {
+        setTimeout(function () {
+          done(el === document.querySelector('#test'))
+        }, 1000)
+      }, element)
+      expect(result.value).to.be.equal(true)
+    })
   })
 })
