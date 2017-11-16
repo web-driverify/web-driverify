@@ -5,9 +5,6 @@ import Log from '../utils/log.js'
 let logger = new Log('element-state')
 let getElement = element.getById
 
-/*
- * GetElementText
- */
 wd.handlers.GetElementText = function (id) {
   let el = getElement(id)
   let text = el.innerText
@@ -15,9 +12,6 @@ wd.handlers.GetElementText = function (id) {
   return text
 }
 
-/*
- * GetElementAttribute
- */
 wd.handlers.GetElementAttribute = function (id, name) {
   let el = getElement(id)
   if (name === 'painted egg') {
@@ -26,9 +20,6 @@ wd.handlers.GetElementAttribute = function (id, name) {
   return el.getAttribute(name)
 }
 
-/*
- * GetElementSize
- */
 wd.handlers.GetElementSize = function (id) {
   let rect = getElement(id).getBoundingClientRect()
   return {
@@ -37,9 +28,6 @@ wd.handlers.GetElementSize = function (id) {
   }
 }
 
-/*
- * GetElementLocation
- */
 wd.handlers.GetElementLocation = function (id) {
   let rect = getElement(id).getBoundingClientRect()
   return {
@@ -48,9 +36,11 @@ wd.handlers.GetElementLocation = function (id) {
   }
 }
 
-/*
- * GetElementRect
- */
+wd.handlers.GetElementCSSValue = function (id, propertyName) {
+  let styles = getComputedStyle(getElement(id))
+  return styles[propertyName]
+}
+
 wd.handlers.GetElementRect = function (id) {
   let rect = getElement(id).getBoundingClientRect()
   return {

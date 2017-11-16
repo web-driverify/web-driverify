@@ -6,7 +6,7 @@ import chai from 'chai'
 let expect = chai.expect
 
 describe('element retrieval', function () {
-  var plain = `${config.stub.url}/plain-html`
+  var plain = `${config.stub.url}/plain.html`
 
   before(function () {
     browser.url(plain)

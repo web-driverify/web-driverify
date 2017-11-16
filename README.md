@@ -212,7 +212,7 @@ Notes:
 | ------------------------------ | ---------------------------------------- | ---------------------------- | ----------- |
 | Is Element Selected            | GET [/session/:sessionId/element/:id/selected](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementidselected) | `.elementIdSelected()`       | Not Started |
 | Get Element Attribute          | GET [/session/:sessionId/element/:id/attribute/:name](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementidattribute/:name) | `.elementIdAttribute()`      | Completed   |
-| Get Element CSS Value          | GET [/session/:sessionId/element/:id/css/:propertyName](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementidcss/:propertyName) | `.elementIdCssProperty()`    | Not Started |
+| Get Element CSS Value          | GET [/session/:sessionId/element/:id/css/:propertyName](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementidcss/:propertyName) | `.elementIdCssProperty()`    | Completed |
 | Get Element Text               | GET [/session/:sessionId/element/:id/text](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementidtext) | `.elementIdText()`           | Completed   |
 | Get Element Tag Name           | GET [/session/:sessionId/element/:id/name](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementidname) | `.elementIdName()`           | Not Started |
 | *Get Element Size*             | GET [/session/:sessionId/element/:id/size](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementidsize) | `.elementIdSize()`           | Completed   |
