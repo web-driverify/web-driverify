@@ -1,22 +1,37 @@
 import wd from '../utils/wd.js'
-import { KeyboardEvent } from '../utils/events.js'
+import Log from '../utils/log.js'
+import { KeyboardEvent, trigger } from '../utils/events.js'
+import { isMobile } from '../utils/ua.js'
 import element from '../utils/element.js'
 import $ from 'jquery'
+
+const log = new Log('drivers/element-interaction')
 
 /*
  * ElementClick
  */
 wd.handlers.ElementClick = function (id) {
   let el = element.getVisible(id)
-  let via = ''
-  if (typeof el.click === 'function') {
-    via = 'native'
-    el.click()
-  } else {
-    via = 'jQuery'
-    $(el).click()
-  }
-  return `${element.toString(id)} clicked via ${via}`
+  var mob = isMobile()
+
+  trigger(el, 'mouseover', 'pointerover')
+  mob && trigger(el, 'touchstart')
+
+  trigger(el, 'mousemove', 'pointermove')
+  mob && trigger(el, 'touchmove')
+
+  trigger(el, 'mousedown', 'pointerdown')
+
+  trigger(el, 'focus')
+  el.focus && el.focus()
+
+  // HTMLElement.click triggers click event while focus does not
+  el.click && el.click()
+
+  trigger(el, 'mouseup', 'pointerup')
+  mob && trigger(el, 'touchend')
+
+  return `element ${id} clicked`
 }
 
 /*
@@ -26,9 +41,9 @@ wd.handlers.ElementSendKeys = function (id, str) {
   let el = element.getVisible(id)
   let val = $(el).val()
   Array.prototype.forEach.call(str, function (c) {
-    el.dispatchEvent(new KeyboardEvent('keydown', c))
-    el.dispatchEvent(new KeyboardEvent('keypress', c))
-    el.dispatchEvent(new KeyboardEvent('keyup', c))
+    trigger(el, new KeyboardEvent('keydown', c))
+    trigger(el, new KeyboardEvent('keypress', c))
+    trigger(el, new KeyboardEvent('keyup', c))
   })
   // based on security concerns, keyboard events wont change value
   $(el).val(val + str)

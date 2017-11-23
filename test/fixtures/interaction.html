@@ -11,16 +11,15 @@
   <form id="form-login">
     <input type="text" id="name" name="name">
   </form>
+  <section class="click-area">
+    <div>A simple div element</div>
+  </section>
   <section class="touch-area">
     <div id="touch">Touch Here!</div>
   </section>
   <script src="/node_modules/jquery/dist/jquery.min.js"></script>
   <script src="/node_modules/jquery.event.swipe/js/jquery.event.swipe.js"></script>
   <script>
-    $('body').on("click", function() {
-      document.title = 'clicked';
-    });
-
     var i;
     $('#touch')
       .on('touchstart', function() {

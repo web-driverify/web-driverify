@@ -1,5 +1,3 @@
-/* globals browser: true */
-
 import config from '../../src/utils/config.js'
 import chai from 'chai'
 
@@ -18,11 +16,41 @@ describe('element interaction', function () {
     expect(browser.getUrl()).to.contain('?name=harttle')
   })
 
-  it('GET /session/:sessionId/element/:id/click', function () {
-    let id = browser.element('body').value.ELEMENT
-    browser.elementIdClick(id)
-    let title = browser.getTitle()
-    expect(title).to.equal('clicked')
+  describe('GET /session/:sessionId/element/:id/click', function () {
+    beforeEach(function () {
+      browser.url(url)
+      browser.execute(function () { document.title = '' })
+    })
+    it('should trigger mouse events for div element', function () {
+      let id = browser.element('.click-area>div').value.ELEMENT
+      browser.execute(function () {
+        var div = document.querySelector('.click-area>div')
+        div.addEventListener('mouseover', fn)
+        div.addEventListener('mousemove', fn)
+        div.addEventListener('mousedown', fn)
+        div.addEventListener('focus', fn)
+        div.addEventListener('mouseup', fn)
+        div.addEventListener('click', fn)
+        function fn (evt) { document.title += '|' + evt.type }
+      })
+      browser.elementIdClick(id)
+      expect(browser.getTitle()).to.equal('|mouseover|mousemove|mousedown|focus|click|mouseup')
+    })
+    it('should trigger touch events for mobile devices', function () {
+      let id = browser.element('.click-area>div').value.ELEMENT
+      browser.execute(function () {
+        var div = document.querySelector('.click-area>div')
+        window.webDriverifySetDevice = 'Mobile'
+        div.addEventListener('touchstart', fn)
+        div.addEventListener('touchmove', fn)
+        div.addEventListener('touchend', fn)
+        div.addEventListener('focus', fn)
+        div.addEventListener('click', fn)
+        function fn (evt) { document.title += '|' + evt.type }
+      })
+      browser.elementIdClick(id)
+      expect(browser.getTitle()).to.equal('|touchstart|touchmove|focus|click|touchend')
+    })
   })
 
   it('POST /session/:sessionId/element/:id/value', function () {
@@ -40,7 +68,6 @@ describe('element interaction', function () {
   })
 
   function getName () {
-    /* global $: true */
     return $('#name').val()
   }
 })

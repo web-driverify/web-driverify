@@ -9,3 +9,4 @@ export * from './document-handling.js'
 
 // senarios
 export * from './frontend-routes.js'
+export * from './driver.js'

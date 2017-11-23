@@ -1,0 +1,14 @@
+{
+  "extends": "standard",
+  "env": {
+    "browser": true
+  },
+  "plugins": [
+    "standard",
+    "promise"
+  ],
+  "rules": {
+    "no-unused-vars": ["error", {
+      "varsIgnorePattern": "logger"
+    }]
+}

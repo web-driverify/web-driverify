@@ -1,6 +1,15 @@
 {
-  "globals": {
-    "$": false,
-    "$$": false
+  "env": {
+    "mocha": true
+  },
+  "plugins": [
+    "mocha"
+  ],
+  "rules": {
+    "globals": {
+      "browser": false,
+      "$": false,
+      "$$": false
+    }
   }
 }
