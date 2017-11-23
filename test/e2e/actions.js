@@ -17,4 +17,14 @@ describe('actions', function () {
     browser.touchClick(id)
     expect(browser.getTitle()).to.match(/^touched,duration:\d+$/)
   })
+
+  it.only('GET /session/:sessionId/touch/scroll', function () {
+    browser.touchPerform([{
+      action: 'press',
+      options: {
+        x: 100,
+        y: 250
+      }
+    }])
+  })
 })
