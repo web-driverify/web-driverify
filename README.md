@@ -86,12 +86,12 @@ APIs are categorized as [WebDriver W3C Candidate Recommandation][wd-w3c].
 | ------------------------------ | ---------------------------------------- | ------------------------- | ----------- |
 | Status                         | GET [/status](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#status) | `.status()`               | 🕑           |
 | New Session                    | POST [/session](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#session) | `.session()`              | ✅           |
-| *Get Active Sessions*          | GET [/sessions](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessions) | `.sessions()`             | 🕑           |
-| *Get Session*                  | GET [/session/:sessionId](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionid) | `.session(id)`            | 🕑           |
+| Get Active Sessions          | GET [/sessions](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessions) | `.sessions()`             | 🕑           |
+| Get Session                  | GET [/session/:sessionId](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionid) | `.session(id)`            | 🕑           |
 | Delete Session                 | DELETE [/session/:sessionId](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionid) | `.session('delete')`      | ✅        |
 | Set Timeouts                   | POST [/session/:sessionId/timeouts](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidtimeouts) | `.timeouts()`             | 🕑           |
-| *Set Timeout for Async Script* | POST [/session/:sessionId/timeouts/async_script](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidtimeoutsasync_script) | `.timeoutsAsyncScript()`  | ✅           |
-| *Set Timout for Implicit Wait* | POST [/session/:sessionId/timeouts/implicit_wait](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidtimeoutsimplicit_wait) | `.timeoutsImplicitWait()` | 🕑           |
+| Set Timeout for Async Script | POST [/session/:sessionId/timeouts/async_script](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidtimeoutsasync_script) | `.timeoutsAsyncScript()`  | ✅           |
+| Set Timout for Implicit Wait | POST [/session/:sessionId/timeouts/implicit_wait](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidtimeoutsimplicit_wait) | `.timeoutsImplicitWait()` | 🕑           |
 
 
 ### Navigation
@@ -130,15 +130,15 @@ Notes:
 
 | Command Name            | API Endpoint                             | wdio API                 | Status   |
 | ----------------------- | ---------------------------------------- | ------------------------ | -------- |
-| *Get Available Engines* | GET [/session/:sessionId/ime/available_engines](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidimeavailable_engines) | `.imeAvailableEngines()` | 👎    |
-| *Get Active Engine*     | GET [/session/:sessionId/ime/active_engine](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidimeactive_engine) | ` .imeActiveEngine()`    | 👎    |
-| *Is IME Activated*      | GET [/session/:sessionId/ime/activated](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidimeactivated) | `.imeActivated()`        | 👎    |
-| *Deactivate IME*        | POST [/session/:sessionId/ime/deactivate](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidimedeactivate) | `.imeDeactivate()`       | 👎    |
-| *Activate IME*          | POST [/session/:sessionId/ime/activate](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidimeactivate) | `.imeActivate()`         | 👎    |
+| Get Available Engines | GET [/session/:sessionId/ime/available_engines](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidimeavailable_engines) | `.imeAvailableEngines()` | 👎    |
+| Get Active Engine     | GET [/session/:sessionId/ime/active_engine](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidimeactive_engine) | ` .imeActiveEngine()`    | 👎    |
+| Is IME Activated      | GET [/session/:sessionId/ime/activated](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidimeactivated) | `.imeActivated()`        | 👎    |
+| Deactivate IME        | POST [/session/:sessionId/ime/deactivate](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidimedeactivate) | `.imeDeactivate()`       | 👎    |
+| Activate IME          | POST [/session/:sessionId/ime/activate](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidimeactivate) | `.imeActivate()`         | 👎    |
 
 Notes:
 
-* Due to Javascript Limitaions, no input sources APIs will support.
+ Due to Javascript Limitaions, no input sources APIs will support.
 
 ### Command Contexts
 
@@ -150,10 +150,10 @@ Notes:
 | Switch To Parent Frame | POST [/session/:sessionId/frame/parent](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidframeparent) | `.frameParent()`          | 👎    |
 | Switch To Window       | POST [/session/:sessionId/window](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidwindow) | `.window()`               | 👎    |
 | Close Window           | DELETE [/session/:sessionId/window](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidwindow) | `.close()`                | 👎    |
-| *Set Window Size*      | POST [/session/:sessionId/window/:windowHandle/size](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidwindowwindowhandlesize) | `.windowHandleSize()`     | 👎    |
-| *Get Window Size*      | GET [/session/:sessionId/window/:windowHandle/size](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidwindowwindowhandlesize) | `.windowHandleSize()`     | 👎    |
-| *Set Window Position*  | POST [/session/:sessionId/window/:windowHandle/position](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidwindowwindowhandleposition) | `.windowHandlePosition()` | 👎    |
-| *Get Window Position*  | GET [/session/:sessionId/window/:windowHandle/position](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidwindowwindowhandleposition) | `.windowHandlePosition()` | 👎    |
+| Set Window Size      | POST [/session/:sessionId/window/:windowHandle/size](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidwindowwindowhandlesize) | `.windowHandleSize()`     | 👎    |
+| Get Window Size      | GET [/session/:sessionId/window/:windowHandle/size](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidwindowwindowhandlesize) | `.windowHandleSize()`     | 👎    |
+| Set Window Position  | POST [/session/:sessionId/window/:windowHandle/position](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidwindowwindowhandleposition) | `.windowHandlePosition()` | 👎    |
+| Get Window Position  | GET [/session/:sessionId/window/:windowHandle/position](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidwindowwindowhandleposition) | `.windowHandlePosition()` | 👎    |
 | Maximize Window        | POST [/session/:sessionId/window/:windowHandle/maximize](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidwindowwindowhandlemaximize) | `.windowMaximize()`       | 👎    |
 
 Notes:
@@ -178,7 +178,7 @@ Notes:
 | Command Name       | API Endpoint                             | wdio API           | Status      |
 | ------------------ | ---------------------------------------- | ------------------ | ----------- |
 | Get Active Element | POST [/session/:sessionId/element/active](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementactive) | `.elementActive()` | 🕑           |
-| *Is Elements Same* | GET [/session/:sessionId/element/:id/equals/:other](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementidequals/:other) |                    | 🕑           |
+| Is Elements Same | GET [/session/:sessionId/element/:id/equals/:other](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementidequals/:other) |                    | 🕑           |
 
 
 ### Element Retrieval
@@ -187,13 +187,13 @@ Notes:
 | -------------------------- | ---------------------------------------- | ----------------- | --------- |
 | Find Element               | POST [/session/:sessionId/element](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelement) | `.element()`      | ✅           |
 | Find Elements              | POST [/session/:sessionId/elements](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelements) | `.elements()`     | ✅           |
-| *Get Element By Id*        | GET [/session/:sessionId/element/:id](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementid) |                   | 👎     |
+| Get Element By Id        | GET [/session/:sessionId/element/:id](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementid) |                   | 👎     |
 | Find Element From Element  | POST [/session/:sessionId/element/:id/element](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementidelement) | `.$(foo).$(bar)`  | ✅           |
 | Find Elements From Element | POST [/session/:sessionId/element/:id/elements](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementidelements) | `.$(foo).$$(bar)` | ✅           |
 
 Notes:
 
-* Get element by id is a reserved api.
+ Get element by id is a reserved api.
 
 ### Element Interaction
 
@@ -202,7 +202,7 @@ Notes:
 | Element Click     | POST [/session/:sessionId/element/:id/click](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementidclick) | `.elementIdClick()` | ✅           |
 | Element Clear     | POST [/session/:sessionId/element/:id/clear](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementidclear) | `.elementIdClear()` | ✅           |
 | Element Send Keys | POST [/session/:sessionId/element/:id/value](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementidvalue) | `.elementIdValue()` | ✅           |
-| *Element Submit*  | POST [/session/:sessionId/element/:id/submit](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementidsubmit) | `.submit()`         | ✅           |
+| Element Submit  | POST [/session/:sessionId/element/:id/submit](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementidsubmit) | `.submit()`         | ✅           |
 
 
 ### Element State
@@ -214,12 +214,12 @@ Notes:
 | Get Element CSS Value          | GET [/session/:sessionId/element/:id/css/:propertyName](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementidcss/:propertyName) | `.elementIdCssProperty()`    | ✅           |
 | Get Element Text               | GET [/session/:sessionId/element/:id/text](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementidtext) | `.elementIdText()`           | ✅           |
 | Get Element Tag Name           | GET [/session/:sessionId/element/:id/name](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementidname) | `.elementIdName()`           | 🕑           |
-| *Get Element Size*             | GET [/session/:sessionId/element/:id/size](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementidsize) | `.elementIdSize()`           | ✅           |
+| Get Element Size             | GET [/session/:sessionId/element/:id/size](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementidsize) | `.elementIdSize()`           | ✅           |
 | Is Element Enabled             | GET [/session/:sessionId/element/:id/enabled](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementidenabled) | `.elementIdEnabled()`        | 🕑           |
-| *Is Element Displayed*         | GET [/session/:sessionId/element/:id/displayed](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementiddisplayed) | `.elementIdDisplayed()`      | ✅           |
-| *Get Element Location*         | GET [/session/:sessionId/element/:id/location](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementidlocation) | `.elementIdLocation()`       | ✅           |
-| *Get Element Rect*             | GET /session/:sessionId/element/:id/rect | `.elementIdRect()`           | ✅           |
-| *Get Element Location In View* | GET [/session/:sessionId/element/:id/location_in_view](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementidlocation_in_view) | `.elementIdLocationInView()` | 🕑           |
+| Is Element Displayed         | GET [/session/:sessionId/element/:id/displayed](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementiddisplayed) | `.elementIdDisplayed()`      | ✅           |
+| Get Element Location         | GET [/session/:sessionId/element/:id/location](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementidlocation) | `.elementIdLocation()`       | ✅           |
+| Get Element Rect             | GET /session/:sessionId/element/:id/rect | `.elementIdRect()`           | ✅           |
+| Get Element Location In View | GET [/session/:sessionId/element/:id/location_in_view](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementidlocation_in_view) | `.elementIdLocationInView()` | 🕑           |
 
 
 ### User Prompts
@@ -236,23 +236,23 @@ Notes:
 
 | Command Name                      | API Endpoint                             | wdio API            | Status      |
 | --------------------------------- | ---------------------------------------- | ------------------- | ----------- |
-| *Get Orientation*                 | GET [/session/:sessionId/orientation](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidorientation) | `.getOrientation()` | 🕑           |
-| *Set Orientation*                 | POST [/session/:sessionId/orientation](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidorientation) | `.setOrientation()` | 👎       |
-| *Move the Mouse*                  | POST [/session/:sessionId/moveto](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidmoveto) | `.moveTo()`         | 🕑           |
-| *Click the Mouse Button*          | POST [/session/:sessionId/click](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidclick) | `.buttonPress()`    | 🕑           |
-| *Click and Hold the Mouse Button* | POST [/session/:sessionId/buttondown](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidbuttondown) | `.buttonDown()`     | 🕑           |
-| *Releases the Mouse Button*       | POST [/session/:sessionId/buttonup](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidbuttonup) | `.buttonUp()`       | 🕑           |
-| *Double-click the Mouse Button*   | POST [/session/:sessionId/doubleclick](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessioniddoubleclick) | `.doDoubleClick()`  | 🕑           |
-| *Tap the Screen*                  | POST [/session/:sessionId/touch/click](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidtouchclick) | `.touchClick()`     | ✅           |
-| *Finger Down*                     | POST [/session/:sessionId/touch/down](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidtouchdown) | `.touchDown()`      | 🕑           |
-| *Finger Up*                       | POST [/session/:sessionId/touch/up](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidtouchup) | `.touchUp()`        | 🕑           |
-| *Finger Move*                     | POST [session/:sessionId/touch/move](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidtouchmove) | `.touchMove()`      | 🕑           |
-| *Finger Scroll*                   | POST [session/:sessionId/touch/scroll](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidtouchscroll) | `.touchScroll()`    | 🕑           |
-| *Double Tap*                      | POST [session/:sessionId/touch/doubleclick](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidtouchdoubleclick) |                     | 🕑           |
-| *Long Tap*                        | POST [session/:sessionId/touch/longclick](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidtouchlongclick) | `.touchLongClick()` | 🕑           |
-| *Flick*                           | POST [session/:sessionId/touch/flick](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidtouchflick) | `.touchFlick()`     | 🕑           |
-| *Get Geo Location*                | GET [/session/:sessionId/location](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidlocation) | `.getGeoLocation()` | 🕑           |
-| *Set Geo Location*                | POST [/session/:sessionId/location](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidlocation) | `.setGeoLocation()` | 👎      |
+| Get Orientation                 | GET [/session/:sessionId/orientation](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidorientation) | `.getOrientation()` | 🕑           |
+| Set Orientation                 | POST [/session/:sessionId/orientation](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidorientation) | `.setOrientation()` | 👎       |
+| Move the Mouse                  | POST [/session/:sessionId/moveto](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidmoveto) | `.moveTo()`         | 🕑           |
+| Click the Mouse Button          | POST [/session/:sessionId/click](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidclick) | `.buttonPress()`    | 🕑           |
+| Click and Hold the Mouse Button | POST [/session/:sessionId/buttondown](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidbuttondown) | `.buttonDown()`     | 🕑           |
+| Releases the Mouse Button       | POST [/session/:sessionId/buttonup](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidbuttonup) | `.buttonUp()`       | 🕑           |
+| Double-click the Mouse Button   | POST [/session/:sessionId/doubleclick](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessioniddoubleclick) | `.doDoubleClick()`  | 🕑           |
+| Tap the Screen                  | POST [/session/:sessionId/touch/click](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidtouchclick) | `.touchClick()`     | ✅           |
+| Finger Down                     | POST [/session/:sessionId/touch/down](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidtouchdown) | `.touchDown()`      | 🕑           |
+| Finger Up                       | POST [/session/:sessionId/touch/up](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidtouchup) | `.touchUp()`        | 🕑           |
+| Finger Move                     | POST [session/:sessionId/touch/move](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidtouchmove) | `.touchMove()`      | 🕑           |
+| Finger Scroll                   | POST [session/:sessionId/touch/scroll](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidtouchscroll) | `.touchScroll()`    | 🕑           |
+| Double Tap                      | POST [session/:sessionId/touch/doubleclick](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidtouchdoubleclick) |                     | 🕑           |
+| Long Tap                        | POST [session/:sessionId/touch/longclick](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidtouchlongclick) | `.touchLongClick()` | 🕑           |
+| Flick                           | POST [session/:sessionId/touch/flick](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidtouchflick) | `.touchFlick()`     | 🕑           |
+| Get Geo Location                | GET [/session/:sessionId/location](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidlocation) | `.getGeoLocation()` | 🕑           |
+| Set Geo Location                | POST [/session/:sessionId/location](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidlocation) | `.setGeoLocation()` | 👎      |
 
 Notes:
 
@@ -263,32 +263,32 @@ Notes:
 
 | Command Name              | API Endpoint                             | wdio API                | Status      |
 | ------------------------- | ---------------------------------------- | ----------------------- | ----------- |
-| *Get Localstorage*        | GET [/session/:sessionId/local_storage](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidlocal_storage) | `.localStorage()`       | 🕑           |
-| *Set Localstorage*        | POST [/session/:sessionId/local_storage](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidlocal_storage) | `.localStorage()`       | 🕑           |
-| *Clear Localstorage*      | DELETE [/session/:sessionId/local_storage](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidlocal_storage) | `.localStorage()`       | 🕑           |
-| *Get Localstorage Item*   | GET [/session/:sessionId/local_storage/key/:key](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidlocal_storagekeykey) | `.localStorage()`       | 🕑           |
-| *Set Localstorage Item*   | DELETE [/session/:sessionId/local_storage/key/:key](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidlocal_storagekeykey) | `.localStorage()`       | 🕑           |
-| *Get Localstorage size*   | GET [/session/:sessionId/local_storage/size](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidlocal_storagesize) | `.localStorageSize()`   | 🕑           |
-| *Get Sessionstorage*      | GET [/session/:sessionId/session_storage](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidsession_storage) | `.sessionStorage()`     | 🕑           |
-| *Set Sessionstorage*      | POST [/session/:sessionId/session_storage](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidsession_storage) | `.sessionStorage()`     | 🕑           |
-| *Clear Sessionstorage*    | DELETE [/session/:sessionId/session_storage](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidsession_storage) | `.sessionStorage()`     | 🕑           |
-| *Get Sessionstorage Item* | GET [/session/:sessionId/session_storage/key/:key](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidsession_storagekeykey) | `.sessionStorage()`     | 🕑           |
-| *Set Sessionstorage Item* | DELETE [/session/:sessionId/session_storage/key/:key](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidsession_storagekeykey) | `.sessionStorage()`     | 🕑           |
-| *Get Sessionstorage Size* | GET [/session/:sessionId/session_storage/size](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidsession_storagesize) | `.sessionStorageSize()` | 🕑           |
+| Get Localstorage        | GET [/session/:sessionId/local_storage](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidlocal_storage) | `.localStorage()`       | 🕑           |
+| Set Localstorage        | POST [/session/:sessionId/local_storage](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidlocal_storage) | `.localStorage()`       | 🕑           |
+| Clear Localstorage      | DELETE [/session/:sessionId/local_storage](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidlocal_storage) | `.localStorage()`       | 🕑           |
+| Get Localstorage Item   | GET [/session/:sessionId/local_storage/key/:key](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidlocal_storagekeykey) | `.localStorage()`       | 🕑           |
+| Set Localstorage Item   | DELETE [/session/:sessionId/local_storage/key/:key](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidlocal_storagekeykey) | `.localStorage()`       | 🕑           |
+| Get Localstorage size   | GET [/session/:sessionId/local_storage/size](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidlocal_storagesize) | `.localStorageSize()`   | 🕑           |
+| Get Sessionstorage      | GET [/session/:sessionId/session_storage](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidsession_storage) | `.sessionStorage()`     | 🕑           |
+| Set Sessionstorage      | POST [/session/:sessionId/session_storage](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidsession_storage) | `.sessionStorage()`     | 🕑           |
+| Clear Sessionstorage    | DELETE [/session/:sessionId/session_storage](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidsession_storage) | `.sessionStorage()`     | 🕑           |
+| Get Sessionstorage Item | GET [/session/:sessionId/session_storage/key/:key](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidsession_storagekeykey) | `.sessionStorage()`     | 🕑           |
+| Set Sessionstorage Item | DELETE [/session/:sessionId/session_storage/key/:key](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidsession_storagekeykey) | `.sessionStorage()`     | 🕑           |
+| Get Sessionstorage Size | GET [/session/:sessionId/session_storage/size](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidsession_storagesize) | `.sessionStorageSize()` | 🕑           |
 
 ### Logs
 
 | Command Name    | API Endpoint                             | wdio API      | Status      |
 | --------------- | ---------------------------------------- | ------------- | ----------- |
-| *Get Log*       | POST [/session/:sessionId/log](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidlog) | `.log()`      | 🕑           |
-| *Get Log Types* | GET [/session/:sessionId/log/types](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidlogtypes) | `.logTypes()` | 🕑           |
+| Get Log       | POST [/session/:sessionId/log](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidlog) | `.log()`      | 🕑           |
+| Get Log Types | GET [/session/:sessionId/log/types](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidlogtypes) | `.logTypes()` | 🕑           |
 
 
 ### Application Cache
 
 | Command Name                   | API Endpoint                             | wdio API                    | Status      |
 | ------------------------------ | ---------------------------------------- | --------------------------- | ----------- |
-| *Get Application Cache Status* | GET [/session/:sessionId/application_cache/status](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidapplication_cachestatus) | `.applicationCacheStatus()` | 🕑           |
+| Get Application Cache Status | GET [/session/:sessionId/application_cache/status](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidapplication_cachestatus) | `.applicationCacheStatus()` | 🕑           |
 
 
 
