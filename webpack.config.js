@@ -17,7 +17,7 @@ var config = {
         test: /\.js$/,
         loader: 'babel-loader',
         options: {
-          presets: ['es2015']
+          presets: ['env']
         },
         exclude: [
           path.join(__dirname, 'node_modules')

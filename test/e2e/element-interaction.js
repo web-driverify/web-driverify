@@ -13,6 +13,7 @@ describe('element interaction', function () {
   it('POST /session/:sessionId/element/:id/submit', function () {
     browser.setValue('#name', 'harttle')
     browser.submitForm('#form-login')
+    browser.pause(500)
     expect(browser.getUrl()).to.contain('?name=harttle')
   })
 

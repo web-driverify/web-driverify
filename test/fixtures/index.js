@@ -11,7 +11,7 @@ import NewSession from '../../src/endpoints/session/new-session.js'
 import DeleteSession from '../../src/endpoints/session/delete-session.js'
 
 let session = null
-let proxyServer, browserClient, stubServer, wdServer
+let proxyServer, browser, stubServer, wdServer
 let debug = Debug('wd:fixtures')
 
 function setupPhantom () {
@@ -61,24 +61,29 @@ function teardownProxy () {
   return Promise.fromCallback(cb => proxyServer.close(cb))
 }
 
-function startBrowserClient (cmd) {
-  var initUrl = `${config.proxy.url}/web-driverify?token=${cmd.token}`
-  debug('starting browser client:', initUrl, 'with proxy:', config.proxy.url)
+async function startBrowserClient (cmd) {
+  const url = `${config.proxy.url}/web-driverify?token=${cmd.token}`
+  debug('starting browser client:', url, 'with proxy:', config.proxy.url)
 
-  return puppeteer
-  .launch({
+  browser = await puppeteer.launch({
     executablePath: config.chrome.exe,
     args: [
       '--proxy-server=' + config.proxy.url,
-      '--user-agent="Mozilla/5.0 (Windows NT 6.1; WOW64; rv:27.0) Gecko/20100101 Firefox/27.0"'
+      '--user-agent="Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Mobile Safari/537.36"'
     ]
   })
-  .then(browser => browser.newPage())
-  .then(page => page.goto(initUrl))
+  const page = await browser.newPage()
+	await page.setViewport({
+		width: 375,
+		height: 667,
+		isMobile: true,
+		hasTouch: true
+	})
+	await page.goto(url)
 }
 
 function exitBrowserClient () {
-  return Promise.resolve().then(() => browserClient.close())
+  return browser.close()
 }
 
 function getSessionId () {

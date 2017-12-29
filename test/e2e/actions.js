@@ -15,6 +15,6 @@ describe('actions', function () {
   it('GET /session/:sessionId/touch/click', function () {
     let id = browser.element('#touch').value.ELEMENT
     browser.touchClick(id)
-    expect(browser.getTitle()).to.match(/^touched,duration:\d+$/)
+    expect(browser.getTitle()).to.match(/^clicked, duration:\d+$/)
   })
 })

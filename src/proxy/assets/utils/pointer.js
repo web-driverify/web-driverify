@@ -2,7 +2,7 @@
 // Thanks to @Nicolas Gryman
 // https://ngryman.sh/articles/simulate-mouse--touch-events-with-jquery-in-phantomjs-and-the-browser/
 import element from './element.js'
-import {TouchEvent} from './events.js'
+import {createTouchEvent, createClickEvent} from './events.js'
 import Log from './log.js'
 
 let logger = new Log('utils:pointer')
@@ -14,28 +14,32 @@ class Pointer {
     this.y = y || 0
   }
 
-  trigger (evtName) {
+  triggerTouchEvent (evtName) {
     let el = document.elementFromPoint(this.x, this.y)
     let id = element.getOrCreate(el)
     logger.log('triggering', evtName, 'for', element.toString(id))
 
-    let evt = new TouchEvent(evtName, [{
+    let evt = createTouchEvent(evtName, [{
       pageX: this.x,
       pageY: this.y
     }])
     el.dispatchEvent(evt)
   }
 
-  click () {
-    this.trigger('click')
+  triggerClickEvent () {
+    let el = document.elementFromPoint(this.x, this.y)
+    let evt = createClickEvent(el);
+    el.dispatchEvent(evt);
   }
 
   tapStart () {
-    this.trigger(Pointer.START_EVENT)
+    logger.log('triggering', Pointer.START_EVENT)
+    this.triggerTouchEvent(Pointer.START_EVENT)
   }
 
   tapEnd () {
-    this.trigger(Pointer.STOP_EVENT)
+    this.triggerTouchEvent(Pointer.STOP_EVENT)
+		this.triggerClickEvent()
   }
 
   move (x, y, callback, duration) {
@@ -60,7 +64,7 @@ class Pointer {
       self.x = Math.ceil(t / duration * x) + sx
       self.y = Math.ceil(t / duration * y) + sy
 
-      self.trigger(Pointer.MOVE_EVENT)
+      self.triggerTouchEvent(Pointer.MOVE_EVENT)
       setTimeout(mv, 0)
     })()
   }

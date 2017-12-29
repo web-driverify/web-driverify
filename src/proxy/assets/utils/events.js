@@ -1,6 +1,12 @@
 import Log from './log.js'
 
 const log = new Log('utils/events')
+const eventTypes = {
+  'click': MouseEvent,
+  'touchstart': TouchEvent,
+  'touchmove': TouchEvent,
+  'touchend': TouchEvent
+}
 
 function trigger (el) {
   Array.prototype.forEach.call(arguments, function (event, idx) {
@@ -16,21 +22,24 @@ function trigger (el) {
 }
 
 function createEvent (type, props) {
-  var event = new Event(type, {
+  const Evt = eventTypes[type] || Event
+  var event = new Evt(type, {
     'bubbles': true
   })
-  for (var key in props) {
-    if (!props.hasOwnProperty(key)) {
-      return
-    }
-    event[key] = props[key]
-  }
+  Object.assign(event, props)
   return event
 }
 
-function TouchEvent (evtName, touches) {
+function createClickEvent () {
+  let evt = createEvent('click')
+  return evt
+}
+
+function createTouchEvent (evtName) {
   let evt = createEvent(evtName)
-  evt.touches = touches || []
+  if (undefined === evt.touches) {
+    evt.touches = []
+  }
   return evt
 }
 
@@ -43,4 +52,4 @@ function KeyboardEvent (type, code) {
   return event
 }
 
-export { KeyboardEvent, TouchEvent, createEvent, trigger }
+export { KeyboardEvent, createTouchEvent, createEvent, trigger, createClickEvent }
