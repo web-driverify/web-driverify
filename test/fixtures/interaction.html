@@ -20,15 +20,21 @@
   <script src="/node_modules/jquery/dist/jquery.min.js"></script>
   <script src="/node_modules/jquery.event.swipe/js/jquery.event.swipe.js"></script>
   <script>
-    var i;
+    var start;
+    var duration;
     $('#touch')
       .on('touchstart', function() {
         console.log('touchstart triggerd');
-        i = Date.now();
+        start = Date.now();
       })
       .on('touchend', function() {
         console.log('touchend triggerd');
-        document.title = 'touched,duration:' + (Date.now() - i);
+        duration = (Date.now() - start);
+        document.title = 'touched, duration:' + duration;
+      })
+      .on('click', function() {
+        console.log('click triggerd');
+        document.title = 'clicked, duration:' + duration;
       });
   </script>
 </body>

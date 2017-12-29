@@ -15,6 +15,9 @@ let exports = {
   ip: getIPAddr(),
   host: getIPAddr(),
   env: process.env.NODE_ENV,
+  chrome: {
+    exe: '/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary'
+  },
   wd: {
     port: '8089'
   },

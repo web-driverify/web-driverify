@@ -19,6 +19,11 @@ proxy:
 wd:
   port: 8089
 
+# launch browser by `npm run debug:chrome`
+# Note: Chromium and Canary both works, but Google Chrome does not
+chromium:
+  exe: '/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary'
+
 # Plugins should be installed manually, key is the package name, value
 # is passed to the plugin directly. For example:
 #

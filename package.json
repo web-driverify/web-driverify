@@ -6,8 +6,8 @@
   "bin": {
     "wd": "lib/bin/wd.js",
     "web-driverify": "lib/bin/wd.js",
-    "wd-phantom": "lib/bin/wd-phantom.js",
-    "web-driverify-phantom": "lib/bin/wd-phantom.js"
+    "wd-chrome": "lib/bin/wd-chrome.js",
+    "web-driverify-chrome": "lib/bin/wd-chrome.js"
   },
   "scripts": {
     "start": "node lib/bin/wd",
@@ -16,14 +16,14 @@
     "build:babel": "babel . --ignore node_modules,assets,test/e2e,test/unit,*.conf* -d lib/",
     "build:files": "cp package.json lib/ && mkdir lib/src/proxy/assets && cp src/proxy/assets/index.bundle.js lib/src/proxy/assets/ && touch lib/src/proxy/assets/favicon.ico && cp -r src/views lib/src/",
     "debug": "webpack && NODE_ENV=development DEBUG=wd:* DEBUG_COLORS=true babel-node bin/debug.js",
-    "debug:phantom": "webpack && NODE_ENV=test DEBUG=wd:* DEBUG_COLORS=true babel-node bin/debug-phantom.js",
+    "debug:chrome": "webpack && NODE_ENV=test DEBUG=wd:* DEBUG_COLORS=true babel-node bin/debug-chrome.js",
     "watch": "concurrently \"webpack --watch\" \"NODE_ENV=test DEBUG=wd:* DEBUG_COLORS=true babel-watch bin/debug.js\"",
-    "watch:phantom": "concurrently \"webpack --watch\" \"NODE_ENV=test DEBUG=wd:* DEBUG_COLORS=true babel-watch bin/debug-phantom.js\"",
+    "watch:chrome": "concurrently \"webpack --watch\" \"NODE_ENV=test DEBUG=wd:* DEBUG_COLORS=true babel-watch bin/debug-chrome.js\"",
     "wait": "wait-on http://localhost:${WD_PORT:=8089}",
     "test": "npm run test:unit && npm run test:e2e",
     "test:unit": "NODE_ENV=test mocha test/unit --recursive --compilers js:babel-core/register",
-    "test:e2e": "concurrently --success first --kill-others \"npm run debug:phantom\" \"npm run wait && npm run test:once\"",
-    "test:e2e:without-phantom": "concurrently --success first --kill-others \"npm run debug\" \"npm run wait && npm run test:once\"",
+    "test:e2e": "concurrently --success first --kill-others \"npm run debug:chrome\" \"npm run wait && npm run test:once\"",
+    "test:e2e:without-chrome": "concurrently --success first --kill-others \"npm run debug\" \"npm run wait && npm run test:once\"",
     "test:once": "wdio wdio.conf.js",
     "preversion": "npm test",
     "version": "npm run build",
@@ -57,7 +57,6 @@
     "js-yaml": "^3.9.0",
     "lodash": "^4.17.4",
     "morgan": "^1.8.0",
-    "node-horseman": "^3.2.0",
     "qrcode-terminal": "^0.11.0",
     "request": "^2.79.0",
     "shopify-liquid": "^1.7.1"
@@ -81,6 +80,7 @@
     "jquery": "^3.1.1",
     "jquery.event.swipe": "^0.5.4",
     "mocha": "^3.2.0",
+    "puppeteer": "^0.13.0",
     "superagent": "^3.4.1",
     "superagent-charset": "^1.1.1",
     "superagent-proxy": "^1.0.2",
