@@ -21,7 +21,7 @@
     "watch:chrome": "concurrently \"webpack --watch\" \"NODE_ENV=test DEBUG=wd:* DEBUG_COLORS=true babel-watch bin/debug-chrome.js\"",
     "wait": "wait-on http://localhost:${WD_PORT:=8089}",
     "test": "npm run test:unit && npm run test:e2e",
-    "test:unit": "NODE_ENV=test mocha test/unit --recursive --compilers js:babel-core/register",
+    "test:unit": "NODE_ENV=test mocha test/unit --recursive --require babel-register --require babel-polyfill",
     "test:e2e": "concurrently --success first --kill-others \"npm run debug:chrome\" \"npm run wait && npm run test:once\"",
     "test:e2e:without-chrome": "concurrently --success first --kill-others \"npm run debug\" \"npm run wait && npm run test:once\"",
     "test:once": "wdio wdio.conf.js",
